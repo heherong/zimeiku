@@ -5,6 +5,7 @@ import Market from '@/components/pages/market/main/market'
 import User from '@/components/pages/user/main/user'
 import Login from '@/components/pages/login/login'
 import Shopping from '@/components/pages/shopping/main/shopping'
+// import Order from '@/components/pages/order/main/order'
 
 Vue.use(Router)
 
@@ -13,7 +14,7 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      component: Index
+      component: Index,
     },
     {
       path: '/index',
@@ -28,7 +29,12 @@ export default new Router({
     {
       path: '/user',
       name: 'user',
-      component: User
+      component: User,
+      // 路由拦截使用
+      // meta:{
+      //   title:"个人中心",
+      //   requireAuth:true
+      // }
     },
     {
       path: '/login',
@@ -38,7 +44,20 @@ export default new Router({
     {
       path: '/shopping',
       name: 'shopping',
-      component: Shopping
+      component: Shopping,
+      meta:{
+        Login_required :false
+      }
     },
+    //购物车
+    // {
+    //   path: '/order',
+    //   name: 'order',
+    //   component: Order,
+    //   meta: {
+    //     title: '购物车',
+    //     requireAuth: true
+    //   }
+    // },
   ]
 })

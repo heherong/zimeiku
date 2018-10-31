@@ -36,6 +36,38 @@
                             </span>
                         </router-link>
                     </li>
+                    <li class="site-separator">
+                        |
+                    </li>
+                    <Myitem txt='我是买家'>
+                        <ul slot="down" class="site-dranmenu-item ">
+                            <li class="transAll">已购买作品</li>
+                            <li class="transAll">我的需求</li>
+                        </ul>
+                    </Myitem>
+                    <li class="site-separator">
+                        |
+                    </li>
+                    <Myitem txt='我是卖家'>
+                        <ul slot="down" class="site-dranmenu-item ">
+                            <li class="transAll">创作者管理</li>
+                            <li class="transAll">作品管理</li>
+                            <li class="transAll">账号管理</li>
+                            <li class="transAll">订单管理</li>
+                        </ul>
+                    </Myitem>
+                    <li class="site-separator">
+                        |
+                    </li>
+                    <li>
+                        玩转圆融
+                    </li>
+                    <li class="site-separator">
+                        |
+                    </li>
+                    <li>
+                        关于我们
+                    </li>
                 </ul>
             </div>
         </div>
@@ -48,13 +80,22 @@
 .site-login-status{cursor: pointer;font-size: 12px;}
 .login li{float: left;}
 .login li a{color:#282B00;}
+
 .site-signin{padding:0 4px;color: #282B00;cursor: pointer;}
 .menu{float: right;width: auto;}
+.menu>li{float: left;padding:0 5px;cursor: pointer;}
+.menu li a:hover{color: #4895E7;}
 .cart-num{color: #4895E7;font-size:14px;}
+li.site-separator{padding: 0;color: #64676A;opacity: 0.15;padding:0;}
+
 </style>
 
 <script>
+import Myitem from './site-dranmenu-item'
 export default {
+    components:{
+        Myitem
+    },
     data:function(){
         return {status:200}
     }
