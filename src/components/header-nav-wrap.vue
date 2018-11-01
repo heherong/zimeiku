@@ -1,6 +1,6 @@
 <template>
-    <div class="header-nav-wrap">
-        <div class="inner-wrap" :style="{'background:#4593e7;':bol}">
+    <div class="header-nav-wrap" :class="{'login-header-bg':bol}">
+        <div class="inner-wrap">
             <div class="header-logo flleft">
                 <router-link to='/'>
                     <img src="../assets/images/ico.ico" class="header-logo-img flleft">
@@ -16,7 +16,7 @@
                 <Myitem mark='user' :sel='selected' txt='个人中心' @change='getVal'></Myitem>
             </ul>
             <div class="header-search-wrap flleft" v-if="this.$route.path!='/login'">
-                <el-input placeholder="请输入内容" v-model="search" class="input-with-select" maxlength='360px;'>
+                <el-input placeholder="请输入内容" v-model="search" class="input-with-select" maxlength='360'  >
                     <el-select v-model="select" slot="prepend" placeholder="买作品">
                         <el-option label="买作品" value="1">买作品</el-option>
                         <el-option label="找作者" value="2">找作者</el-option>
@@ -34,14 +34,15 @@
 </template>
 
 <style>
-.header-nav-wrap{background: rgba(255,255,255,0.95);overflow: hidden;}
-.inner-wrap{width: 1170px;margin: 0 auto;}
+.header-nav-wrap{background: rgba(255,255,255,0.95);overflow: hidden;height: 83px;}
+
 .header-logo{padding-top: 20px;}
 .header-logo-img{width: 45px;height: 42px;vertical-align: middle;}
 .header-txt{line-height: 18px;width: 59px;margin-top: 1px;font-size: 12px;color: #64676a;padding-top: 4px;}
 .header-list-wrap{padding-left: 12px;width: auto;}
 .header-search-wrap{    position: relative;width: 320px;border: 2px solid rgba(72,149,231,0.50);border-radius: 2px;margin-top: 21px;border-radius: 7px;}
 .publish-btn{margin: 21px 0 0 20px;}
+.login-header-bg{background:#4593e7;}
 </style>
 
 <script>
@@ -58,12 +59,17 @@ export default {
             bol:false
             }
     },
-    computed:{
-        fn:function(){
-            if(this.$route.path!='/login'){
-                bol
-            }
-            bol=false
+    watch: {
+        $route: {
+            handler: function(val, oldVal){
+                if(val.name=='login'){
+                    this.bol=true
+                }else{
+                    this.bol=false
+                }
+            },
+            // 深度观察监听
+            deep: true
         }
     },
     methods:{
@@ -73,7 +79,7 @@ export default {
         }
     },
     mounted:function(){
-        console.log(this.$route.path)
+        
     }
 }
 </script>

@@ -4,7 +4,8 @@ import Index from '@/components/pages/index/main/index'
 import Market from '@/components/pages/market/main/market'
 import User from '@/components/pages/user/main/user'
 import Login from '@/components/pages/login/login'
-import Shopping from '@/components/pages/shopping/main/shopping'
+import ShoppingCart from '@/components/pages/shoppingCart/main/shopping'
+import ContentBank from '@/components/pages/contentBank/main/ContentBank'
 // import Order from '@/components/pages/order/main/order'
 
 Vue.use(Router)
@@ -42,12 +43,18 @@ export default new Router({
       component: Login
     },
     {
-      path: '/shopping',
-      name: 'shopping',
-      component: Shopping,
+      path: '/shoppingcart',
+      name: 'shoppingcart',
+      component: ShoppingCart,
       meta:{
         Login_required :false
       }
+    },
+    {
+      path: '/ContentBank',
+      name: 'ContentBank',
+      component: ContentBank,
+      
     },
     //购物车
     // {
