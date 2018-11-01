@@ -33,7 +33,45 @@
 	</div>
 </template>
 
-<style>
+<script>
+	import Myitem from './header-nav-item'
+	export default {
+		components: {
+			Myitem
+		},
+		data: function() {
+			return {
+				selected: "index",
+				search: '',
+				select: '',
+				bol: false
+			}
+		},
+		watch: {
+			$route: {
+				handler: function(val, oldVal) {
+					if (val.name == 'login') {
+						this.bol = true
+					} else {
+						this.bol = false
+					}
+				},
+				// 深度观察监听
+				deep: true
+			}
+		},
+		methods: {
+			getVal: function(val) {
+				console.log(val);
+				this.selected = val;
+			}
+		},
+		mounted: function() {
+
+		}
+	}
+</script>
+<style scoped>
 	.header-nav-wrap {
 		background: rgba(255, 255, 255, 0.95);
 		overflow: hidden;
@@ -81,42 +119,3 @@
 		background: #4593e7;
 	}
 </style>
-
-<script>
-	import Myitem from './header-nav-item'
-	export default {
-		components: {
-			Myitem
-		},
-		data: function() {
-			return {
-				selected: "index",
-				search: '',
-				select: '',
-				bol: false
-			}
-		},
-		watch: {
-			$route: {
-				handler: function(val, oldVal) {
-					if (val.name == 'login') {
-						this.bol = true
-					} else {
-						this.bol = false
-					}
-				},
-				// 深度观察监听
-				deep: true
-			}
-		},
-		methods: {
-			getVal: function(val) {
-				console.log(val);
-				this.selected = val;
-			}
-		},
-		mounted: function() {
-
-		}
-	}
-</script>
