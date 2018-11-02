@@ -28,8 +28,6 @@ export default {
     methods:{
         tab:function(){
             this.$emit('change',this.mark);
-            console.log(this.mark);
-            console.log(this.sel)
             this.$router.push(`/${this.mark}`);
         }
     }

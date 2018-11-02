@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <Myheader></Myheader>
-    
-    <router-view/>
+    <div style="margin-top:118px;overflow:hidden">
+      <router-view/>
+    </div>
     <Myfooter></Myfooter>
   </div>
 </template>

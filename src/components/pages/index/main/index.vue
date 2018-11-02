@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-top:118px;">
+    <div>
         <MyBanner effect='fade'>
             <div slot="swiper-con" class="swiper-slide">
                 <img src="../../../../assets/images/Banner/banner01.jpg" alt="" class="swiper-img">
