@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/components/pages/index/main/index'
-import Market from '@/components/pages/market/main/market'
-import User from '@/components/pages/user/main/user'
-import Login from '@/components/pages/login/login'
-import ShoppingCart from '@/components/pages/shoppingCart/main/shopping'
-import ContentBank from '@/components/pages/contentBank/main/ContentBank'
-// import Order from '@/components/pages/order/main/order'
+import Index from '@/pages/index/main/index'
+import Market from '@/pages/market/main/market'
+import User from '@/pages/user/main/user'
+import Login from '@/pages/login/login'
+import ShoppingCart from '@/pages/shoppingCart/main/shopping'
+import ContentBank from '@/pages/contentBank/main/ContentBank'
+// import Order from '@/pages/order/main/order'
 
 Vue.use(Router)
 

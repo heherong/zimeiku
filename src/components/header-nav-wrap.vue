@@ -17,7 +17,7 @@
 			</ul>
 			<div class="header-search-wrap flleft" v-if="this.$route.path!='/login'">
 				<el-input placeholder="请输入内容" v-model="search" class="input-with-select" maxlength='360'>
-					<el-select v-model="select" slot="prepend" placeholder="买作品">
+					<el-select v-model="select" slot="prepend">
 						<el-option label="买作品" value="1">买作品</el-option>
 						<el-option label="找作者" value="2">找作者</el-option>
 						<el-option label="做推广" value="3">做推广</el-option>
@@ -43,7 +43,7 @@
 			return {
 				selected: "index",
 				search: '',
-				select: '',
+				select: '1',
 				bol: false
 			}
 		},
@@ -117,5 +117,10 @@
 
 	.login-header-bg {
 		background: #4593e7;
+	}
+</style>
+<style>
+	.header-search-wrap .el-input-group__prepend{
+		width: 50px;
 	}
 </style>
