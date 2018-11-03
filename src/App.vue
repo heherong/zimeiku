@@ -28,6 +28,8 @@ a:visited{color:#282B00}
 .line{width: 1px;height: 24px;margin: 11px 15px 0;opacity: 0.5;background: #A9ADB0;}
 .transAll{transition: all .2s ease-in-out;-moz-transition: all .2s ease-in-out;-webkit-transition: all .2s ease-in-out;}
 .inner-wrap{width: 1170px;margin: 0 auto;}
+.wrap{ margin: 0px auto 30px;overflow: hidden;background:#F1F3F6;padding-top: 20px;}
+.icon-help{width:15px;height:15px;margin-right: 4px;vertical-align: middle;cursor: pointer; margin-top: 2px;display: inline-block;background:url('./assets/images/icon-question.png');background-position: center;background-size: 100%;}
 </style>
 
 
