@@ -1,0 +1,71 @@
+<template>
+    <div class="original-content-list-wrap">
+        <div class="title-wrap">
+            <span >作品列表</span>
+            <p id="p">
+                <span class="check-codition active-condition" >综合</span>
+                <span>|</span>
+                <span class="check-codition">最新</span>
+                <span>|</span>
+                <span class="check-codition">价格从高到低</span>
+                <span>|</span>
+                <span class="check-codition">价格从低到高</span>
+            </p>
+        </div>
+        <ul class="original-works-list-wrap">
+            <MyItem></MyItem>
+            <MyItem></MyItem>
+            <MyItem></MyItem>
+            <div style="text-align:center;">
+                <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :total="100">
+                </el-pagination>
+            </div>
+            
+        </ul>
+    </div>
+</template>
+
+<style>
+.original-content-list-wrap{margin-top:23px;}
+.title-wrap{width: 100%;border-bottom: 1px solid #e9ecf1;height: 48px;line-height: 48px;background: #fff;}
+.title-wrap>span{margin-left: 29px;color: #64676a;font-size: 16px;}
+.title-wrap p{float: right; margin-right: 21px;}
+.title-wrap>p>span{margin-right: 8px;color: #64676a;padding: 4px 9px;cursor: pointer;font-size: 12px;border-radius: 2px;}
+.check-codition{}
+span.active-condition{color: #4895e7 !important;background: #e5f0fc;}
+.original-works-list-wrap>li{padding: 28px 0;margin-bottom: 11px;background: #fff;}
+</style>
+
+<script>
+import MyItem from './ContentListItem'
+export default {
+    components:{
+        MyItem
+    },
+    data:function(){
+        return {active:0,a:1}
+    },
+    methods:{
+
+    },
+    mounted:function(){
+        var list = document.getElementById('p').getElementsByTagName("span");
+        for(var i = 0; i < list.length; i++){
+            (function(n){
+                list[n].onclick = function(){
+                    for(var j = 0; j < list.length; j++){
+                        list[j].className = '';
+                    }
+                    list[n].className = "active-condition";
+                }
+            
+            }(i))
+        }
+    }
+}
+</script>
+
+
