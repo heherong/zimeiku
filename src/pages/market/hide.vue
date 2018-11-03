@@ -1,6 +1,6 @@
 <template>
     <div class="tit-more" @click="fn">
-        <img src="../../../assets/images/arr_small_down.png">
+        <img src="../../assets/images/arr_small_down.png">
     </div>
 </template>
 

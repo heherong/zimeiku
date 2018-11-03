@@ -2,7 +2,7 @@
     <li >
         <div class="img-box">
             <router-link to='/ContentBank' target="_blank">
-                <img src="../../../assets/images/1.jpg" alt="" style="width:100%;">
+                <img src="../../assets/images/1.jpg" alt="" style="width:100%;">
                 <!-- <slot name="img"></slot> -->
             </router-link>
         </div>
