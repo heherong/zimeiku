@@ -17,11 +17,11 @@ export default new Router({
       name: 'index',
       component: Index,
     },
-    {
-      path: '/index',
-      name: 'index',
-      component: Index
-    },
+//  {
+//    path: '/index',
+//    name: 'index',
+//    component: Index
+//  },
     {
       path: '/market',
       name: 'market',
