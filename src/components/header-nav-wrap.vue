@@ -11,6 +11,8 @@
                 </router-link>
             </div>
             <ul class="header-list-wrap flleft transAll" style="width:560px;"  v-if="this.$route.path!='/login'">
+
+
                 <Myitem mark='index' :sel='selected' txt='首  页' @change='getVal' ></Myitem>
                 <Myitem mark='market' :sel='selected' txt='文章广场' @change='getVal'></Myitem>
                 <Myitem mark='user' :sel='selected' txt='个人中心' @change='getVal'></Myitem>
@@ -70,7 +72,8 @@ export default {
             },
             // 深度观察监听
             deep: true
-        }
+        },
+        
     },
     methods:{
         getVal:function(val){

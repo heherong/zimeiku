@@ -11,6 +11,14 @@
 	</div>
 </template>
 
+<<<<<<< HEAD
+<script>
+export default {
+    
+}
+</script>
+
+=======
 <style>
 	
 </style>
@@ -30,3 +38,4 @@
 			}
 	}
 </script>
+>>>>>>> a36aace6d2efc389ff607401756c28efb2c27961

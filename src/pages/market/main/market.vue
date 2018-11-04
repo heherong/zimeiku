@@ -14,7 +14,7 @@
 
 <style>
 .condition-wrap{padding:20px 0;overflow: hidden;background:#fff;}
-.wrap{ margin: 0px auto 30px;overflow: hidden;background:#F1F3F6;padding-top: 20px;}
+
 .market{width: 1170px;margin: 0 auto;}
 </style>
 
