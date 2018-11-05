@@ -1,6 +1,9 @@
 .condition-wrap{padding:20px 0;overflow: hidden;background:#fff;}
-.wrap{ margin: 0px auto 30px;overflow: hidden;background:#F1F3F6;padding-top: 20px;}
-.market{width: 1170px;margin: 0 auto;}
+.wrap{ overflow: hidden;background:#F1F3F6;padding-top: 20px;}
+.market{width: 1170px;margin: 0 auto;margin-bottom: 30px;}
+.tac{
+	background-color: #fff;
+}
 .el-money {
 	margin-right: 10px;
 	background: url(../images/user/money.png);
@@ -8,6 +11,9 @@
 .el-money-on {
 	margin-right: 10px;
 	background: url(../images/user/money_on.png);
+}
+.el-submenu .el-menu-item{
+	min-width:190px;
 }
 /*可以公共*/
 .my-icon-size{

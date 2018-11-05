@@ -2,9 +2,16 @@
 	<div class="wrap transAll" style="min-height:366px;">
 		<Myheader :active ='tabActive'></Myheader>
 		<div class="market" style="margin-top:83px;">
-			<!--侧边栏-->	
-			<UserNav></UserNav>
-		
+			<el-row class="tac">
+				<el-col :span="4">
+					<!--侧边栏-->	
+					<UserNav v-on:activeId="listenToNav"></UserNav>
+				</el-col>
+				<el-col :span="20">
+					<!--内容-->
+					<Inform></Inform>
+				</el-col>
+			</el-row>
 		</div>
 	</div>
 </template>
@@ -14,12 +21,27 @@
 </style>
 
 <script>
-	import UserNav from '../user-nav'
 	import Myheader from '../../../components/header-nav-wrap'
+	import UserNav from '../user-nav'
+	import Inform from '../inform'
+//	import MyProperty from '../myProperty'
+//	import Setting from '../setting'
+//	import Release from '../release'
+//	import MyWorks from '../myWorks'
+//	import WorksStatus from '../worksStatus'
+//	import BuyWorks from '../buyWorks'
 	export default {
 		components:{
+			Myheader,
 			UserNav,
-			Myheader
+			Inform,  //系统公告
+//			MyProperty,
+//			Setting,
+//			Release,
+//			MyWorks,
+//			WorksStatus,
+//			ReleaseWorks,
+//			BuyWorks
 	    },
 		data: function() {
 			return {
@@ -30,6 +52,11 @@
 			next(vm=>{
 				vm.tabActive = to.params.name
 			})
+		},
+		methods:{
+			listenToNav:function(data){
+				console.log(data);
+			}
 		}
 	}
 </script>
