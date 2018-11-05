@@ -29,6 +29,7 @@ export default {
         tab:function(){
             this.$emit('change',this.mark);
             this.$router.push(`/${this.mark}`);
+            console.log(this.mark)
         }
     }
 }

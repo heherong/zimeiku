@@ -1,41 +1,35 @@
 <template>
-	<div class="content">
-		<div class="wrap transAll" style="min-height:366px;">
-			<div class="market">
-				<!--侧边栏-->	
-				<UserNav></UserNav>
-			
-			</div>
+	<div class="wrap transAll" style="min-height:366px;">
+		<Myheader :active ='tabActive'></Myheader>
+		<div class="market" style="margin-top:83px;">
+			<!--侧边栏-->	
+			<UserNav></UserNav>
+		
 		</div>
-
 	</div>
 </template>
 
-<<<<<<< HEAD
-<script>
-export default {
-    
-}
-</script>
-
-=======
 <style>
 	
 </style>
 
 <script>
 	import UserNav from '../user-nav'
+	import Myheader from '../../../components/header-nav-wrap'
 	export default {
 		components:{
-		    UserNav
+			UserNav,
+			Myheader
 	    },
 		data: function() {
 			return {
-				
+				 tabActive:'user'
 			}
 		},
-		methods: {
-			}
+		beforeRouteEnter:(to,form,next)=>{
+			next(vm=>{
+				vm.tabActive = to.params.name
+			})
+		}
 	}
 </script>
->>>>>>> a36aace6d2efc389ff607401756c28efb2c27961

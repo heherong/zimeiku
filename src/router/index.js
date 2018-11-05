@@ -17,11 +17,11 @@ export default new Router({
       name: 'index',
       component: Index,
     },
-//  {
-//    path: '/index',
-//    name: 'index',
-//    component: Index
-//  },
+    {
+      path: '/index',
+      name: 'index',
+      component: Index
+    },
     {
       path: '/market',
       name: 'market',
@@ -40,7 +40,12 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta:{
+        title:'登录',
+        requestAuto: true
+      },
+      
     },
     {
       path: '/shoppingcart',

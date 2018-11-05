@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Myheader :active ='tabActive'></Myheader>
         <MyBanner effect='fade'>
             <div slot="swiper-con" class="swiper-slide">
                 <img src="../../../assets/images/Banner/banner01.jpg" alt="" class="swiper-img">
@@ -21,11 +22,23 @@
 import MyBanner from '../../../components/Banner'
 import MyIndexNumInfo from '../IndexNumInfo'
 import MyIndexSection from '../IndexSectionWrap'
+import Myheader from '../../../components/header-nav-wrap'
 export default {
     components:{
         MyBanner,
         MyIndexNumInfo,
-        MyIndexSection
+        MyIndexSection,
+        Myheader
+    },
+    data:function(){
+        return {
+            tabActive:'index'
+        }
+    },
+    beforeRouteEnter:(to,form,next)=>{
+        next(vm=>{
+            vm.tabActive = to.params.name
+        })
     }
 }
 </script>
