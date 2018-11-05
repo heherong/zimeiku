@@ -20,6 +20,14 @@
 				</template>
 			</el-table-column>
 		</el-table>
+		<div class="pages">
+			<el-pagination
+			  background
+			  layout="prev, pager, next"
+			  :total="1000">
+			</el-pagination>
+		</div>
+		
 	</div>
 </template>
 
