@@ -29,8 +29,8 @@
                             <div class="input-login">
                                 <el-checkbox v-model="checked">记住密码</el-checkbox>
                             </div>
-                            <div class="login-btn-submit">
-                                
+                            <div class="login-btn-submit input-login">
+                                <el-button type="primary" @click="onSubmit" style="width:292px;">登录</el-button>
                             </div>
                         </el-form>
                     </div>
