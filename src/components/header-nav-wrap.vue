@@ -1,5 +1,5 @@
 <template>
-    <div class="header-nav-wrap transAll" :class="{'login-header-bg':bol}">
+    <div class="header-nav-wrap transAll" :class="{'login-header-bg':bol,'top':!fixbol}">
         <div class="inner-wrap">
             <div class="header-logo flleft">
                 <router-link to='/'>
@@ -73,7 +73,7 @@ export default {
             search: '',
             select: '',
             bol:false,
-
+            fixbol:true,
             }
     },
     watch: {
@@ -108,12 +108,23 @@ export default {
         getVal:function(val){
             this.selected=val;
         },
+        fn:function(){
+            let downScroll = window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop;
+            if(downScroll>36){
+                this.fixbol=false
+            }else{
+                this.fixbol=true
+            }
+        }
     },
     mounted:function(){
         console.log('active:'+this.active);
         console.log('selected:'+this.selected);
         
     },
+    created:function(){
+        window.addEventListener('scroll',this.fn)
+    }
 }
 </script>
 

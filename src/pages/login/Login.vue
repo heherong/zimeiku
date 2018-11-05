@@ -26,6 +26,12 @@
                             <div class="input-login">
                                 <el-input type="password" v-model="form.pass" autocomplete="off" minlength=48></el-input>
                             </div>
+                            <div class="input-login">
+                                <el-checkbox v-model="checked">记住密码</el-checkbox>
+                            </div>
+                            <div class="login-btn-submit">
+                                
+                            </div>
                         </el-form>
                     </div>
                 </div>
