@@ -18,21 +18,62 @@
                             <li  :class="{loginActive:now==1}" @click="now=1">手机动态登录</li>
                         </ul>
                     </div>
-                    <div class="login-from-wrap">
-                        <el-form ref="form" :model="form" label-width="80px">
-                            <div class="input-login">
-                                <input type="text" autocomplete="off" placeholder="请输入手机号码" maxlength="11" class="el-input__inner" v-model='form.number' minlength=48> </el-input>
-                            </div>
-                            <div class="input-login">
-                                <el-input type="password" v-model="form.pass" autocomplete="off" minlength=48></el-input>
-                            </div>
-                            <div class="input-login">
-                                <el-checkbox v-model="checked">记住密码</el-checkbox>
-                            </div>
-                            <div class="login-btn-submit input-login">
-                                <el-button type="primary" @click="onSubmit" style="width:292px;">登录</el-button>
-                            </div>
+                    <div class="login-from-wrap" v-if="now==0">
+                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+                            <el-form-item prop="shoujihao" style="margin-left:0;" class="input-login">
+                                <el-input v-model.number="ruleForm2.shoujihao" style="margin-left:0;width:290px"  placeholder="请输入手机号"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="pass"  class="input-login">
+                                <el-input type="password" v-model="ruleForm2.pass" autocomplete="off" placeholder="请输入密码"></el-input>
+                            </el-form-item>
+                                <el-checkbox v-model="checked" >记住密码</el-checkbox>
+                            <el-form-item>
+                                <div class="login-btn-submit input-login">
+                                    <el-button type="primary" @click="onSubmit"  style="width:292px;" >登录</el-button>
+                                </div>
+                            </el-form-item>
                         </el-form>
+                        <div class="login-bot-wrap">
+                            <span class="login-foget transAll">忘记密码</span>
+                            <span class="login-reg transAll">注册新用户</span>
+                        </div>
+                    </div>
+                    
+
+                    <div class="login-from-wrap" v-else>
+                        
+                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+                            <el-form-item prop="shoujihao" style="margin-left:0;" class="input-login">
+                                <el-input v-model.number="ruleForm2.shoujihao" style="margin-left:0;width:290px"  placeholder="请输入手机号"></el-input>
+                            </el-form-item>
+                        
+                           
+                            <el-form-item prop="pass"  class="input-login" style="width:50%;">
+                                <el-input type="password" v-model="ruleForm2.pass" autocomplete="off" placeholder="请输入验证码"></el-input>
+                                
+                            </el-form-item>
+                            <div class="pic-code">
+                                <img src="../../assets/images/getValidateImg.jpg" alt="" style="width:100%;">
+
+                            </div>
+                            <el-form-item  class="input-login" style="width:50%;">
+                                <el-input v-model="ruleForm2.poCode" placeholder="请输入手机验证码" :disabled="bol"></el-input>
+                                
+                            </el-form-item>
+
+                            <div class="ip-code">
+                                <el-button type="primary" @click="oniP">获取验证码</el-button>
+                            </div>
+                            <el-form-item>
+                                <div class="login-btn-submit input-login">
+                                    <el-button type="primary" @click="onSubmit"  style="width:292px;" >登录</el-button>
+                                </div>
+                            </el-form-item>
+                        </el-form>
+                        <div class="login-bot-wrap">
+                            <span class="login-foget transAll" @click="loginFoget">忘记密码</span>
+                            <span class="login-reg transAll" @click="loginReg">注册新用户</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,6 +92,13 @@
 .login-tab li:hover{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px solid #4895e7;}
 li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px solid #4895e7;}
 .input-login{margin-top:30px;}
+.login-from-wrap{position: relative;}
+div.el-form-item__content{margin-left:0!important;}
+.pic-code{width:118px;height:40px;position: absolute;right:0;top:70px;}
+.ip-code{width:118px;height:40px;position: absolute;right:0;top:140px;}
+.login-bot-wrap{font-size:14px;}
+.login-foget{text-align: center;color: #4895e7;cursor: pointer;}
+.login-reg{text-align: center;color: #4895e7;cursor: pointer;float: right;}
 </style>
 
 
@@ -60,16 +108,66 @@ export default {
     components:{
         
     },
-    data:function(){
-        return {
-            now:0,
-            form: {
-                number: '',
-                password: '',
-                
-            }
+     data() {
+      var checkshouji = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入手机号码'));
         }
-    } 
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+          
+          }
+        }, 1000);
+      };
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      
+      return {
+        checked:'',
+        now:1,
+        bol:true,
+        ruleForm2: {
+          pass: '',
+          checkPass: '',
+          shoujihao: '',
+          poCode:'',
+        },
+        rules2: {
+          pass: [
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          shoujihao: [
+            { validator: checkshouji, trigger: 'blur' }
+          ]
+        },
+        
+        
+      };
+    },
+    methods:{
+        onSubmit:function(){
+            console.log(1);
+        },
+        oniP:function(){
+            this.bol = false;
+        },
+        loginFoget:function(){
+            this.$router.push('./login')
+        },
+        loginReg:function(){
+            this.$router.push('./reg')
+        }
+    }
 }
 </script>
 
