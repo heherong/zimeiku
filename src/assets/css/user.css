@@ -16,6 +16,22 @@
 .el-submenu .el-menu-item{
 	min-width:190px;
 }
+.inform {
+	background-color: #fff;
+	padding: 20px 20px 20px 40px;
+}
+
+.inform h4 {
+	color: #504752;
+	padding-bottom: 15px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ddd;
+	/*font-weight: 500;*/
+}
+
+.el-table thead tr th {
+	background-color: #eef1f6;
+}
 /*可以公共*/
 .my-icon-size{
 	display: inline-block;
