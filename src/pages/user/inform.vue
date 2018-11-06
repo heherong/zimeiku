@@ -79,19 +79,5 @@
 </script>
 
 <style>
-	.inform {
-		background-color: #fff;
-		padding: 20px 20px 20px 40px;
-	}
-	
-	.inform h4 {
-		color: #504752;
-		padding-bottom: 15px;
-		margin-bottom: 20px;
-		border-bottom: 1px solid #ddd;
-	}
-	
-	.el-table thead tr th {
-		background-color: #eef1f6;
-	}
+	@import url("../../assets/css/user");
 </style>
