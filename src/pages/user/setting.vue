@@ -156,9 +156,15 @@
 	export default {
 		data() {
 			return {
+<<<<<<< HEAD
 				settingShow: 1, //显示页面 1是当前，2是认证，3是手机，4是邮箱，5是微信，6是登录密码，7是支付密码
 				headImg: jpg1, //头像
 				name: "herong", //昵称
+=======
+				settingShow:1, //显示页面 1是当前，2是认证，3是手机，4是邮箱，5是微信，6是登录密码，7是支付密码
+				headImg: jpg1,
+				name: "",
+>>>>>>> 132c930de91439ad4724b4d9d03e58f15236f4a9
 				identificationStatus: true, //认证状态
 				iphone: 1871234123,
 				email: '1@qq.com',

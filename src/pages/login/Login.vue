@@ -1,15 +1,8 @@
 <template>
-    <div class="wrap transAll" style="min-height:366px;">
-        <header class="login-header">
-            <div class="header-con-wrap">
-                <div class="header-item">
-                    <img src="../../assets/images/ico.ico" style="width:50px;float:left;padding-top:12px;">
-                    <div class="line flleft" style="height:45px;"></div>
-                    <span class="login-header-title">用户登录</span>
-                </div>
-            </div>
-        </header>
-        <div class="market" style="background: #fff;border-radius: 2px;padding: 102px 0;margin-top:30px;">
+    <div class="wrap transAll" style="min-height:366px;height:900px;">
+        
+        <Myheader types='用户登录'></Myheader>
+        <div class="market" style="background: #fff;border-radius: 2px;padding: 102px 0;width:1170px;margin:0 auto;margin-top:30px;">
             <div class="login-wrap">
                 <div class="login-wrap">
                     <div class="login-tab-wrap">
@@ -19,9 +12,9 @@
                         </ul>
                     </div>
                     <div class="login-from-wrap" v-if="now==0">
-                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                            <el-form-item prop="shoujihao" style="margin-left:0;" class="input-login">
-                                <el-input v-model.number="ruleForm2.shoujihao" style="margin-left:0;width:290px"  placeholder="请输入手机号"></el-input>
+                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="ruleForm">
+                            <el-form-item prop="shoujihao" style="" class="input-login">
+                                <el-input v-model.number="ruleForm2.shoujihao" style=""  placeholder="请输入手机号"></el-input>
                             </el-form-item>
                             <el-form-item prop="pass"  class="input-login">
                                 <el-input type="password" v-model="ruleForm2.pass" autocomplete="off" placeholder="请输入密码"></el-input>
@@ -34,22 +27,22 @@
                             </el-form-item>
                         </el-form>
                         <div class="login-bot-wrap">
-                            <span class="login-foget transAll">忘记密码</span>
-                            <span class="login-reg transAll">注册新用户</span>
+                            <span class="login-foget transAll" @click="loginFoget">忘记密码</span>
+                            <span class="login-reg transAll" @click="loginReg">注册新用户</span>
                         </div>
                     </div>
                     
 
                     <div class="login-from-wrap" v-else>
                         
-                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                            <el-form-item prop="shoujihao" style="margin-left:0;" class="input-login">
+                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
+                            <el-form-item prop="shoujihao" class="input-login">
                                 <el-input v-model.number="ruleForm2.shoujihao" style="margin-left:0;width:290px"  placeholder="请输入手机号"></el-input>
                             </el-form-item>
                         
                            
-                            <el-form-item prop="pass"  class="input-login" style="width:50%;">
-                                <el-input type="password" v-model="ruleForm2.pass" autocomplete="off" placeholder="请输入验证码"></el-input>
+                            <el-form-item prop="poCode"  class="input-login" style="width:50%;">
+                                <el-input type="password" v-model="ruleForm2.poCode" autocomplete="off" placeholder="请输入验证码"></el-input>
                                 
                             </el-form-item>
                             <div class="pic-code">
@@ -82,10 +75,7 @@
 </template>
 
 <style>
-.login-header{width: 100%;height: 68px;background: #4593e7;line-height: 68px;border-bottom: 1px solid #99c1ed;overflow: hidden;}
-.header-con-wrap{width: 1190px;background: #4593e7;margin: 0 auto;color: #fff;overflow: hidden;}
-.header-item{float: left;cursor: pointer;text-align: center;}
-.login-header-title{font-size: 26px;}
+
 .login-wrap{width: 292px;margin: 0 auto;}
 .login-tab{overflow: hidden;}
 .login-tab li{float: left;width: 50%;border-bottom: 1px solid #e2e4e7;padding-bottom: 16px;text-align: center;font-size: 16px;cursor: pointer;}
@@ -93,7 +83,7 @@
 li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px solid #4895e7;}
 .input-login{margin-top:30px;}
 .login-from-wrap{position: relative;}
-div.el-form-item__content{margin-left:0!important;}
+/* div.el-form-item__content{margin-left:0!important;} */
 .pic-code{width:118px;height:40px;position: absolute;right:0;top:70px;}
 .ip-code{width:118px;height:40px;position: absolute;right:0;top:140px;}
 .login-bot-wrap{font-size:14px;}
@@ -103,10 +93,10 @@ div.el-form-item__content{margin-left:0!important;}
 
 
 <script>
-
+import Myheader from '../../components/loginHeader'
 export default {
     components:{
-        
+        Myheader
     },
      data() {
       var checkshouji = (rule, value, callback) => {
@@ -131,7 +121,16 @@ export default {
           callback();
         }
       };
-      
+      var poCode = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入验证码'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('poCode');
+          }
+          callback();
+        }
+      };
       return {
         checked:'',
         now:1,
@@ -141,6 +140,7 @@ export default {
           checkPass: '',
           shoujihao: '',
           poCode:'',
+
         },
         rules2: {
           pass: [
@@ -148,7 +148,10 @@ export default {
           ],
           shoujihao: [
             { validator: checkshouji, trigger: 'blur' }
-          ]
+          ],
+          poCode: [
+            { validator: poCode, trigger: 'blur' }
+          ],
         },
         
         
