@@ -5,9 +5,11 @@ import Market from '@/pages/market/main/market'
 import User from '@/pages/user/main/user'
 import Login from '@/pages/login/login'
 import Reg from '@/pages/reg/reg'
+
+import BuyerOrder from '@/pages/BuyerOrder/main/buyerOrder'
 import ShoppingCart from '@/pages/shoppingCart/main/shopping'
 import ContentBank from '@/pages/contentBank/main/ContentBank'
-// import Order from '@/components/pages/order/main/order'
+
 
 Vue.use(Router)
 
@@ -54,6 +56,12 @@ export default new Router({
       component: Reg,
     },
     {
+      path: '/buyerorder',
+      name: 'buyerorder',
+      component: BuyerOrder,
+    },
+    {
+      //购物车
       path: '/shoppingcart',
       name: 'shoppingcart',
       component: ShoppingCart,
@@ -67,15 +75,5 @@ export default new Router({
       component: ContentBank,
       
     },
-    //购物车
-    // {
-    //   path: '/order',
-    //   name: 'order',
-    //   component: Order,
-    //   meta: {
-    //     title: '购物车',
-    //     requireAuth: true
-    //   }
-    // },
   ]
 })

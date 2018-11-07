@@ -23,6 +23,7 @@
                 <Myitem mark='index' :sel='selected' txt='首  页' @change='getVal' ></Myitem>
                 <Myitem mark='market' :sel='selected' txt='文章广场' @change='getVal'></Myitem>
                 <Myitem mark='user' :sel='selected' txt='个人中心' @change='getVal'></Myitem>
+                <Myitem mark='buyerorder' :sel='selected' txt='征文大厅' @change='getVal'></Myitem>
             </ul>
             <div class="header-search-wrap flleft" v-if="this.$route.path!='/login'">
                 <el-input placeholder="请输入内容" v-model="search" class="input-with-select" maxlength='360'  >

@@ -36,7 +36,7 @@
                     <div class="login-from-wrap" v-else>
                         
                         <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
-                            <el-form-item prop="shoujihao" style="margin-left:0;" class="input-login">
+                            <el-form-item prop="shoujihao" class="input-login">
                                 <el-input v-model.number="ruleForm2.shoujihao" style="margin-left:0;width:290px"  placeholder="请输入手机号"></el-input>
                             </el-form-item>
                         
