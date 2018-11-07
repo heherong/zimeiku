@@ -1,0 +1,171 @@
+<template>
+    <div>
+        <Myheader types='用户注册'></Myheader>
+        <div class="register-wrap">
+            <div class="register-con-wrap">
+                <div class="register-el">
+                    <div class="register-tit-wrap">
+                        <p>马上注册</p>
+                        <p></p>
+                    </div>
+                    <div class="register-from-wrap">
+                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
+                            <el-form-item prop="shoujihao" style="margin-left:0;" class="input-login">
+                                <el-input v-model.number="ruleForm2.shoujihao" style="margin-left:0;width:290px"  placeholder="请输入手机号"></el-input>
+                            </el-form-item>
+                        
+                           
+                            <el-form-item prop="poCode"  class="input-login" style="width:50%;">
+                                <el-input type="poCode" v-model="ruleForm2.poCode" autocomplete="off" placeholder="请输入验证码"></el-input>
+                                
+                            </el-form-item>
+                            <div class="pic-code">
+                                <img src="../../assets/images/getValidateImg.jpg" alt="" style="width:100%;">
+
+                            </div>
+                            <el-form-item  class="input-login" style="width:50%;">
+                                <el-input v-model="ruleForm2.poCode" placeholder="请输入手机验证码" :disabled="bol"></el-input>
+                                
+                            </el-form-item>
+
+                            <div class="ip-code">
+                                <el-button type="primary" @click="oniP">获取验证码</el-button>
+                            </div>
+
+                            <el-form-item prop="pass">
+                                <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"  placeholder="请输入密码"></el-input>
+                            </el-form-item>
+                            <el-form-item prop="checkPass">
+                                <el-input type="password" v-model="ruleForm2.checkPass" autocomplete="off"  placeholder="请再次输入密码"></el-input>
+                            </el-form-item>
+                            <div class="register-bot-wrap">
+                                <el-checkbox v-model="agree">
+                                    请勾选阅读并同意  <span class="register-login">《陶梦用户服务协议》</span>
+                                </el-checkbox>
+                                <span class="register-login">
+                                    登录
+                                </span>
+                            </div>
+                            <el-form-item>
+                                <div class="reg-btn-submit input-login" style="margin-top:30px;">
+                                    <el-button type="primary" @click="onSubmit"  style="width:292px;" >注册</el-button>
+                                </div>
+                            </el-form-item>
+
+                        </el-form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style>
+.register-wrap{min-height: 688px;padding-top: 30px;background: #eceff4;height: 810px;}
+.register-con-wrap{width: 1170px;margin: 0 auto;background: #fff;border-radius: 2px;padding: 36px 0;}
+.register-el{width: 292px;margin: 0 auto;}
+.register-tit-wrap{text-align: center;color: #303132;}
+.register-tit-wrap>p{font-size:24px;}
+.register-tit-wrap p:last-child{width: 62px;height: 2px;margin: 8px auto 26px;background: #6daaec;}
+.register-from-wrap{position: relative;}
+.ip-code{width:118px;height:40px;position: absolute;right:0;top:130px;}
+.pic-code{width:118px;height:40px;position: absolute;right:0;top:70px;}
+.register-bot-wrap{position: relative;font-size: 12px;}
+.register-login{float: right;color: #4895e7;text-align: center;cursor: pointer;}
+.el-checkbox__label{font-size: 10px;}
+</style>
+
+
+<script>
+import Myheader from '../../components/loginHeader'
+export default {
+    components:{
+        Myheader
+    },
+     data() {
+      var checkshouji = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('请输入手机号码'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+          
+          }
+        }, 1000);
+      };
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+       var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm2.pass) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+      var poCode = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入验证码'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('poCode');
+          }
+          callback();
+        }
+      };
+      return {
+        
+        agree:true,
+        bol:true,
+        ruleForm2: {
+          pass: '',
+          checkPass: '',
+          shoujihao: '',
+          poCode:'',
+        },
+        rules2: {
+          pass: [
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          checkPass:[
+              { validator: validatePass2, trigger: 'blur' }
+          ],
+          shoujihao: [
+            { validator: checkshouji, trigger: 'blur' }
+          ],
+          poCode: [
+            { validator: poCode, trigger: 'blur' }
+          ],
+        },
+        
+        
+      };
+    },
+    methods:{
+        onSubmit:function(){
+            console.log(1);
+        },
+        oniP:function(){
+            this.bol = false;
+        },
+        loginFoget:function(){
+            this.$router.push('./login')
+        },
+        loginReg:function(){
+            this.$router.push('./reg')
+        }
+    }
+}
+</script>
+

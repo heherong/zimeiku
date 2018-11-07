@@ -94,7 +94,7 @@
 	export default {
 		data() {
 			return {
-				settingShow:3, //显示页面 1是当前，2是认证，3是手机，4是邮箱，5是微信，6是登录密码，7是支付密码
+				settingShow:1, //显示页面 1是当前，2是认证，3是手机，4是邮箱，5是微信，6是登录密码，7是支付密码
 				headImg: jpg1,
 				name: "",
 				identificationStatus: true, //认证状态

@@ -4,6 +4,7 @@ import Index from '@/pages/index/main/index'
 import Market from '@/pages/market/main/market'
 import User from '@/pages/user/main/user'
 import Login from '@/pages/login/login'
+import Reg from '@/pages/reg/reg'
 import ShoppingCart from '@/pages/shoppingCart/main/shopping'
 import ContentBank from '@/pages/contentBank/main/ContentBank'
 // import Order from '@/components/pages/order/main/order'
@@ -46,6 +47,11 @@ export default new Router({
         requestAuto: true
       },
       
+    },
+    {
+      path: '/reg',
+      name: 'reg',
+      component: Reg,
     },
     {
       path: '/shoppingcart',

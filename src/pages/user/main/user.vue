@@ -1,6 +1,6 @@
 <template>
-	<div class="wrap transAll" style="min-height:366px;">
-		<Myheader :active ='tabActive'></Myheader>
+	<div class="wrap transAll" style="min-height:366px; height:880px;">
+		<Myheader :active='a'></Myheader>
 		<div class="market" style="margin-top:83px;">
 			<el-row class="tac">
 				<el-col :span="4">
@@ -60,14 +60,15 @@
 	    },
 		data: function() {
 			return {
-				 tabActive:'1'
+				 tabActive:'1',
+				 a:'user'
 			}
 		},
-//		beforeRouteEnter:(to,form,next)=>{
-//			next(vm=>{
-//				vm.tabActive = to.params.name
-//			})
-//		},
+		beforeRouteEnter:(to,form,next)=>{
+			next(vm=>{
+				vm.a = to.params.name
+			})
+		},
 		methods:{
 			listenToNav:function(data){
 				let that = this;
