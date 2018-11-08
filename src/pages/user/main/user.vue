@@ -1,11 +1,6 @@
 <template>
-<<<<<<< HEAD
-	<div class="wrap transAll" style="min-height:366px;">
-		<Myheader :active='tabActive'></Myheader>
-=======
 	<div class="wrap transAll" style="min-height:366px; height:880px;">
 		<Myheader :active='a'></Myheader>
->>>>>>> 132c930de91439ad4724b4d9d03e58f15236f4a9
 		<div class="market" style="margin-top:83px;">
 			<el-row class="tac" :gutter="20">
 				<el-col :span="4">
@@ -46,11 +41,7 @@
 	import Inform from '../inform'
 	import MyProperty from '../myProperty'
 	import Setting from '../setting'
-<<<<<<< HEAD
 //	import Release from '../release'
-=======
-	import Release from '../release'
->>>>>>> 132c930de91439ad4724b4d9d03e58f15236f4a9
 	import MyWorks from '../myWorks'
 	import WorksStatus from '../worksStatus'
 	import ReleaseWorks from '../releaseWorks'
@@ -59,7 +50,6 @@
 		components: {
 			Myheader,
 			UserNav,
-<<<<<<< HEAD
 			Inform, //系统公告
 			MyProperty, //我的财务
 			Setting, //账号设置
@@ -71,29 +61,7 @@
 		},
 		data: function() {
 			return {
-				tabActive: '5'
-			}
-		},
-		//		beforeRouteEnter:(to,form,next)=>{
-		//			next(vm=>{
-		//				vm.tabActive = to.params.name
-		//			})
-		//		},
-		methods: {
-			listenToNav: function(data) {
-=======
-			Inform,  //系统公告
-			MyProperty,  //我的财务
-			Setting,    //账号设置
-			Release,   //发布稿件
-			MyWorks,   //我的稿件
-			WorksStatus,  //我的投稿
-			ReleaseWorks,  //发布征稿
-			BuyWorks,   //已购稿件
-	    },
-		data: function() {
-			return {
-				 tabActive:'1',
+				 tabActive:'5',
 				 a:'user'
 			}
 		},
@@ -104,7 +72,6 @@
 		},
 		methods:{
 			listenToNav:function(data){
->>>>>>> 132c930de91439ad4724b4d9d03e58f15236f4a9
 				let that = this;
 				that.tabActive = data;
 				console.log(data);
