@@ -1,7 +1,7 @@
 <template>
-    <div class="wrap transAll" style="min-height:366px;">
+    <div class="wrap transAll" style="min-height:366px; margin-top:0;">
         <Myheader :active ='tabActive'></Myheader>
-        <div class="market" style="margin-top:130px;">
+        <div class="market" style="margin-top:105px;">
             <div class="condition-wrap">
                 <MyconditionWrap type='作品类型' :data1='infoType' :bol2='false'></MyconditionWrap>
                 <MyconditionWrap type='作品字数' :data1='infoNum' :bol1='false' :bol2='false'></MyconditionWrap>
