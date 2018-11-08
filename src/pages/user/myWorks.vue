@@ -11,13 +11,13 @@
 					<span @click="changeStatus(1)" :class=" status==1?'active':'' ">全部</span>
 				</el-col>
 				<el-col :span="6">
-					<span @click="changeStatus(2)" :class=" status==2?'active':'' ">投稿</span>
+					<span @click="changeStatus(2)" :class=" status==2?'active':'' ">发布投稿</span>
 				</el-col>
 				<el-col :span="6">
 					<span @click="changeStatus(3)" :class=" status==3?'active':'' ">文章广场</span>
 				</el-col>
 				<el-col :span="6">
-					<span @click="changeStatus(4)" :class=" status==4?'active':'' ">草稿</span>
+					<span @click="changeStatus(4)" :class=" status==4?'active':'' ">草稿箱</span>
 				</el-col>
 			</el-row>
 			<el-table :data="tableData" style="width: 100%">

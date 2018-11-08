@@ -1,8 +1,8 @@
 <template>
 	<div class="inform">
-		<div class="moneyList">
+		<div class="moneyList" v-if="status==1">
 			<h4>我的征稿 </h4>
-			<el-button type="primary" class="release-gao">发布征稿 <i class="el-icon-edit el-icon--right"></i></el-button>
+			<el-button type="primary" class="release-gao" @click="toWrite">发布征稿 <i class="el-icon-edit el-icon--right"></i></el-button>
 			
 			<el-table :data="tableData" style="width: 100%">
 				<el-table-column label="时间" width="200">
@@ -31,6 +31,10 @@
 				</el-pagination>
 			</div>
 		</div>
+		<div class="moneyList" v-if="status==2">
+			<h4>征稿需求 </h4>
+			
+		</div>
 
 	</div>
 </template>
@@ -39,6 +43,7 @@
 	export default {
 		data() {
 			return {
+				status:1,  //1是列表状态，2是发布
 				tableData: [{
 					date: '2016-05-02111',
 					cash: '89',
@@ -83,6 +88,11 @@
 			},
 			handleDelete(index, row) {
 				console.log(index, row);
+			},
+			//发布稿件
+			toWrite:function(){
+				let that = this;
+				this.status = 2;
 			}
 		}
 	}

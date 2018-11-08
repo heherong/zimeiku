@@ -10,9 +10,9 @@
 				<el-col :span="20">
 					<!--我的稿件-->
 					<MyWorks v-if="tabActive==1"></MyWorks>
-					<!--我的投稿-->
+					<!--卖稿记录-->
 					<WorksStatus v-if="tabActive==2"></WorksStatus>
-					<!--发布征稿-->
+					<!--我的征稿-->
 					<ReleaseWorks v-if="tabActive==3"></ReleaseWorks>
 					<!--已购稿件-->
 					<BuyWorks v-if="tabActive==4"></BuyWorks>
