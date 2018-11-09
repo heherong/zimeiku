@@ -42,7 +42,7 @@
                                 <el-checkbox v-model="agree">
                                     请勾选阅读并同意  <span class="register-login">《陶梦用户服务协议》</span>
                                 </el-checkbox>
-                                <span class="register-login">
+                                <span class="register-login" @click="loginFoget()">
                                     登录
                                 </span>
                             </div>

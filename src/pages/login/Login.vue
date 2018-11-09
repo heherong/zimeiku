@@ -7,25 +7,17 @@
                 <div class="login-wrap">
                     <div class="login-tab-wrap">
                         <ul class="login-tab">
-                            <li :class="{loginActive:now==0}" @click="now=0">账号密码登录</li>
+                            <li :class="{loginActive:now==0}" @click="now=0">微信登录</li>
                             <li  :class="{loginActive:now==1}" @click="now=1">手机动态登录</li>
                         </ul>
                     </div>
                     <div class="login-from-wrap" v-if="now==0">
-                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="ruleForm">
-                            <el-form-item prop="shoujihao" style="" class="input-login">
-                                <el-input v-model.number="ruleForm2.shoujihao" style=""  placeholder="请输入手机号"></el-input>
-                            </el-form-item>
-                            <el-form-item prop="pass"  class="input-login">
-                                <el-input type="password" v-model="ruleForm2.pass" autocomplete="off" placeholder="请输入密码"></el-input>
-                            </el-form-item>
-                                <el-checkbox v-model="checked" >记住密码</el-checkbox>
-                            <el-form-item>
-                                <div class="login-btn-submit input-login">
-                                    <el-button type="primary" @click="onSubmit"  style="width:292px;" >登录</el-button>
-                                </div>
-                            </el-form-item>
-                        </el-form>
+                        <div class="openWx">
+                            打开微信,扫一扫
+                        </div>
+                        <div style="width:200px;margin:0 auto;">
+                            <img style="max-width:100%;" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTFdXN0Y4bTdlSDMxOHhlYzFzMUwAAgQhAeVbAwQAjScA" alt="">
+                        </div>
                         <div class="login-bot-wrap">
                             <span class="login-foget transAll" @click="loginFoget">忘记密码</span>
                             <span class="login-reg transAll" @click="loginReg">注册新用户</span>
@@ -89,6 +81,7 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 .login-bot-wrap{font-size:14px;}
 .login-foget{text-align: center;color: #4895e7;cursor: pointer;}
 .login-reg{text-align: center;color: #4895e7;cursor: pointer;float: right;}
+.openWx{padding-top: 40px;font-size: 14px;color: #000;padding-bottom: 10px;text-align: center;}
 </style>
 
 
@@ -111,16 +104,6 @@ export default {
           }
         }, 1000);
       };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          if (this.ruleForm2.checkPass !== '') {
-            this.$refs.ruleForm2.validateField('checkPass');
-          }
-          callback();
-        }
-      };
       var poCode = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入验证码'));
@@ -133,19 +116,14 @@ export default {
       };
       return {
         checked:'',
-        now:1,
+        now:0,
         bol:true,
         ruleForm2: {
-          pass: '',
-          checkPass: '',
           shoujihao: '',
           poCode:'',
 
         },
         rules2: {
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
           shoujihao: [
             { validator: checkshouji, trigger: 'blur' }
           ],
