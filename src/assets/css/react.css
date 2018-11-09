@@ -14,4 +14,5 @@ fieldset, img { border:0; }
 button, input, select, textarea { font-size:100%; } 
 table { border-collapse:collapse; border-spacing:0; } 
 html,body{width: 100%;height: 100%;}
-body{background:#ECEFF4;}
+body{background:#ECEFF4;padding-right:0 !important }
+i{font-style: normal;font-weight: normal;}

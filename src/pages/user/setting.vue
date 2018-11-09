@@ -341,8 +341,10 @@
 			//回退页面
 			returnPage: function() {
 				this.settingShow = 1;
-			}
-		}
+			},
+			
+		},
+		
 	}
 </script>
 

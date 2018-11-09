@@ -4,11 +4,13 @@
 	background: #fff;
 }
 
-.wrap {
+
+/* .wrap {
 	overflow: hidden;
 	background: #F1F3F6;
 	padding-top: 20px;
-}
+	不要用这段样式
+} */
 
 .market {
 	width: 1170px;
@@ -17,7 +19,7 @@
 }
 
 .tac {
-	background-color: #f1f3f6;
+	/* background-color: #f1f3f6; */
 	padding-bottom: 20px;
 }
 

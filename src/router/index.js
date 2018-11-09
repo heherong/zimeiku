@@ -9,11 +9,12 @@ import Reg from '@/pages/reg/reg'
 import BuyerOrder from '@/pages/BuyerOrder/main/buyerOrder'
 import ShoppingCart from '@/pages/shoppingCart/main/shopping'
 import ContentBank from '@/pages/contentBank/main/ContentBank'
-
+import demandHall from '@/pages/demandHall/main/demandHall'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -28,7 +29,7 @@ export default new Router({
     {
       path: '/market',
       name: 'market',
-      component: Market
+      component: Market,
     },
     {
       path: '/user',
@@ -73,7 +74,11 @@ export default new Router({
       path: '/ContentBank',
       name: 'ContentBank',
       component: ContentBank,
-      
+    },
+    {
+      path: '/demandHall',
+      name: 'demandHall',
+      component: demandHall,
     },
   ]
 })

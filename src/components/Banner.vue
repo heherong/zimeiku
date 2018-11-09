@@ -63,6 +63,6 @@ export default {
 
 <style>
     @import '../assets/libs/swiper/css/swiper.css';
-    .banner{width: 100%;overflow: hidden;}
+    .banner{width: 100%;overflow: hidden;margin-top: 61px;}
     .banner .swiper-contanier .swiper-img{width: 100%;}
 </style>

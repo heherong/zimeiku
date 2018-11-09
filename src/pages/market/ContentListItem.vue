@@ -33,7 +33,7 @@
                             <span>2</span>
                         </p>
                         <p class="popluarity">
-                            人<span style="visibility:hidden;display:inline;">哈</span>气
+                            人&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp气
                             <span>441</span>
                         </p>
                         <p class="jump_detail">
@@ -81,10 +81,10 @@
                 <span class="price-pub">买断价:</span>
                 <span class="price">¥1</span>
             </p>
-            <p>
+            <!-- <p>
                 <button class="addCar">加入购物车</button>
-            </p>
-            <p style="margin-top:15px;">
+            </p> -->
+            <p style="margin-top:60px;">
                 <button class="purchase">立即购买</button>
             </p>
         </div>
@@ -99,12 +99,14 @@
     .word-num-wrap{line-height: 24px;float: left;font-size: 14px;}
     .works-time{line-height: 32px;height: 32px;font-size: 12px;position: relative;float: left;width:100%;}
     .work-author{float: left;display: block;width: 164px;height: 32px;position: relative;line-height: 32px;}
-    .float-author{ display: none; position: absolute;width: 140px;left: 0;top: 32px;background: #fff;border: 1px solid #f2f4f6;border-radius: 2px;padding: 13px 42px;z-index:2;box-shadow: 0px 0px 43px #e4dede;}
+    .float-author{display: none;  position: absolute;width: 140px;left: 0;top: 32px;background: #fff;border: 1px solid #f2f4f6;border-radius: 2px;padding: 13px 42px;z-index:2;box-shadow: 0px 0px 43px #e4dede;}
     .work-author:hover div.float-author{display: block;}
     .float-author p{line-height: 24px;font-size: 12px;color: #303132;margin-top: 11px;}
-    .float-author p>span{vertical-align: middle;margin-left: 8px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 77px;display: inline-block;text-align: left;font-size: 14px;}
-    .author-float-info>img{width: 50px;height: 50px;border-radius: 50%;vertical-align: middle;}
+    .author-float-info>span{margin-top:10px;}
+    .float-author p>span{float:right;vertical-align: middle;margin-left: 8px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 77px;display: inline-block;text-align: left;font-size: 14px;}
     
+    .author-float-info>img{width: 50px;height: 50px;border-radius: 50%;vertical-align: middle;}
+
     .btn-more{display: block;text-align: center; line-height: 34px;width: 120px;height: 34px;background: #4895e7;color: #fff;font-size: 12px;margin: 0 auto;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
     .item-describe{float: left; line-height: 22px;height: 42px;color: #727477;max-height: 49px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;font-size: 14px;}
     .work-label-wrap{margin-top: 20px;font-size: 12px;float: left;}

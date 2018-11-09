@@ -1,12 +1,8 @@
 <template>
     <div class="wrap transAll">
+        <Myheader :active='a'></Myheader>
         <div class="content">
-            <div class="nav-author">
-                <span style="#48494a;" @click="fn">买作品</span><span> > </span><span style="color:#48494a;">作品详情</span>
-                <div class="back">
-                     <<span @click='back' style='font-size:12px;color: #bbbfc4;'>返回</span>
-                </div>
-            </div>
+           
             <div style="position: relative; height: 100%;">
                 <article class="article-detail">
                     <div class="article-title">
@@ -140,7 +136,7 @@
                 </div>
             </div>
         </div>
-        <div class="fix-buy">
+        <!-- <div class="fix-buy">
             <div style="overflow: hidden;height:50px;line-height:50px;background:#fff;background:rgba(0,0,0,.65)">
                 <div class="bottom-work-title">
                     如何引导小孩
@@ -158,12 +154,12 @@
                     </span>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <style>
-.content{width: 1170px;margin: 0 auto;height: 100%;}
+.content{width: 1170px;margin: 0 auto;height: 100%;margin-top:105px;}
 .fix-buy{position: fixed;left: 0;bottom: 0;width:100%;}
 .bottom-work-title{float: left; margin-left: 10%;color: #303132;font-size: 16px;font-weight: bold;}
 .work-price{color:#fff;margin-right: 50px;}
@@ -214,9 +210,14 @@
 
 <script>
 import Item from '../../market/ContentListItem'
+import Myheader from '../../../components/header-nav-wrap'
 export default {
     components:{
-        Item  
+        Item  ,
+        Myheader
+    },
+    data:function(){
+        return {a:'market'}
     },
     methods:{
         back:function(){
@@ -225,6 +226,14 @@ export default {
         fn:function(){
             this.$router.push('/market')
         }
+    },
+    beforeRouteEnter:(to,form,next)=>{
+        next(vm=>{
+            vm.a = form.params.name
+        })
+    },
+    mounted:function(){
+        console.log(this.a);
     }
 }
 </script>
