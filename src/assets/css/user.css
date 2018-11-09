@@ -110,7 +110,11 @@
 
 
 /*setting*/
-.el-input:nth-child(1){margin-right:0;}
+
+.el-input:nth-child(1) {
+	margin-right: 0;
+}
+
 .head-image {
 	cursor: pointer;
 }
@@ -158,16 +162,63 @@
 	left: 10px;
 	color: #67C23A;
 }
-.demo-input-size{
-	margin-top:50px;
+
+.demo-input-size {
+	margin-top: 50px;
 }
+
 .change-input {
 	width: 80%;
 	border-radius: 5px;
 	border: solid 1px #ccc;
 	padding: 10px;
 }
+
 .iphone-input {
 	width: 35%;
-	margin-bottom:20px;
+	margin-bottom: 20px;
+}
+
+
+/*releaseWorks*/
+
+.list-status {
+	margin-bottom: 20px;
+}
+
+.list-status span {
+	display: inline-block;
+	width: 50%;
+	cursor: pointer;
+	text-align: center;
+}
+
+.list-status .active {
+	padding-bottom: 5px;
+	border-bottom: solid 2px #409EFF;
+}
+
+.cash {
+	font-size: 20px;
+	color: #56BCEB;
+}
+
+.myMoney-cash {
+	line-height: 60px;
+	background-color: #eef1f6;
+	padding-left: 10px;
+}
+
+.myMoney {
+	margin-bottom: 50px;
+}
+
+.release-gao {
+	float: right;
+	margin-bottom: 30px;
+}
+
+.input-must {
+	color: #ff0000;
+	margin-right: 10px;
 }
