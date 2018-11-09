@@ -136,7 +136,7 @@
                 </div>
             </div>
         </div>
-        <div class="fix-buy">
+        <!-- <div class="fix-buy">
             <div style="overflow: hidden;height:50px;line-height:50px;background:#fff;background:rgba(0,0,0,.65)">
                 <div class="bottom-work-title">
                     如何引导小孩
@@ -154,7 +154,7 @@
                     </span>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
