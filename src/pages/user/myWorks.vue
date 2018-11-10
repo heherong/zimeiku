@@ -3,7 +3,7 @@
 		<div v-if="pageStatus == 1">
 			<div class="myMoney">
 				<h4>我的稿件 </h4>
-				<el-button type="primary" class="release-gao">新建稿件 <i class="el-icon-edit el-icon--right"></i></el-button>
+				<el-button type="primary" class="release-gao" @click="toAddGao">新建稿件 <i class="el-icon-edit el-icon--right"></i></el-button>
 			</div>
 			<div class="moneyList">
 				<h4>稿件明细 </h4>
@@ -54,7 +54,33 @@
 			<div class="myMoney">
 				<h4>新建稿件  <i class="el-icon-edit-outline"></i></h4>
 			</div>
-			<vue-ueditor-wrap v-model="msg" :config="myConfig"></vue-ueditor-wrap>
+			<el-row>
+				<el-col :span="3">
+					<label for=""><span class="input-must">*</span>稿件标题</span></label>
+				</el-col>
+				<el-col :span="10">
+					<el-input v-model="form.title" class="add-title" placeholder="请输入标题"></el-input>
+				</el-col>
+			</el-row>
+			<div>
+				<vue-ueditor-wrap v-model="form.msg" :config="myConfig"></vue-ueditor-wrap>
+			</div>
+			
+			
+			<div style="position: absolute;left: 100%;top: 170px;">
+				<el-row>
+					<el-button type="success" plain icon="el-icon-check">保存并返回</el-button>
+				</el-row>
+				<el-row>
+					<el-button type="success" plain icon="el-icon-check">保存</el-button>
+				</el-row>
+				<el-row>
+					<el-button type="primary" plain icon="el-icon-upload2">发稿</el-button>
+				</el-row>
+				<el-row>
+					<el-button type="danger" plain icon="el-icon-close" @click="quit">取消</el-button>
+				</el-row>
+			</div>
 		</div>
 		
 	</div>
@@ -68,10 +94,14 @@
 		},
 		data() {
 			return {
-				pageStatus:2, //列表页面1 ，新建页面2
+				pageStatus:1, //列表页面1 ，新建页面2
 				status:1,
 				tableData: [{date:'2016-05-02',cash:'89',status:'购买',address:'上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄'},{date:'2016-05-04',cash:'12.22',status:'购买',address:'上海市普陀区金沙江路 1517 弄'},{date:'2016-05-01',cash:'23.3',status:'出售',address:'上海市普陀区金沙江路 1519 弄'},{date:'2016-05-03',cash:'42',status:'购买',address:'上海市普陀区金沙江路 1516 弄'},{date:'2016-05-04',cash:'77',status:'出售',address:'上海市普陀区金沙江路 1517 弄'},{date:'2016-05-01',cash:'34',status:'出售',address:'上海市普陀区金沙江路 1519 弄'},{date:'2016-05-03',cash:'12',status:'购买',address:'上海市普陀区金沙江路 1516 弄'}],
-				msg: '<h2>Hello World!</h2>',
+				
+				form:{
+					msg:'<h2>Hello World!</h2>',
+					title:''
+				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
 		            // serverUrl: 'http://api.demo.com/ueditor/upload',
@@ -98,6 +128,13 @@
 			changeStatus:function(index){
 				let that = this;
 				that.status = index;
+			},
+			//新建稿件
+			toAddGao:function(){
+				this.pageStatus = 2;
+			},
+			quit:function(){
+				this.pageStatus = 1;
 			}
 		}
 	}

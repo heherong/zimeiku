@@ -158,7 +158,7 @@
     </div>
 </template>
 
-<style>
+<style scoped="scoped">
 .content{width: 1170px;margin: 0 auto;height: 100%;margin-top:105px;}
 .fix-buy{position: fixed;left: 0;bottom: 0;width:100%;}
 .bottom-work-title{float: left; margin-left: 10%;color: #303132;font-size: 16px;font-weight: bold;}

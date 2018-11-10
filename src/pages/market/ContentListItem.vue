@@ -92,7 +92,7 @@
     </li>
 </template>
 
-<style>
+<style scoped="scoped">
     .img-box {float: left;width: 240px;height: 136px;position: relative;overflow: hidden;margin-left: 26px;}
     .works-info-wrap{float: left;width: 700px;margin-left: 20px;}
     .works-info-tit-wrap strong{font-size: 18px;color: #48494a;font-weight: bold;float: left;}
