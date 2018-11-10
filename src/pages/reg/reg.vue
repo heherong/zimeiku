@@ -24,7 +24,7 @@
 	                            </span>
 							</div>
 							<el-form-item style="text-align: center;">
-								<el-button type="text" @click="toChangeType(2)" style="color: #31a081;text-decoration: underline;">切换手机号登录</el-button>
+								<el-button type="text" @click="toChangeType(2)" style="color: #31a081;text-decoration: underline;">切换手机号注册</el-button>
 							</el-form-item>
 						</el-form>
 					</div>
