@@ -14,24 +14,28 @@
 		</div>
 		<div class="moneyList">
 			<h4>账目明细 </h4>
-			<el-row class="list-status">
-				<el-col :span="6">
+			<el-row class="list-status" :gutter="20">
+				<el-col :span="5">
 					<span @click="changeStatus(1)" :class=" status==1?'active':'' ">全部</span>
 				</el-col>
-				<el-col :span="6">
+				<el-col :span="5">
 					<span @click="changeStatus(2)" :class=" status==2?'active':'' ">支出</span>
 				</el-col>
-				<el-col :span="6">
+				<el-col :span="4">
 					<span @click="changeStatus(3)" :class=" status==3?'active':'' ">收入</span>
 				</el-col>
-				<el-col :span="6">
+				<el-col :span="5">
 					<span @click="changeStatus(4)" :class=" status==4?'active':'' ">提现</span>
+				</el-col>
+				<el-col :span="5">
+					<span @click="changeStatus(5)" :class=" status==5?'active':'' ">充值</span>
 				</el-col>
 			</el-row>
 			<el-table :data="tableData" style="width: 100%">
-				<el-table-column label="时间" width="200">
+				<el-table-column type="index" width="60" label="序号"></el-table-column>
+				<el-table-column label="事件" width="400">
 					<template slot-scope="scope">
-						<span>{{ scope.row.date }}</span>
+						<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.address }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="金额" width="150">
@@ -44,9 +48,9 @@
 						<span>{{ scope.row.status }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="相关">
+				<el-table-column label="时间" >
 					<template slot-scope="scope">
-						<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.address }}</span>
+						<span>{{ scope.row.date }}</span>
 					</template>
 				</el-table-column>
 			</el-table>
