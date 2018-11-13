@@ -92,7 +92,7 @@
                     <nav class="author-info">
                         <div class="author-desc">
                             <img src="http://cdn.yuanrongbank.com/3781/1539579564341/12123.jpg" alt="" class="author-img">
-                            <div class="author-name">
+                            <div class="author-name" style="width:100%;">
                                 一颗执着的心 
                             </div>
                             <div class="author-article">

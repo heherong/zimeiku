@@ -5,8 +5,10 @@
 			<div class="register-con-wrap">
 				<div class="register-el">
 					<div class="register-tit-wrap">
-						<p>马上注册</p>
-						<p></p>
+						<ul class="reg-tab">
+                            <li :class="{regActive:status==1}" @click="status=1">微信登录</li>
+                            <li  :class="{regActive:status==2}" @click="status=2">手机动态登录</li>
+                        </ul>
 					</div>
 					<!--微信注册-->
 					<div class="register-from-wrap" v-if="status==1">
@@ -23,9 +25,9 @@
 	                                登录
 	                            </span>
 							</div>
-							<el-form-item style="text-align: center;">
+							<!-- <el-form-item style="text-align: center;">
 								<el-button type="text" @click="toChangeType(2)" style="color: #31a081;text-decoration: underline;">切换手机号注册</el-button>
-							</el-form-item>
+							</el-form-item> -->
 						</el-form>
 					</div>
 					<!--手机号码注册-->
@@ -35,8 +37,8 @@
 								<el-input v-model.number="ruleForm2.shoujihao" style="margin-left:0;width:290px" placeholder="请输入手机号"></el-input>
 							</el-form-item>
 
-							<el-form-item prop="poCode" class="input-login" style="width:50%;">
-								<el-input type="poCode" v-model="ruleForm2.poCode" autocomplete="off" placeholder="请输入验证码"></el-input>
+							<el-form-item prop="imgCode" class="input-login" style="width:50%;">
+								<el-input type="imgCode" v-model="ruleForm2.imgCode" autocomplete="off" placeholder="请输入验证码"></el-input>
 
 							</el-form-item>
 							<div class="pic-code">
@@ -73,9 +75,9 @@
 									<el-button type="primary" @click="onSubmit" style="width:292px;">注册</el-button>
 								</div>
 							</el-form-item>
-							<el-form-item style="text-align: center;">
+							<!-- <el-form-item style="text-align: center;">
 								<el-button type="text" @click="toChangeType(1)" style="color: #31a081;text-decoration: underline;">切换微信注册</el-button>
-							</el-form-item>
+							</el-form-item> -->
 						</el-form>
 					</div>
 				</div>
@@ -85,6 +87,10 @@
 </template>
 
 <style>
+	.reg-tab{overflow: hidden;margin-bottom:20px;}
+	.reg-tab li{float: left;width: 50%;border-bottom: 1px solid #e2e4e7;padding-bottom: 16px;text-align: center;font-size: 16px;cursor: pointer;}
+	.reg-tab li:hover{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px solid #4895e7;}
+	li.regActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px solid #4895e7;}
 	.register-wrap {
 		min-height: 688px;
 		padding-top: 30px;
@@ -94,10 +100,12 @@
 	
 	.register-con-wrap {
 		width: 1170px;
+		height: 530px;
 		margin: 0 auto;
 		background: #fff;
 		border-radius: 2px;
-		padding: 36px 0;
+		padding: 102px 0;
+		padding-bottom: 50px;
 	}
 	
 	.register-el {
@@ -198,15 +206,20 @@
 				}
 			};
 			var poCode = (rule, value, callback) => {
-				if(value === '') {
-					callback(new Error('请输入验证码'));
+				if (value === '') {
+				callback(new Error('请输入验证码'));
 				} else {
-					if(this.ruleForm2.checkPass !== '') {
-						this.$refs.ruleForm2.validateField('poCode');
-					}
-					callback();
+				callback();
 				}
 			};
+			var imgCode = (rule, value, callback) => {
+				if (value === '') {
+				callback(new Error('请输入验证码'));
+				} else {
+				callback();
+				}
+			};
+			
 			return {
 				status: 1, //1为微信注册 2是手机号码注册
 				agree: true,
@@ -219,6 +232,7 @@
 					checkPass: '',
 					shoujihao: '',
 					poCode: '',
+					imgCode:''
 				},
 				rules2: {
 					pass: [{
@@ -237,6 +251,9 @@
 						validator: poCode,
 						trigger: 'blur'
 					}],
+					 imgCode:[
+						{ validator: imgCode, trigger: 'blur' }
+					],
 				},
 
 			};

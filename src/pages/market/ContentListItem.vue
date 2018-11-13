@@ -92,7 +92,7 @@
     </li>
 </template>
 
-<style scoped="scoped">
+<style>
     .img-box {float: left;width: 240px;height: 136px;position: relative;overflow: hidden;margin-left: 26px;}
     .works-info-wrap{float: left;width: 700px;margin-left: 20px;}
     .works-info-tit-wrap strong{font-size: 18px;color: #48494a;font-weight: bold;float: left;}
@@ -104,9 +104,7 @@
     .float-author p{line-height: 24px;font-size: 12px;color: #303132;margin-top: 11px;}
     .author-float-info>span{margin-top:10px;}
     .float-author p>span{float:right;vertical-align: middle;margin-left: 8px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 77px;display: inline-block;text-align: left;font-size: 14px;}
-    
     .author-float-info>img{width: 50px;height: 50px;border-radius: 50%;vertical-align: middle;}
-
     .btn-more{display: block;text-align: center; line-height: 34px;width: 120px;height: 34px;background: #4895e7;color: #fff;font-size: 12px;margin: 0 auto;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
     .item-describe{float: left; line-height: 22px;height: 42px;color: #727477;max-height: 49px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;font-size: 14px;}
     .work-label-wrap{margin-top: 20px;font-size: 12px;float: left;}

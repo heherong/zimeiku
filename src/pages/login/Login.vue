@@ -2,7 +2,7 @@
     <div class="wrap transAll" style="min-height:366px;height:900px;">
         
         <Myheader types='用户登录'></Myheader>
-        <div class="market" style="background: #fff;border-radius: 2px;padding: 102px 0;width:1170px;margin:0 auto;margin-top:30px;">
+        <div class="market" style="background: #fff;border-radius: 2px;padding: 102px 0;width:1170px;margin:0 auto;margin-top:30px;height:500px;">
             <div class="login-wrap">
                 <div class="login-wrap">
                     <div class="login-tab-wrap">
@@ -33,8 +33,8 @@
                             </el-form-item>
                         
                            
-                            <el-form-item prop="poCode"  class="input-login" style="width:50%;">
-                                <el-input type="password" v-model="ruleForm2.poCode" autocomplete="off" placeholder="请输入验证码"></el-input>
+                            <el-form-item prop="imgCode"  class="input-login" style="width:50%;">
+                                <el-input type="password" v-model="ruleForm2.imgCode" autocomplete="off" placeholder="请输入验证码"></el-input>
                                 
                             </el-form-item>
                             <div class="pic-code">
@@ -108,9 +108,13 @@ export default {
         if (value === '') {
           callback(new Error('请输入验证码'));
         } else {
-          if (this.ruleForm2.checkPass !== '') {
-            this.$refs.ruleForm2.validateField('poCode');
-          }
+          callback();
+        }
+      };
+      var imgCode = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入验证码'));
+        } else {
           callback();
         }
       };
@@ -121,7 +125,7 @@ export default {
         ruleForm2: {
           shoujihao: '',
           poCode:'',
-
+          imgCode:''
         },
         rules2: {
           shoujihao: [
@@ -129,6 +133,9 @@ export default {
           ],
           poCode: [
             { validator: poCode, trigger: 'blur' }
+          ],
+          imgCode:[
+            { validator: imgCode, trigger: 'blur' }
           ],
         },
         
