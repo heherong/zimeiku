@@ -2,7 +2,7 @@
     <header class="login-header">
         <div class="header-con-wrap">
             <div class="header-item" @click="fn">
-                <img src="../assets/images/ico.ico" style="width:50px;float:left;padding-top:12px;">
+                <img src="../assets/images/ico.png" style="width:50px;float:left;padding-top:12px;">
                 <div class="line flleft" style="height:45px;"></div>
                 <span class="login-header-title">{{types}}</span>
             </div>

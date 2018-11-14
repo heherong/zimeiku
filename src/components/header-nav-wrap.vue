@@ -3,7 +3,7 @@
         <div class="inner-wrap">
             <div class="header-logo flleft">
                 <router-link to='/'>
-                    <img src="../assets/images/ico.ico" class="header-logo-img flleft">
+                    <img src="../assets/images/ico.png" class="header-logo-img flleft">
                     <div class="line flleft"></div>
                     <div class="header-txt flleft">
                         内容交易服务平台

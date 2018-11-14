@@ -11,6 +11,9 @@
              <div slot="swiper-con" class="swiper-slide">
                 <img src="../../../assets/images/Banner/banner03.jpg" alt="" class="swiper-img">
             </div>
+            <div slot="swiper-con" class="swiper-slide">
+                <img src="../../../assets/images/Banner/banner04.jpg" alt="" class="swiper-img">
+            </div>
         </MyBanner>
         <MyIndexNumInfo></MyIndexNumInfo>
         <MyIndexSection></MyIndexSection>
