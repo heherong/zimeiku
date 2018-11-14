@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="container-right">
-                    <nav class="author-info">
+                    <nav class="author-info2">
                         <div class="author-desc">
                             <img src="http://cdn.yuanrongbank.com/3781/1539579564341/12123.jpg" alt="" class="author-img">
                             <div class="author-name" style="width:100%;">
@@ -198,7 +198,7 @@
                 </div>
                 <div class="container-table">
                     <el-table
-                        :data="tableData4"
+                        data=""
                         style="width: 100%"
                         max-height="250">
                         <el-table-column
@@ -272,7 +272,7 @@ li.list-item-example>span:last-child{float: left;width: 700px;line-height: 30px;
 .submit-pay i{font-style: normal;font-weight: normal;}
 .submit-pay>span{display: inline-block;margin-top: 5px;width: 90px;height: 38px;line-height: 38px;text-align: center;font-size: 14px;color: #FFFFFF;background: #4895E7;border-radius: 2px;cursor: pointer;}
 .container-right{width: 280px;float: right;}
-.author-info{width: 274px;border-radius: 2px;background: #fff;}
+.author-info2{width: 274px;border-radius: 2px;background: #fff;}
 .author-desc{padding-top: 20px;height: 230px;background: #f7f8fc;text-align: center;}
 .author-img{width: 100px;height: 100px;border-radius: 50%;cursor:pointer;}
 .author-name{height: 46px;line-height: 40px;color: #303132;font-weight: bold;}
@@ -302,7 +302,7 @@ export default {
         Myheader
     },
     data:function(){
-        return {a:'demandHall'}
+        return {a:'buyerorder'}
     },
     beforeRouteEnter:(to,form,next)=>{
         next(vm=>{

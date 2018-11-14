@@ -6,8 +6,8 @@
 				<div class="register-el">
 					<div class="register-tit-wrap">
 						<ul class="reg-tab">
-                            <li :class="{regActive:status==1}" @click="status=1">微信登录</li>
-                            <li  :class="{regActive:status==2}" @click="status=2">手机动态登录</li>
+                            <li :class="{regActive:status==1}" @click="status=1">微信注册</li>
+                            <li  :class="{regActive:status==2}" @click="status=2">手机动态注册</li>
                         </ul>
 					</div>
 					<!--微信注册-->
