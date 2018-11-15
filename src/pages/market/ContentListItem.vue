@@ -2,19 +2,19 @@
     <li >
         <div class="img-box">
             <router-link to='/ContentBank' target="_blank">
-                <img src="../../assets/images/1.jpg" alt="" style="width:100%;">
-                <!-- <slot name="img"></slot> -->
+                <img :src="list.img_count" alt="" style="width:100%;" v-if="!(list.img_count=='' || list.img_count == null)">
+                <img src="../../assets/images/1.jpg" alt="" style="width:100%;" v-else>
             </router-link>
         </div>
         <div class="works-info-wrap">
             <div class="works-info-tit-wrap">
-                <strong>一千个人中有一千个爱情的模样</strong>
+                <strong>{{list.title}}</strong>
                 <span class="word-num-wrap">（1638字0图片）</span>
             </div>
             <div class="works-time">
                 <span class="work-author" style="cursor:pointer">
                     <span>作者：</span>
-                        瑾
+                        {{list.field}}
                     <div class="float-author">
                         <p class="author-float-info">
                             <img src="http://cdn.yuanrongbank.com/3896/1539755290323/微信图片_20181017134756.jpg">
@@ -41,14 +41,14 @@
                         </p>
                     </div>
                 </span>
-                <span class="work-lebal">2018-10-21 16:03:50</span>
+                <span class="work-lebal">{{list.created_at}}</span>
                 <span class="item-label" style="float:right;" v-show="!bol">
                     <span class="work-label">买断价</span>
                     <span class="work-con">￥99</span>
                 </span>
             </div>
             <div class="item-describe">
-                什么是爱情？爱情这种东西从来都没有被系统的教学过，我们也不知道具体答案。大概是在青春期的书籍或者是电视中看到的，起初那些男女之间的亲昵被我们认知为爱情。我们学着他们的样子，试图与身边最美丽的异性展开这种关系。在逐渐的尝试中，我们心中渐渐拥有了对爱情的认知。每个人对爱情的认知都是不一样的，这取决与每个人在认识爱情之初的所经历过得那样。有的是彩色，有的是灰色。有的人回忆爱情时味道是甜的，有人回忆爱......
+                {{list.content}}
             </div>
             <p class="work-label-wrap">
                 <span class="item-label">
@@ -57,20 +57,25 @@
                 </span>
                 <span class="item-label">
                     <span class="work-label">高频词：</span>
-                    <span class="work-con">
-                        男人<span class="work-label"> | </span>
-                        女人<span class="work-label"> | </span>
-                        恨嫁<span class="work-label"> | </span>
-                        女追男<span class="work-label"> | </span>
+                    <span class="work-con" >
+                        <span v-for="item in list.words_count" v-if="list.words_count!=null">
+                            {{item}}<span class="work-label"> | </span>
+                        </span>
+                        <span v-else>
+                            女人<span class="work-label" > | </span>
+                            恨嫁<span class="work-label"> | </span>
+                            女追男<span class="work-label"> | </span>
+                        </span>
                     </span>
                 </span>
                 <span class="item-label" >
-                    <span class="work-label">浏览量</span>
+                    <span class="work-label">浏览量:</span>
                     <span class="work-con">106</span>
                 </span>
                 <span class="item-label" v-show="bol">
                     <span class="work-label">陶梦指数：</span>
-                    <span class="work-con">65.35</span>
+                    <span class="work-con" v-if="list.b360!=null || list.baidu!=null ||list.sogou!=null">{{(list.b360+list.baidu+list.sogou)/3}}</span>
+                    <span class="work-con" v-else>65.35</span>
                 </span>
                 
             </p>
@@ -79,13 +84,13 @@
             <p>
                 <i class="icon-help" @click="amend"></i>
                 <span class="price-pub">买断价:</span>
-                <span class="price">¥1</span>
+                <span class="price">¥{{list.money}}</span>
             </p>
             <!-- <p>
                 <button class="addCar">加入购物车</button>
             </p> -->
             <p style="margin-top:60px;">
-                <button class="purchase">立即购买</button>
+                <button class="purchase" @click="buy()" :disabled='isDisabled'>立即购买</button>
             </p>
         </div>
         <div style="clear:both;"></div>
@@ -107,7 +112,7 @@
     .author-float-info>img{width: 50px;height: 50px;border-radius: 50%;vertical-align: middle;}
     .btn-more{display: block;text-align: center; line-height: 34px;width: 120px;height: 34px;background: #4895e7;color: #fff;font-size: 12px;margin: 0 auto;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
     .item-describe{float: left; line-height: 22px;height: 42px;color: #727477;max-height: 49px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;font-size: 14px;}
-    .work-label-wrap{margin-top: 20px;font-size: 12px;float: left;}
+    .work-label-wrap{margin-top: 20px;font-size: 12px;float: left;width:100%;}
     .item-label{margin-right: 55px;}
     .works-right-wrap{float: right;width: 132px;margin-right: 31px;text-align: center;}
     .works-right-wrap>p:nth-of-type(1){width: 100%;text-align: center;margin-bottom: 18px;}
@@ -124,7 +129,18 @@
           bol:{
               type:Boolean,
               default:true
+          },
+          list:{
+              type:Object,
+              default:{}
+          },
+          i:{
+              type:Number,
+              default:0
           }
+      },
+      data:function(){
+          return {isDisabled:false}
       },
     methods: {
       amend() {
@@ -183,8 +199,24 @@
             message: 'action: ' + action
           });
         });
-      }
-    }
+      },
+        buy(){
+            let self = this;
+            this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
+                article_id:this.list.author_id
+            }).then(function(res){
+                self.$message({
+                    message:res.data.msg,
+                     type: 'success'
+                });
+                if(res.data.msg=='购买成功'){
+                    self.isDisabled = true;
+                }
+            }).catch(function(res){
+                console.log(res)
+            })
+        }
+    },
   }
 </script>
 

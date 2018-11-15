@@ -27,7 +27,7 @@
                 </div>
                 <div class="demand-help transAll">
                     <div>
-                        <span>玩转陶梦</span> 
+                        <span>玩转自媒库</span> 
 
                     </div>
                     <ul>
@@ -116,11 +116,28 @@ export default {
             now:0
         }
     },
+    methods:{
+        getAjax:function(){
+            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
+                params:{
+                    page:'1',
+                    pagesize:'5'
+                }
+            }).then(function(res){
+                console.log(res)
+            }).catch(function(res){
+                console.log(res);
+            })
+        }
+    },
     beforeRouteEnter:(to,form,next)=>{
 			next(vm=>{
 				vm.a = to.params.name
 			})
-		},
+        },
+    created:function(){
+        this.getAjax();
+    }
 }
 </script>
 

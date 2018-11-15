@@ -35,14 +35,15 @@ export default {
     },
     data:function(){
         return {
-            tabActive:'index'
+            tabActive:'index',
+            newsList:''
         }
     },
     beforeRouteEnter:(to,form,next)=>{
         next(vm=>{
             vm.tabActive = to.params.name
         })
-    }
+    },
 }
 </script>
 

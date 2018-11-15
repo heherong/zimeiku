@@ -8,6 +8,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import App from './App'
 import router from './router'
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+
+Vue.use(VueAxios,axios);
+
 
 //加入elementUi组件
 Vue.use(ElementUI);

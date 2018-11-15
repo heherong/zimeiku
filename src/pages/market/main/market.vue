@@ -42,7 +42,8 @@ export default {
         next(vm=>{
             vm.tabActive = to.params.name
         })
-    }
+    },
+    
 }
 </script>
 

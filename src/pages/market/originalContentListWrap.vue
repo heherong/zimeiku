@@ -13,8 +13,7 @@
             </p>
         </div>
         <ul class="original-works-list-wrap">
-            <MyItem></MyItem>
-            <MyItem></MyItem>
+            <MyItem v-for="(item , index) in data" :list='item' :i='index'></MyItem>
             <MyItem></MyItem>
             <div style="text-align:center;">
                 <el-pagination
@@ -36,6 +35,7 @@
 .title-wrap>p>span{margin-right: 8px;color: #64676a;padding: 4px 9px;cursor: pointer;font-size: 12px;border-radius: 2px;}
 .check-codition{}
 span.active-condition{color: #4895e7 !important;background: #e5f0fc;}
+/* .original-works-list-wrap{min-height: 520px;} */
 .original-works-list-wrap>li{padding: 28px 0;margin-bottom: 11px;background: #fff;}
 </style>
 
@@ -46,7 +46,7 @@ export default {
         MyItem
     },
     data:function(){
-        return {active:0,a:1}
+        return {active:0,a:1,data:''}
     },
     methods:{
 
@@ -64,6 +64,24 @@ export default {
             
             }(i))
         }
+    },
+    methods:{
+        fn:function(){
+            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
+                params:{
+                    page:"1",
+                    pagesize:'2'
+                }
+            }).then((response)=>{
+                this.data=response.data.data.list;
+                console.log(this.data);
+            }).catch((response)=>{
+                console.log(response);
+            })
+        }
+    },
+    created:function(){
+        this.fn();
     }
 }
 </script>

@@ -22,6 +22,7 @@ export default {
 
 <style>
 @import url('assets/css/react.css');
+#app{height: 100%;}
 a:hover{text-decoration: none;}
 a:visited{color:#282B00}
 .flleft{float: left;}
