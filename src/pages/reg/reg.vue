@@ -224,6 +224,7 @@
 				status: 1, //1为微信注册 2是手机号码注册
 				agree: true,
 				bol: true,
+				getTicket:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/ticket',
 				ruleForm1: {
 					erwma: ''
 				},
@@ -257,6 +258,20 @@
 				},
 
 			};
+		},
+		mounted:function(){
+			let that = this;
+			//获取ticket
+			that.axios.get(that.getTicket,{
+                headers: {
+            		'Content-Type': 'application/json;charset=UTF-8'
+          		},
+            }).then((response)=>{
+                
+                console.log(that.data);
+            }).catch((response)=>{
+                console.log(response);
+            })
 		},
 		methods: {
 			onSubmit: function() {

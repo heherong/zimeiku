@@ -4,30 +4,63 @@
 			<h4>我的征稿 </h4>
 			<el-button type="primary" class="release-gao" @click="toWrite">发布征稿 <i class="el-icon-edit el-icon--right"></i></el-button>
 
-			<el-table :data="tableData" style="width: 100%">
-				<el-table-column label="时间" width="200">
+			<el-table 
+				:data="tableData.slice((curPage-1)*pagesize,curPage*pagesize)"
+				style="width: 100%">
+				<el-table-column type="index" width="60" label="序号" align="center"></el-table-column>
+				<el-table-column label="标题" width="110" align="center"> 
 					<template slot-scope="scope">
-						<span>{{ scope.row.date }}</span>
+				        <el-popover trigger="hover" placement="top">
+				          <p>标题: {{ scope.row.title }}</p>
+				          <div slot="reference" class="name-wrapper">
+				            <span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.title }}</span>
+				          </div>
+				        </el-popover>
+				   </template>
+				</el-table-column>
+				<el-table-column label="详情" width="130" align="center">
+					<template slot-scope="scope">
+				        <el-popover trigger="hover" placement="top">
+				          <p>详情: {{ scope.row.content }}</p>
+				          <div slot="reference" class="name-wrapper">
+				            <span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.content }}</span>
+				          </div>
+				        </el-popover>
+				   </template>
+				</el-table-column>
+				<el-table-column label="单价（元）" align="center">
+					<template slot-scope="scope" width="70">
+						<span>{{ scope.row.price }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="金额" width="150">
+				<el-table-column label="数量" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.cash }}</span>
+						<span >{{ scope.row.number }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="类型">
-					<template slot-scope="scope" width="120">
+				<el-table-column label="开始时间" width="130" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.start_at }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="周期天数（天）" width="120" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.days }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="状态" align="center">
+					<template slot-scope="scope">
 						<span>{{ scope.row.status }}</span>
-					</template>
-				</el-table-column>
-				<el-table-column label="相关">
-					<template slot-scope="scope">
-						<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.address }}</span>
 					</template>
 				</el-table-column>
 			</el-table>
 			<div class="pages">
-				<el-pagination background layout="prev, pager, next" :total="1000">
+				<el-pagination  
+					@current-change="currentChange"
+					:current-page="curPage"
+					layout="prev, pager, next"
+					:total="totalNum" 
+					>
 				</el-pagination>
 			</div>
 		</div>
@@ -185,6 +218,10 @@
 				checkboxGroup: [], //实时状态
 				checkBoxPre: [], //当前状态
 				radio: '1',
+				getList_url:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/mylist',
+				curPage:1, //当前页数
+				pagesize:10, //一页10条
+				totalNum:0,  //总数
 				form: {
 					title: '',
 					checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
@@ -197,10 +234,39 @@
 					checkTerm:'',  //周期
 					checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'}],
 				},
-				tableData: [{date:'2016-05-02111',cash:'89',status:'购买',address:'上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄'},{date:'2016-05-04',cash:'12.22',status:'购买',address:'上海市普陀区金沙江路 1517 弄'},{date:'2016-05-01',cash:'23.3',status:'出售',address:'上海市普陀区金沙江路 1519 弄'},{date:'2016-05-03',cash:'42',status:'购买',address:'上海市普陀区金沙江路 1516 弄'},{date:'2016-05-04',cash:'77',status:'出售',address:'上海市普陀区金沙江路 1517 弄'},{date:'2016-05-01',cash:'34',status:'出售',address:'上海市普陀区金沙江路 1519 弄'},{date:'2016-05-03',cash:'12',status:'购买',address:'上海市普陀区金沙江路 1516 弄'}],
+				tableData: [],
 			}
 		},
+		created:function(){
+        	this.getList();
+   		},
 		methods: {
+			getList(){
+				let that = this;
+				that.axios.get(that.getList_url,{
+	                params:{
+	                    page:that.curPage,
+	                    pagesize:that.pagesize
+	                }
+	            }).then((response)=>{
+	            	
+	            	if(response.data.data.list.length>0){
+	            		for(let i=0;i<response.data.data.list.length;i++){
+	            			response.data.data.list[i].start_at = response.data.data.list[i].start_at.substring(0,10);
+	            		}
+	            		that.tableData = response.data.data.list;
+	            		that.totalNum = response.data.data.count;
+	            	}
+	                
+	                console.log(that.tableData);
+	            }).catch((response)=>{
+	                console.log(response);
+	            })
+			},
+			currentChange: function(curPage){
+                this.curPage = curPage;
+                console.log(this.curPage)  //点击第几页
+        	},
 			handleEdit(index, row) {
 				console.log(index, row);
 			},

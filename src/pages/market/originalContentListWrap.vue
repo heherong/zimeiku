@@ -13,7 +13,7 @@
             </p>
         </div>
         <ul class="original-works-list-wrap">
-            <MyItem v-for="(item , index) in data" :list='item' :i='index'></MyItem>
+            <MyItem v-for="(item , index) in data" :list='item' :key='index'></MyItem>
             <MyItem></MyItem>
             <div style="text-align:center;">
                 <el-pagination
