@@ -225,6 +225,9 @@ export default {
         },
         fn:function(){
             this.$router.push('/market')
+        },
+        getAjax(){
+            this.axios.get
         }
     },
     beforeRouteEnter:(to,form,next)=>{
@@ -233,7 +236,10 @@ export default {
         })
     },
     mounted:function(){
-        console.log(this.a);
+        
+    },
+    created:function(){
+
     }
 }
 </script>

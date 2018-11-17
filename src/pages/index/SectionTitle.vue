@@ -12,7 +12,7 @@
 .section-title{padding-bottom: 20px;line-height: 24px;}
 .title{float: left;font-size: 24px;color: #64676A;}
 .title-sp-line{display:inline-block;float: left;width: 3px;height: 24px;margin-right: 6px;border-radius: 2px;}
-.more{float: right;color: #82868a;padding-right: 2px;}
+.more{float: right;color: #82868a;padding-right: 2px;cursor: pointer;}
 </style>
 
 

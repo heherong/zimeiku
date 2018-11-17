@@ -48,9 +48,6 @@ export default {
     data:function(){
         return {active:0,a:1,data:''}
     },
-    methods:{
-
-    },
     mounted:function(){
         var list = document.getElementById('p').getElementsByTagName("span");
         for(var i = 0; i < list.length; i++){
@@ -74,10 +71,11 @@ export default {
                 }
             }).then((response)=>{
                 this.data=response.data.data.list;
-                console.log(this.data);
+                
             }).catch((response)=>{
                 console.log(response);
             })
+            
         }
     },
     created:function(){
