@@ -13,7 +13,7 @@
                     </div>
                     <div class="login-from-wrap" v-if="now==0">
                         <div class="openWx">
-                            打开微信,扫一扫
+                            ( 打开微信，使用扫一扫 )
                         </div>
                         <div style="width:200px;margin:0 auto;">
                             <img style="max-width:100%;" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTFdXN0Y4bTdlSDMxOHhlYzFzMUwAAgQhAeVbAwQAjScA" alt="">
@@ -81,7 +81,7 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 .login-bot-wrap{font-size:14px;}
 .login-foget{text-align: center;color: #4895e7;cursor: pointer;}
 .login-reg{text-align: center;color: #4895e7;cursor: pointer;float: right;}
-.openWx{padding-top: 40px;font-size: 14px;color: #000;padding-bottom: 10px;text-align: center;}
+.openWx{padding-top: 15px;text-align: center;font-size: 14px;color:#9b9b9b;}
 </style>
 
 

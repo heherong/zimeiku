@@ -5,11 +5,13 @@ import Market from '@/pages/market/main/market'
 import User from '@/pages/user/main/user'
 import Login from '@/pages/login/login'
 import Reg from '@/pages/reg/reg'
+import Help from '@/pages/help/help'
 
 import BuyerOrder from '@/pages/BuyerOrder/main/buyerOrder'
 import ShoppingCart from '@/pages/shoppingCart/main/shopping'
 import ContentBank from '@/pages/contentBank/main/ContentBank'
 import demandHall from '@/pages/demandHall/main/demandHall'
+
 
 Vue.use(Router)
 
@@ -67,9 +69,9 @@ export default new Router({
       path: '/shoppingcart',
       name: 'shoppingcart',
       component: ShoppingCart,
-      meta:{
-        Login_required :false
-      }
+      // meta:{
+      //   Login_required :false
+      // }
     },
     {
       path: '/ContentBank',
@@ -81,5 +83,10 @@ export default new Router({
       name: 'demandHall',
       component: demandHall,
     },
+    {
+      path:'/help',
+      name:'help',
+      component:Help
+    }
   ]
 })

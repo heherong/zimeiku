@@ -53,14 +53,7 @@
                             </div>
                             <div style="text-align:center;">我文笔棒，怎样更好变现？</div>
                         </li> 
-                        <li class="marketing-type transAll">
-                            <div style="">
-                                <div>营销分发</div>
-                                <div>Marketing</div>
-                                <div>marketing-type</div>
-                            </div>
-                            <div class>我有账号，如何有偿发广告？</div>
-                        </li> 
+                        
                     </ul>
                 </div>
             </div>
@@ -84,7 +77,7 @@
 .demand-query-type span:nth-child(n+3){    display: inline-block;width: 84px;text-align: left;}
 .demandActive{color: #4895E7;}
 .demand-list li{width: 780px;height: 210px;border-radius: 2px;background: #fff;margin-bottom: 20px;padding: 0 27px 22px 23px;overflow: hidden;position: relative;}
-.demand-help{width: 280px;height: 640px;background: #fff;float: right;padding: 23px 20px 43px 20px;}
+.demand-help{width: 280px;height: 450px;background: #fff;float: right;padding: 23px 20px 43px 20px;}
 .demand-help>div{overflow: hidden;height: 30px;line-height: 30px;padding-bottom: 5px;border-bottom: 1px solid #e9ebec;}
 .demand-help div>span:first-child{font-size: 18px;color: #64676A;float: left;position: relative;top: -2px;}
 .demand-help ul li{width: 240px;margin-top: 20px;border-radius: 2px;cursor: pointer;}

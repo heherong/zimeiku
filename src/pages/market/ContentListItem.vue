@@ -8,7 +8,7 @@
         </div>
         <div class="works-info-wrap">
             <div class="works-info-tit-wrap">
-                <strong>{{list.title}}</strong>
+                <strong @click="fn()" style="cursor: pointer;">{{list.title}}</strong>
                 <span class="word-num-wrap">（1638字0图片）</span>
             </div>
             <div class="works-time">
@@ -17,16 +17,18 @@
                         {{list.field}}
                     <div class="float-author">
                         <p class="author-float-info">
-                            <img src="http://cdn.yuanrongbank.com/3896/1539755290323/微信图片_20181017134756.jpg">
-                            <span>瑾</span>
+                            <img :src="list.img_count" alt="" v-if="list.img_count!=null" />
+                            <img src="http://cdn.yuanrongbank.com/3896/1539755290323/微信图片_20181017134756.jpg" v-else />
+                            
+                            <span>{{list.field}}</span>
                         </p>
                         <p>
                             创作形式
-                            <span>文章</span>
+                            <span>{{list.type}}</span>
                         </p>
                         <p>
                             擅长领域
-                            <span>情感、故事/小说、历史</span>
+                            <span>{{list.words_count}}</span>
                         </p>
                         <p>
                             作品数量
@@ -44,7 +46,7 @@
                 <span class="work-lebal">{{list.created_at}}</span>
                 <span class="item-label" style="float:right;" v-show="!bol">
                     <span class="work-label">买断价</span>
-                    <span class="work-con">￥99</span>
+                    <span class="work-con">￥{{list.money}}</span>
                 </span>
             </div>
             <div class="item-describe">
@@ -53,7 +55,7 @@
             <p class="work-label-wrap">
                 <span class="item-label">
                     <span class="work-label">分类：</span>
-                    <span class="work-con">情感</span>
+                    <span class="work-con">{{list.original_degree}}</span>
                 </span>
                 <span class="item-label">
                     <span class="work-label">高频词：</span>
@@ -71,10 +73,11 @@
                 <span class="item-label" >
                     <span class="work-label">浏览量:</span>
                     <span class="work-con">106</span>
+                    
                 </span>
                 <span class="item-label" v-show="bol">
                     <span class="work-label">陶梦指数：</span>
-                    <span class="work-con" v-if="list.b360!=null || list.baidu!=null ||list.sogou!=null">{{(list.b360+list.baidu+list.sogou)/3}}</span>
+                    <span class="work-con" v-if="list.original_degree!=null">{{list.original_degree}}</span>
                     <span class="work-con" v-else>65.35</span>
                 </span>
                 
@@ -201,21 +204,26 @@
         });
       },
         buy(){
-            let self = this;
-            this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
-                article_id:this.list.author_id
-            }).then(function(res){
-                self.$message({
-                    message:res.data.msg,
-                     type: 'success'
-                });
-                if(res.data.msg=='购买成功'){
-                    self.isDisabled = true;
-                }
-            }).catch(function(res){
-                console.log(res)
-            })
-        }
+            this.$router.push('/shoppingcart')
+            // let self = this;
+            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
+            //     article_id:this.list.author_id
+            // }).then(function(res){
+            //     self.$message({
+            //         message:res.data.msg,
+            //          type: 'success'
+            //     });
+            //     if(res.data.msg=='购买成功'){
+            //         self.isDisabled = true;
+            //     }
+            // }).catch(function(res){
+            //     console.log(res)
+            // })
+        },
+        fn:function(){
+            this.$router.push('/ContentBank')
+            console.log(1);
+        },
     },
   }
 </script>

@@ -21,19 +21,19 @@ Vue.config.productionTip = false
 
 
 // 路由拦截
-router.beforeEach((to, from, next) => {
-  //判断是否登录，使用vuex好点
-  const loggin_in = true;
-  if(to.name!=='/login'){
-    if(loggin_in && to.matched.some(function(item){
-    return item.meta.Login_required
-    })){
-      next('/login');
-    }else{
-      next();
-    }
-  }
-})
+// router.beforeEach((to, from, next) => {
+//   //判断是否登录，使用vuex好点
+//   const loggin_in = true;
+//   if(to.name!=='/login'){
+//     if(loggin_in && to.matched.some(function(item){
+//     return item.meta.Login_required
+//     })){
+//       next('/login');
+//     }else{
+//       next();
+//     }
+//   }
+// })
 
 /* eslint-disable no-new */
 new Vue({
