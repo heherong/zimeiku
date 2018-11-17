@@ -204,7 +204,7 @@
         });
       },
         buy(){
-            this.$router.push('/shoppingcart')
+            this.$router.push('/shoppingcart/cart_article')
             // let self = this;
             // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
             //     article_id:this.list.author_id
