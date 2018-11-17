@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap transAll" style="min-height:366px; height:880px;margin-top:20px;width:100%;">
 		<Myheader :active='a'></Myheader>
-		<div class="market" style="margin-top:83px;width:90% !important;">
+		<div class="market" style="margin-top:83px;">
 			<el-row class="tac" :gutter="20">
 				<el-col :span="4">
 					<!--侧边栏-->

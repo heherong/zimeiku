@@ -69,7 +69,7 @@
 
 			<el-form ref="form" :model="form" label-width="80px">
 				<!--征稿标题-->
-				<el-form-item>
+				<el-form-item >
 					<el-row>
 						<el-col :span="5">
 							<label for=""><span class="input-must">*</span>征稿标题</span></label>
@@ -187,6 +187,9 @@
 								</el-option>
 							</el-select>
 						</el-col>
+						<el-col :span="3">
+							<p style="margin-left:10px;">周</p>
+						</el-col>
 					</el-row>
 				</el-form-item>
 				<!--征稿详细说明-->
@@ -196,13 +199,13 @@
 							<label for=""><span class="input-must">*</span>征稿详细说明</span></label>
 						</el-col>
 						<el-col :span="10">
-							<el-input type="textarea" :rows="10" placeholder="请输入内容" ></el-input>
+							<el-input type="textarea" :rows="10" placeholder="请输入内容（50字以上）" v-model="form.content"></el-input>
 						</el-col>
 					</el-row>
 				</el-form-item>
 				<el-form-item style="text-align: center;">
-					<el-button type="primary" @click="onSubmit">立即创建</el-button>
 					<el-button @click="quit">取消</el-button>
+					<el-button type="primary" @click="onSubmit">立即创建</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -219,8 +222,9 @@
 				checkBoxPre: [], //当前状态
 				radio: '1',
 				getList_url:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/mylist',
+				addRequest:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/add',
 				curPage:1, //当前页数
-				pagesize:10, //一页10条
+				pagesize:1, //一页10条
 				totalNum:0,  //总数
 				form: {
 					title: '',
@@ -228,18 +232,19 @@
 					font: 2000,  //稿子字数
 					gaoCont: 1,  //稿子篇数
 					checkOptions: [{value:'1',label:'¥200-¥500 (对稿件质量有简单要求)'},{value:'2',label:'¥500-¥1000 (对稿件质量有明确要求)'},{value:'3',label:'¥1000-¥1500 (对稿件质量、风格有要求)'},{value:'4',label:'自定义稿费区间'}],
-					checkValue: '', //下拉框选中的值
+					checkValue: '1', //下拉框选中的值
 					lowPrice:50,  //最低值
 					highPrice:100,  //最高值
-					checkTerm:'',  //周期
+					checkTerm:'1',  //周期
 					checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'}],
+					content:''
 				},
 				tableData: [],
 			}
 		},
 		created:function(){
-        	this.getList();
-   		},
+	        this.getList();
+	   	},
 		methods: {
 			getList(){
 				let that = this;
@@ -279,7 +284,67 @@
 				this.status = 2;
 			},
 			onSubmit() {
-				console.log('submit!');
+				let that = this;
+				
+				//验证
+//				form: {
+//					title: '',
+//					checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
+//					font: 2000,  //稿子字数
+//					gaoCont: 1,  //稿子篇数
+//					checkOptions: [{value:'1',label:'¥200-¥500 (对稿件质量有简单要求)'},{value:'2',label:'¥500-¥1000 (对稿件质量有明确要求)'},{value:'3',label:'¥1000-¥1500 (对稿件质量、风格有要求)'},{value:'4',label:'自定义稿费区间'}],
+//					checkValue: '', //下拉框选中的值
+//					lowPrice:50,  //最低值
+//					highPrice:100,  //最高值
+//					checkTerm:'',  //周期
+//					checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'}],
+//				},
+				if(that.form.title){
+					if(that.form.title.length>50 || that.form.title.length<5){
+						that.$message.error('征稿标题字数限制为5~50');
+						that.form.title = "";
+					}else{
+						
+						if(that.checkBoxPre.length<1){
+							that.$message.error('请至少选择一项标签');
+						}else{
+							if(that.checkBoxPre.content && that.checkBoxPre.content.length>50){
+								//调用接口
+								let priceStr = ''
+								if(checkValue ==1){
+									priceStr = '200-500';
+								}else if(checkValue ==2){
+									priceStr = '500-1000';
+								}else if(checkValue ==3){
+									priceStr = '1000-1200';
+								}else{
+									priceStr = that.form.lowPrice+'-'+ that.form.highPrice;
+								}
+								
+//								that.axios.post(that.addRequest, {
+//								    content: that.form.content,
+//								    title: that.form.title,
+//								    price:priceStr,
+//								    number:that.form.gaoCont,
+//								    
+//								  })
+//								  .then(function (response) {
+//								  	console.log(response);
+//								    
+//								  })
+//								  .catch(function (error) {
+//								    console.log(error);
+//								  });
+							}else{
+								that.$message.error('征稿详细说明字数要大于50');
+							}
+						}
+						
+					} 
+				}else{
+					that.$message.error('征稿标题不能为空');
+					that.form.title = "";
+				}
 			},
 			//多选
 			checkBoxs: function() {
