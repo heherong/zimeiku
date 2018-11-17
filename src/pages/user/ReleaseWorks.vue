@@ -4,29 +4,27 @@
 			<h4>我的征稿 </h4>
 			<el-button type="primary" class="release-gao" @click="toWrite">发布征稿 <i class="el-icon-edit el-icon--right"></i></el-button>
 
-			<el-table 
-				:data="tableData.slice((curPage-1)*pagesize,curPage*pagesize)"
-				style="width: 100%">
+			<el-table :data="tableData.slice((curPage-1)*pagesize,curPage*pagesize)" style="width: 100%">
 				<el-table-column type="index" width="60" label="序号" align="center"></el-table-column>
-				<el-table-column label="标题" width="110" align="center"> 
+				<el-table-column label="标题" width="110" align="center">
 					<template slot-scope="scope">
-				        <el-popover trigger="hover" placement="top">
-				          <p>标题: {{ scope.row.title }}</p>
-				          <div slot="reference" class="name-wrapper">
-				            <span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.title }}</span>
-				          </div>
-				        </el-popover>
-				   </template>
+						<el-popover trigger="hover" placement="top">
+							<p>标题: {{ scope.row.title }}</p>
+							<div slot="reference" class="name-wrapper">
+								<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.title }}</span>
+							</div>
+						</el-popover>
+					</template>
 				</el-table-column>
 				<el-table-column label="详情" width="130" align="center">
 					<template slot-scope="scope">
-				        <el-popover trigger="hover" placement="top">
-				          <p>详情: {{ scope.row.content }}</p>
-				          <div slot="reference" class="name-wrapper">
-				            <span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.content }}</span>
-				          </div>
-				        </el-popover>
-				   </template>
+						<el-popover trigger="hover" placement="top">
+							<p>详情: {{ scope.row.content }}</p>
+							<div slot="reference" class="name-wrapper">
+								<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.content }}</span>
+							</div>
+						</el-popover>
+					</template>
 				</el-table-column>
 				<el-table-column label="单价（元）" align="center">
 					<template slot-scope="scope" width="70">
@@ -35,7 +33,7 @@
 				</el-table-column>
 				<el-table-column label="数量" width="90" align="center">
 					<template slot-scope="scope">
-						<span >{{ scope.row.number }}</span>
+						<span>{{ scope.row.number }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="开始时间" width="130" align="center">
@@ -55,12 +53,7 @@
 				</el-table-column>
 			</el-table>
 			<div class="pages">
-				<el-pagination  
-					@current-change="currentChange"
-					:current-page="curPage"
-					layout="prev, pager, next"
-					:total="totalNum" 
-					>
+				<el-pagination @current-change="currentChange" :current-page="curPage" layout="prev, pager, next" :total="totalNum">
 				</el-pagination>
 			</div>
 		</div>
@@ -69,7 +62,7 @@
 
 			<el-form ref="form" :model="form" label-width="80px">
 				<!--征稿标题-->
-				<el-form-item >
+				<el-form-item>
 					<el-row>
 						<el-col :span="5">
 							<label for=""><span class="input-must">*</span>征稿标题</span></label>
@@ -158,25 +151,25 @@
 						</el-col>
 						<!--起始价格-->
 						<el-col :span="4">
-						<el-input v-model="form.lowPrice" @change="toChangePrice(3)"></el-input>
+							<el-input v-model="form.lowPrice" @change="toChangePrice(3)"></el-input>
 						</el-col>
 						<el-col :span="2">
-							<el-button class="release-up" @click="toChangePrice(1)" ><i class="el-icon-arrow-up" ></i></el-button>
-							<el-button class="release-up" @click="toChangePrice(2)" ><i class="el-icon-arrow-down"></i></el-button>
+							<el-button class="release-up" @click="toChangePrice(1)"><i class="el-icon-arrow-up"></i></el-button>
+							<el-button class="release-up" @click="toChangePrice(2)"><i class="el-icon-arrow-down"></i></el-button>
 						</el-col>
 						<!--最高价格-->
 						<el-col :span="4">
-						<el-input v-model="form.highPrice" @change="toChangeHighPrice(3)"></el-input>
+							<el-input v-model="form.highPrice" @change="toChangeHighPrice(3)"></el-input>
 						</el-col>
 						<el-col :span="2">
 							<el-button class="release-up" @click="toChangeHighPrice(1)"><i class="el-icon-arrow-up"></i></el-button>
 							<el-button class="release-up" @click="toChangeHighPrice(2)"><i class="el-icon-arrow-down"></i></el-button>
 						</el-col>
-						
+
 					</el-row>
 				</el-form-item>
 				<!--征稿周期-->
-				<el-form-item >
+				<el-form-item>
 					<el-row>
 						<el-col :span="5">
 							<label for=""><span class="input-must">*</span>征稿周期</span></label>
@@ -192,8 +185,21 @@
 						</el-col>
 					</el-row>
 				</el-form-item>
+				<!--征稿开始时间-->
+				<el-form-item>
+					<el-row>
+						<el-col :span="5">
+							<label for=""><span class="input-must">*</span>开始时间</span></label>
+						</el-col>
+						<el-col :span="10">
+							<el-date-picker v-model="form.startTime" type="date" placeholder="选择日期">
+							</el-date-picker>
+
+						</el-col>
+					</el-row>
+				</el-form-item>
 				<!--征稿详细说明-->
-				<el-form-item >
+				<el-form-item>
 					<el-row>
 						<el-col :span="5">
 							<label for=""><span class="input-must">*</span>征稿详细说明</span></label>
@@ -216,224 +222,265 @@
 <script>
 	export default {
 		data() {
-			return {
-				status: 1, //1是列表状态，2是发布
-				checkboxGroup: [], //实时状态
-				checkBoxPre: [], //当前状态
-				radio: '1',
-				getList_url:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/mylist',
-				addRequest:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/add',
-				curPage:1, //当前页数
-				pagesize:1, //一页10条
-				totalNum:0,  //总数
-				form: {
-					title: '',
-					checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
-					font: 2000,  //稿子字数
-					gaoCont: 1,  //稿子篇数
-					checkOptions: [{value:'1',label:'¥200-¥500 (对稿件质量有简单要求)'},{value:'2',label:'¥500-¥1000 (对稿件质量有明确要求)'},{value:'3',label:'¥1000-¥1500 (对稿件质量、风格有要求)'},{value:'4',label:'自定义稿费区间'}],
-					checkValue: '1', //下拉框选中的值
-					lowPrice:50,  //最低值
-					highPrice:100,  //最高值
-					checkTerm:'1',  //周期
-					checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'}],
-					content:''
-				},
-				tableData: [],
-			}
-		},
-		created:function(){
-	        this.getList();
-	   	},
-		methods: {
-			getList(){
-				let that = this;
-				that.axios.get(that.getList_url,{
-	                params:{
-	                    page:that.curPage,
-	                    pagesize:that.pagesize
-	                }
-	            }).then((response)=>{
-	            	
-	            	if(response.data.data.list.length>0){
-	            		for(let i=0;i<response.data.data.list.length;i++){
-	            			response.data.data.list[i].start_at = response.data.data.list[i].start_at.substring(0,10);
-	            		}
-	            		that.tableData = response.data.data.list;
-	            		that.totalNum = response.data.data.count;
-	            	}
-	                
-	                console.log(that.tableData);
-	            }).catch((response)=>{
-	                console.log(response);
-	            })
+				return {
+					status: 1, //1是列表状态，2是发布
+					checkboxGroup: [], //实时状态
+					checkBoxPre: [], //当前状态
+					radio: '1',
+					getList_url: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/mylist',
+					addRequest: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/add',
+					curPage: 1, //当前页数
+					pagesize: 1, //一页10条
+					totalNum: 0, //总数
+					form: {
+						title: '',
+						checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
+						font: 2000, //稿子字数
+						gaoCont: 1, //稿子篇数
+						checkOptions: [{
+							value: '1',
+							label: '¥200-¥500 (对稿件质量有简单要求)'
+						}, {
+							value: '2',
+							label: '¥500-¥1000 (对稿件质量有明确要求)'
+						}, {
+							value: '3',
+							label: '¥1000-¥1500 (对稿件质量、风格有要求)'
+						}, {
+							value: '4',
+							label: '自定义稿费区间'
+						}],
+						checkValue: '1', //下拉框选中的值
+						lowPrice: 50, //最低值
+						highPrice: 100, //最高值
+						checkTerm: '1', //周期
+						checkTermOptions: [{
+							value: '1',
+							label: '1'
+						}, {
+							value: '2',
+							label: '2'
+						}, {
+							value: '3',
+							label: '3'
+						}, {
+							value: '4',
+							label: '4'
+						}],
+						content: '',
+						startTime: '' //开始时间
+					},
+					tableData: [],
+				}
 			},
-			currentChange: function(curPage){
-                this.curPage = curPage;
-                console.log(this.curPage)  //点击第几页
-        	},
-			handleEdit(index, row) {
-				console.log(index, row);
+			created: function() {
+				this.getList();
 			},
-			handleDelete(index, row) {
-				console.log(index, row);
-			},
-			//发布稿件
-			toWrite: function() {
-				let that = this;
-				this.status = 2;
-			},
-			onSubmit() {
-				let that = this;
-				
-				//验证
-//				form: {
-//					title: '',
-//					checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
-//					font: 2000,  //稿子字数
-//					gaoCont: 1,  //稿子篇数
-//					checkOptions: [{value:'1',label:'¥200-¥500 (对稿件质量有简单要求)'},{value:'2',label:'¥500-¥1000 (对稿件质量有明确要求)'},{value:'3',label:'¥1000-¥1500 (对稿件质量、风格有要求)'},{value:'4',label:'自定义稿费区间'}],
-//					checkValue: '', //下拉框选中的值
-//					lowPrice:50,  //最低值
-//					highPrice:100,  //最高值
-//					checkTerm:'',  //周期
-//					checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'}],
-//				},
-				if(that.form.title){
-					if(that.form.title.length>50 || that.form.title.length<5){
-						that.$message.error('征稿标题字数限制为5~50');
-						that.form.title = "";
-					}else{
-						
-						if(that.checkBoxPre.length<1){
-							that.$message.error('请至少选择一项标签');
-						}else{
-							if(that.checkBoxPre.content && that.checkBoxPre.content.length>50){
-								//调用接口
-								let priceStr = ''
-								if(checkValue ==1){
-									priceStr = '200-500';
-								}else if(checkValue ==2){
-									priceStr = '500-1000';
-								}else if(checkValue ==3){
-									priceStr = '1000-1200';
-								}else{
-									priceStr = that.form.lowPrice+'-'+ that.form.highPrice;
-								}
-								
-//								that.axios.post(that.addRequest, {
-//								    content: that.form.content,
-//								    title: that.form.title,
-//								    price:priceStr,
-//								    number:that.form.gaoCont,
-//								    
-//								  })
-//								  .then(function (response) {
-//								  	console.log(response);
-//								    
-//								  })
-//								  .catch(function (error) {
-//								    console.log(error);
-//								  });
-							}else{
-								that.$message.error('征稿详细说明字数要大于50');
-							}
+			methods: {
+				getList() {
+					let that = this;
+					that.axios.get(that.getList_url, {
+						params: {
+							page: that.curPage,
+							pagesize: that.pagesize
 						}
-						
-					} 
-				}else{
-					that.$message.error('征稿标题不能为空');
-					that.form.title = "";
-				}
-			},
-			//多选
-			checkBoxs: function() {
-				let that = this;
-				if(that.checkboxGroup.length > 3) {
-					that.checkboxGroup = that.checkBoxPre;
-				} else {
-					that.checkBoxPre = that.checkboxGroup;
-				}
-			},
-			//改变字数
-			toChangeSize: function(index) {
-				let that = this;
-				if(index == 1 && that.form.font <= 100000) {
-					that.form.font = that.form.font + 100;
+					}).then((response) => {
 
-				} else if(index == 2 && that.form.font > 100) {
-					that.form.font = that.form.font - 100;
+						if(response.data.data.list.length > 0) {
+							for(let i = 0; i < response.data.data.list.length; i++) {
+								response.data.data.list[i].start_at = response.data.data.list[i].start_at.substring(0, 10);
+							}
+							that.tableData = response.data.data.list;
+							that.totalNum = response.data.data.count;
+						}
 
-				} else if((index == 3 && that.form.font <= 100) || !Number.isInteger(parseInt(that.form.font))) {
-					that.form.font = 100;
+//						console.log(that.tableData);
+					}).catch((response) => {
+						console.log(response);
+					})
+				},
+				currentChange: function(curPage) {
+					this.curPage = curPage;
+					console.log(this.curPage) //点击第几页
+				},
+				handleEdit(index, row) {
+					console.log(index, row);
+				},
+				handleDelete(index, row) {
+					console.log(index, row);
+				},
+				//发布稿件
+				toWrite: function() {
+					let that = this;
+					this.status = 2;
+				},
+				onSubmit() {
+					let that = this;
+
+					//验证
+					//				form: {
+					//					title: '',
+					//					checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
+					//					font: 2000,  //稿子字数
+					//					gaoCont: 1,  //稿子篇数
+					//					checkOptions: [{value:'1',label:'¥200-¥500 (对稿件质量有简单要求)'},{value:'2',label:'¥500-¥1000 (对稿件质量有明确要求)'},{value:'3',label:'¥1000-¥1500 (对稿件质量、风格有要求)'},{value:'4',label:'自定义稿费区间'}],
+					//					checkValue: '', //下拉框选中的值
+					//					lowPrice:50,  //最低值
+					//					highPrice:100,  //最高值
+					//					checkTerm:'',  //周期
+					//					checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'}],
+					//				},
+					if(that.form.title) {
+						if(that.form.title.length > 50 || that.form.title.length < 5) {
+							that.$message.error('征稿标题字数限制为5~50');
+							that.form.title = "";
+						} else {
+
+							if(that.checkBoxPre.length < 1) {
+								that.$message.error('请至少选择一项标签');
+							} else {
+								if(that.form.startTime) {
+									if(that.form.content && that.form.content.length > 50) {
+										//调用接口
+										let priceStr = ''
+										if(that.form.checkValue == 1) {
+											priceStr = '200-500';
+										} else if(that.form.checkValue == 2) {
+											priceStr = '500-1000';
+										} else if(that.form.checkValue == 3) {
+											priceStr = '1000-1200';
+										} else {
+											priceStr = that.form.lowPrice + '-' + that.form.highPrice;
+										}
+
+										that.axios.post(that.addRequest, {
+										    content: that.form.content,
+										    title: that.form.title,
+										    price:priceStr,
+										    number:that.form.gaoCont,
+										    start_at:that.form.startTime,
+										    days:that.form.checkTerm*7,
+										    field:that.checkBoxPre.join(','),
+										    words:that.form.font
+										  })
+										  .then(function (response) {
+//										  	console.log(response);
+										    if(response.data.code==0){
+										    	that.$message({
+										          	message: '创建成功！',
+										          	type: 'success'
+										        });
+										        that.quit();
+										    }else{
+										    	
+										    }
+										  })
+										  .catch(function (error) {
+										    console.log(error);
+										  });
+									} else {
+										that.$message.error('征稿详细说明字数要大于50');
+									}
+								} else {
+									that.$message.error('请选择开始时间');
+								}
+
+							}
+
+						}
+					} else {
+						that.$message.error('征稿标题不能为空');
+						that.form.title = "";
+					}
+				},
+				//多选
+				checkBoxs: function() {
+					let that = this;
+					if(that.checkboxGroup.length > 3) {
+						that.checkboxGroup = that.checkBoxPre;
+					} else {
+						that.checkBoxPre = that.checkboxGroup;
+					}
+				},
+				//改变字数
+				toChangeSize: function(index) {
+					let that = this;
+					if(index == 1 && that.form.font <= 100000) {
+						that.form.font = that.form.font + 100;
+
+					} else if(index == 2 && that.form.font > 100) {
+						that.form.font = that.form.font - 100;
+
+					} else if((index == 3 && that.form.font <= 100) || !Number.isInteger(parseInt(that.form.font))) {
+						that.form.font = 100;
+					}
+					that.form.font = parseInt(that.form.font);
+				},
+				//改变稿子数
+				toChangeCont: function(index) {
+					let that = this;
+					if(index == 1 && that.form.gaoCont <= 100000) {
+						that.form.gaoCont = that.form.gaoCont + 1;
+
+					} else if(index == 2 && that.form.gaoCont >= 2) {
+						that.form.gaoCont = that.form.gaoCont - 1;
+
+					} else if((index == 3 && that.form.gaoCont <= 1) || !Number.isInteger(parseInt(that.form.gaoCont))) {
+						that.form.gaoCont = 1;
+					}
+					that.form.gaoCont = parseInt(that.form.gaoCont);
+				},
+				//自定义价格 最低
+				toChangePrice: function(index) {
+					let that = this;
+					if(index == 1) {
+						that.form.lowPrice = that.form.lowPrice + 50;
+
+					} else if(index == 2 && that.form.lowPrice >= 100) {
+						that.form.lowPrice = that.form.lowPrice - 50;
+
+					} else if((index == 3 && that.form.lowPrice <= 50) || !Number.isInteger(parseInt(that.form.lowPrice))) {
+
+						that.form.lowPrice = 50;
+					}
+					that.form.lowPrice = parseInt(that.form.lowPrice);
+					if(that.form.lowPrice > that.form.highPrice) {
+						that.$message({
+							message: '最小价位应小于最高价位',
+							type: 'warning'
+						});
+					}
+				},
+				//自定义价格 最高
+				toChangeHighPrice: function(index) {
+					let that = this;
+					if(index == 1) {
+						that.form.highPrice = that.form.highPrice + 50;
+
+					} else if(index == 2 && that.form.highPrice >= 150) {
+						that.form.highPrice = that.form.highPrice - 50;
+
+					} else if((index == 3 && that.form.highPrice <= 100) || !Number.isInteger(parseInt(that.form.highPrice))) {
+
+						that.form.highPrice = 100;
+					}
+					that.form.highPrice = parseInt(that.form.highPrice);
+					if(that.form.lowPrice > that.form.highPrice) {
+						that.$message({
+							message: '最高价位应大于最小价位',
+							type: 'warning'
+						});
+					}
+				},
+				//下拉框
+				toChangecheck: function() {
+					let that = this;
+				},
+				//返回
+				quit: function() {
+					this.status = 1;
 				}
-				that.form.font = parseInt(that.form.font);
-			},
-			//改变稿子数
-			toChangeCont: function(index) {
-				let that = this;
-				if(index == 1 && that.form.gaoCont <= 100000) {
-					that.form.gaoCont = that.form.gaoCont + 1;
-
-				} else if(index == 2 && that.form.gaoCont >= 2) {
-					that.form.gaoCont = that.form.gaoCont - 1;
-
-				} else if((index == 3 && that.form.gaoCont <= 1) || !Number.isInteger(parseInt(that.form.gaoCont)) ) {
-					that.form.gaoCont = 1;
-				}
-				that.form.gaoCont = parseInt(that.form.gaoCont);
-			},
-			//自定义价格 最低
-			toChangePrice:function(index){
-				let that = this;
-				if(index == 1 ) {
-					that.form.lowPrice = that.form.lowPrice + 50;
-
-				} else if(index == 2 && that.form.lowPrice >= 100) {
-					that.form.lowPrice = that.form.lowPrice - 50;
-
-				} else if((index == 3 && that.form.lowPrice <= 50) || !Number.isInteger(parseInt(that.form.lowPrice))) {
-					
-					that.form.lowPrice = 50;
-				}
-				that.form.lowPrice = parseInt(that.form.lowPrice);
-				if(that.form.lowPrice>that.form.highPrice){
-					that.$message({
-			          	message: '最小价位应小于最高价位',
-			          	type: 'warning'
-			        });
-				}
-			},
-			//自定义价格 最高
-			toChangeHighPrice:function(index){
-				let that = this;
-				if(index == 1 ) {
-					that.form.highPrice = that.form.highPrice + 50;
-
-				} else if(index == 2 && that.form.highPrice >= 150) {
-					that.form.highPrice = that.form.highPrice - 50;
-
-				} else if((index == 3 && that.form.highPrice <= 100) || !Number.isInteger(parseInt(that.form.highPrice))) {
-					
-					that.form.highPrice = 100;
-				}
-				that.form.highPrice = parseInt(that.form.highPrice);
-				if(that.form.lowPrice>that.form.highPrice){
-					that.$message({
-			          	message: '最高价位应大于最小价位',
-			          	type: 'warning'
-			        });
-				}
-			},
-			//下拉框
-			toChangecheck:function(){
-				let that = this;
-			},
-			//返回
-			quit:function(){
-				this.status = 1;
 			}
-		}
 	}
 </script>
 
