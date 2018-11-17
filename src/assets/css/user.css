@@ -12,7 +12,15 @@
 	不要用这段样式
 } */
 
+<<<<<<< HEAD
+.market {
+	width: 1170px;
+	margin: 0 auto;
+	margin-bottom: 30px;
+}
+=======
 
+>>>>>>> 8f8a4690eef76e5de0966926a22e1090595091bc
 
 .tac {
 	/* background-color: #f1f3f6; */

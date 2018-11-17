@@ -21,30 +21,98 @@
 						<span @click="changeStatus(4)" :class=" status==4?'active':'' ">草稿箱</span>
 					</el-col>
 				</el-row>
-				<el-table :data="tableData" style="width: 100%">
-					<el-table-column label="时间" width="200">
+				<el-table 
+					:data="tableData.slice((curPage-1)*pagesize,curPage*pagesize)"
+					 style="width: 100%">
+					<el-table-column type="index" width="60" label="序号" align="center"></el-table-column>
+					<el-table-column label="标题" width="100">
 						<template slot-scope="scope">
-							<span>{{ scope.row.date }}</span>
+							<span>{{ scope.row.title }}</span>
 						</template>
 					</el-table-column>
-					<el-table-column label="金额" width="150">
+					<el-table-column label="内容" width="150">
 						<template slot-scope="scope">
-							<span>{{ scope.row.cash }}</span>
+							<span>{{ scope.row.content }}</span>
 						</template>
 					</el-table-column>
-					<el-table-column label="类型">
-						<template slot-scope="scope" width="120">
-							<span>{{ scope.row.status }}</span>
+					<el-table-column label="字数">
+						<template slot-scope="scope" width="80">
+							<span>{{ scope.row.words_count }}</span>
 						</template>
 					</el-table-column>
-					<el-table-column label="相关">
+					<el-table-column label="图片数" width="80">
 						<template slot-scope="scope">
-							<span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.address }}</span>
+							<span>{{ scope.row.img_count }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="总原创度" width="80">
+						<template slot-scope="scope">
+							<span>{{ scope.row.original_degree }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="百度" width="80">
+						<template slot-scope="scope">
+							<span>{{ scope.row.baidu }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="搜狗" width="80">
+						<template slot-scope="scope">
+							<span>{{ scope.row.sogou }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="360" width="80">
+						<template slot-scope="scope">
+							<span>{{ scope.row.b360 }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="谷歌" width="80">
+						<template slot-scope="scope">
+							<span>没有找到字段</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="关键词" width="100">
+						<template slot-scope="scope">
+							<span>没有找到字段</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="领域" width="80">
+						<template slot-scope="scope">
+							<span>{{ scope.row.field }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="创建时间" width="90">
+						<template slot-scope="scope">
+							<span>{{ scope.row.created_at }}</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="文章状态" width="80">
+						<template slot-scope="scope">
+							<span>没有找到字段</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="投稿时间" width="90">
+						<template slot-scope="scope">
+							<span>没有找到字段</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="购买人账号" width="100">
+						<template slot-scope="scope">
+							<span>没有找到字段</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="购买时间" width="90">
+						<template slot-scope="scope">
+							<span>没有找到字段</span>
 						</template>
 					</el-table-column>
 				</el-table>
 				<div class="pages">
-					<el-pagination background layout="prev, pager, next" :total="1000">
+					<el-pagination  
+						@current-change="currentChange"
+						:current-page="curPage"
+						layout="prev, pager, next"
+						:total="totalNum" 
+						>
 					</el-pagination>
 				</div>
 			</div>
@@ -69,13 +137,13 @@
 			
 			<div style="position: absolute;left: 100%;top: 170px;">
 				<el-row>
-					<el-button type="success" plain icon="el-icon-check">保存并返回</el-button>
+					<el-button type="success" plain icon="el-icon-check" @click="toSave(2)">保存并返回</el-button>
 				</el-row>
 				<el-row>
-					<el-button type="success" plain icon="el-icon-check">保存</el-button>
+					<el-button type="success" plain icon="el-icon-check" @click="toSave(1)">保存至草稿箱</el-button>
 				</el-row>
 				<el-row>
-					<el-button type="primary" plain icon="el-icon-upload2">发稿</el-button>
+					<el-button type="primary" plain icon="el-icon-upload2">发稿（文章广场）</el-button>
 				</el-row>
 				<el-row>
 					<el-button type="danger" plain icon="el-icon-close" @click="quit">取消</el-button>
@@ -96,15 +164,19 @@
 			return {
 				pageStatus:1, //列表页面1 ，新建页面2
 				status:1,
-				tableData: [{date:'2016-05-02',cash:'89',status:'购买',address:'上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄上海市普陀区金沙江路 1518 弄'},{date:'2016-05-04',cash:'12.22',status:'购买',address:'上海市普陀区金沙江路 1517 弄'},{date:'2016-05-01',cash:'23.3',status:'出售',address:'上海市普陀区金沙江路 1519 弄'},{date:'2016-05-03',cash:'42',status:'购买',address:'上海市普陀区金沙江路 1516 弄'},{date:'2016-05-04',cash:'77',status:'出售',address:'上海市普陀区金沙江路 1517 弄'},{date:'2016-05-01',cash:'34',status:'出售',address:'上海市普陀区金沙江路 1519 弄'},{date:'2016-05-03',cash:'12',status:'购买',address:'上海市普陀区金沙江路 1516 弄'}],
-				
+				getList_url:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/mylist',
+				saveWork:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/add',
+				curPage:1, //当前页数
+				pagesize:10, //一页10条
+				totalNum:0,  //总数
+				tableData: [],
 				form:{
 					msg:'<h2>Hello World!</h2>',
 					title:''
 				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
-		            // serverUrl: 'http://api.demo.com/ueditor/upload',
+		             serverUrl: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/add',
 		            // 你的UEditor资源存放的路径,相对于打包后的index.html
 		            UEDITOR_HOME_URL: './static/UEditor/',
 		            // 编辑器不自动被内容撑高
@@ -118,7 +190,36 @@
 		       }
 			}
 		},
+		created:function(){
+        this.getList();
+   	},
 		methods: {
+			getList(){
+				let that = this;
+				that.axios.get(that.getList_url,{
+	                params:{
+	                    page:that.curPage,
+	                    pagesize:that.pagesize
+	                }
+	            }).then((response)=>{
+	            	
+	            	if(response.data.data.list.length>0){
+	            		for(let i=0;i<response.data.data.list.length;i++){
+	            			response.data.data.list[i].created_at = response.data.data.list[i].created_at.substring(0,10);
+	            		}
+	            		that.tableData = response.data.data.list;
+	            		that.totalNum = response.data.data.count;
+	            	}
+	                
+	                console.log(that.tableData);
+	            }).catch((response)=>{
+	                console.log(response);
+	            })
+			},
+			currentChange: function(curPage){
+                this.curPage = curPage;
+                console.log(this.curPage)  //点击第几页
+        	},
 			handleEdit(index, row) {
 				console.log(index, row);
 			},
@@ -133,6 +234,65 @@
 			toAddGao:function(){
 				this.pageStatus = 2;
 			},
+			toSave:function(index){
+				if(index==1){
+					//保存 发布投稿：1 文章广场：2 草稿箱: 3
+					let that = this;
+					if(that.form.title){
+						that.axios.post(that.saveWork, {
+						    content: that.form.msg,
+						    title: that.form.title,
+						    type:2
+						  })
+						  .then(function (response) {
+						    let res  = response.data;
+						    if(res.code==0){
+						    	that.$message({
+						          message: '保存成功！',
+						          type: 'success'
+						        });
+						    }else{
+						    	that.$message.error('保存失败，请重新保存');
+						    }
+						  })
+						  .catch(function (error) {
+						    console.log(error);
+						  });
+					}else{
+						that.$message.error('标题不能为空');
+						return;
+					}
+					
+				}else{
+					//保存
+					let that = this;
+					if(that.form.title){
+						that.axios.post(that.saveWork, {
+						    content: that.form.msg,
+						    title: that.form.title,
+						    type:2
+						  })
+						  .then(function (response) {
+						  	let res  = response.data;
+						    if(res.code==0){
+						    	that.$message({
+						          message: '保存成功！',
+						          type: 'success'
+						        });
+						    }else{
+						    	that.$message.error('保存失败，请重新保存');
+						    }
+						    that.quit();
+						  })
+						  .catch(function (error) {
+						    console.log(error);
+						  });
+					}else{
+						that.$message.error('标题不能为空');
+						return;
+					}
+				}
+			},
 			quit:function(){
 				this.pageStatus = 1;
 			}
@@ -142,6 +302,9 @@
 
 <style>
 	@import url("../../assets/css/user");
+	/*.market{
+		width:95%;
+	}*/
 	.list-status{
 		margin-bottom: 20px;
 	}
