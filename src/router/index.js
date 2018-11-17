@@ -12,6 +12,10 @@ import ShoppingCart from '@/pages/shoppingCart/main/shopping'
 import ContentBank from '@/pages/contentBank/main/ContentBank'
 import demandHall from '@/pages/demandHall/main/demandHall'
 
+//购物车二级路由
+import cartArticle from '@/pages/shoppingCart/children/cart_article'
+import cartAuthor from '@/pages/shoppingCart/children/cart_author'
+// import cartDistribution from '@/pages/shoppingCart/children/cart_distribution'
 
 Vue.use(Router)
 
@@ -69,6 +73,11 @@ export default new Router({
       path: '/shoppingcart',
       name: 'shoppingcart',
       component: ShoppingCart,
+      children:[
+        {path:'cart_article',component:cartArticle},
+        {path:'cart_author',component:cartAuthor},
+        //营销账号 {path:'cart_distribution',component:cartDistribution}
+      ]
       // meta:{
       //   Login_required :false
       // }
