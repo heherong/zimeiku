@@ -4,9 +4,10 @@
 			<div class="myMoney">
 				<h4>我的稿件 </h4>
 				<el-button type="primary" class="release-gao" @click="toAddGao">新建稿件 <i class="el-icon-edit el-icon--right"></i></el-button>
-			</div>
-			<div class="moneyList">
-				<h4>稿件明细 </h4>
+				<p class="border-p"></p>
+			<!--</div>
+			<div class="moneyList">-->
+				<!--<h4>稿件明细 </h4>-->
 				<el-row class="list-status">
 					<el-col :span="6">
 						<span @click="changeStatus(1)" :class=" status==1?'active':'' ">全部</span>
@@ -103,6 +104,11 @@
 					<el-table-column label="购买时间" width="90">
 						<template slot-scope="scope">
 							<span>没有找到字段</span>
+						</template>
+					</el-table-column>
+					<el-table-column label="操作">
+						<template slot-scope="scope">
+							<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -300,7 +306,7 @@
 	}
 </script>
 
-<style>
+<style scoped="scoped">
 	@import url("../../assets/css/user");
 	/*.market{
 		width:95%;
@@ -331,5 +337,15 @@
 	
 	.myMoney {
 		margin-bottom: 50px;
+	}
+	.inform h4{
+		display: inline-block;
+		border: none;
+		position: relative;
+    	top: 15px;
+	}
+	.border-p{
+		border-bottom: 1px solid #ddd;
+		margin-bottom: 20px;
 	}
 </style>
