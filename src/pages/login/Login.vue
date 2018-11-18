@@ -7,8 +7,8 @@
                 <div class="login-wrap">
                     <div class="login-tab-wrap">
                         <ul class="login-tab">
-                            <li :class="{loginActive:now==0}" @click="now=0">微信登录</li>
-                            <li  :class="{loginActive:now==1}" @click="now=1">手机动态登录</li>
+                            <li :class="{loginActive:now==0}" @click="now=0" style="width:100%">微信登录</li>
+                            <!--<li  :class="{loginActive:now==1}" @click="now=1">手机动态登录</li>-->
                         </ul>
                     </div>
                     <div class="login-from-wrap" v-if="now==0">

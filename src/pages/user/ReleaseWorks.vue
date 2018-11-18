@@ -144,19 +144,26 @@
 					</el-row>
 				</el-form-item>
 				<!--稿件要求-->
+				<p style="margin: 0 auto;text-align: center;color: #909090;font-size: 14px;margin-bottom: 7px;">( 温馨提示：征稿文章的原创度会按照您所选原创度来判定，且不会低于设定值； 0为不限 )</p>
 				<el-form-item>
 					<el-row>
 						<el-col :span="3">
 							<label for=""><span class="input-must">*</span>百度原创度</span></label>
 						</el-col>
-						<el-col :span="7" style="margin-right:30px;">
+						<el-col :span="6">
 							<el-slider v-model="form.baidu"></el-slider>
+						</el-col>
+						<el-col :span="2" style="margin-right:30px;color:#333;">
+							<p style="text-align: right;">( {{ form.baidu}} )%</p>
 						</el-col>
 						<el-col :span="3">
 							<label for=""><span class="input-must">*</span>搜狗原创度</span></label>
 						</el-col>
-						<el-col :span="7">
+						<el-col :span="6">
 							<el-slider v-model="form.sogou"></el-slider>
+						</el-col>
+						<el-col :span="2">
+							<p style="text-align: right;color:#333;">( {{ form.sogou}} )%</p>
 						</el-col>
 					</el-row>
 				</el-form-item>
@@ -165,14 +172,20 @@
 						<el-col :span="3">
 							<label for=""><span class="input-must">*</span>360原创度</span></label>
 						</el-col>
-						<el-col :span="7" style="margin-right:30px;">
+						<el-col :span="6" >
 							<el-slider v-model="form.b360"></el-slider>
 						</el-col>
-						<el-col :span="3">
-							<label for=""><span class="input-must">*</span>谷歌原创度</span></label>
+						<el-col :span="2" style="margin-right:30px;color:#333;">
+							<p style="text-align: right;">( {{ form.b360}} )%</p>
 						</el-col>
-						<el-col :span="7">
+						<el-col :span="3">
+							<label for=""><span class="input-must">*</span>综合原创度</span></label>
+						</el-col>
+						<el-col :span="6">
 							<el-slider v-model="form.bchrome"></el-slider>
+						</el-col>
+						<el-col :span="2">
+							<p style="text-align: right;color:#333;">( {{ form.bchrome}} )%</p>
 						</el-col>
 					</el-row>
 				</el-form-item>

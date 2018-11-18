@@ -6,8 +6,8 @@
 				<div class="register-el">
 					<div class="register-tit-wrap">
 						<ul class="reg-tab">
-                            <li :class="{regActive:status==1}" @click="status=1">微信注册</li>
-                            <li  :class="{regActive:status==2}" @click="status=2">手机动态注册</li>
+                            <li :class="{regActive:status==1}" @click="status=1" style="width:100%">微信注册</li>
+                            <!--<li  :class="{regActive:status==2}" @click="status=2">手机动态注册</li>-->
                         </ul>
 					</div>
 					<!--微信注册-->
@@ -15,7 +15,7 @@
 						<el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
 							<p style="font-size: 14px;text-align: center;color:#9b9b9b;">( 打开微信，使用扫一扫 )</p>
 							<div style="width:200px;margin:0 auto;">
-								<img style="max-width:100%;" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTFdXN0Y4bTdlSDMxOHhlYzFzMUwAAgQhAeVbAwQAjScA" alt="">
+								<img style="max-width:100%;" :src="qrcode" alt="">
 							</div>
 							<div class="register-bot-wrap">
 								<el-checkbox v-model="agree">
@@ -224,7 +224,9 @@
 				status: 1, //1为微信注册 2是手机号码注册
 				agree: true,
 				bol: true,
-				getTicket:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/ticket',
+				qrcode: 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTFdXN0Y4bTdlSDMxOHhlYzFzMUwAAgQhAeVbAwQAjScA' ,//二维码图片
+				ticket: '',
+				getTicket:'/api/qrcode',
 				ruleForm1: {
 					erwma: ''
 				},
@@ -262,13 +264,15 @@
 		mounted:function(){
 			let that = this;
 			//获取ticket
-			that.axios.get(that.getTicket,{
-                headers: {
-            		'Content-Type': 'application/json;charset=UTF-8'
-          		},
-            }).then((response)=>{
-                
-                console.log(that.data);
+			that.axios.get(that.getTicket
+			).then((response)=>{
+                console.log(response.data);
+                if(response.data.code==0){
+                	let listData = response.data.data.list;
+                	that.qrcode = listData.qrcode_url;
+                	//获取下一个接口
+                	
+                }
             }).catch((response)=>{
                 console.log(response);
             })
