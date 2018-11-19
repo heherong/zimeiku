@@ -89,11 +89,11 @@
                 <span class="price-pub">买断价:</span>
                 <span class="price">¥{{list.money}}</span>
             </p>
-            <!-- <p>
-                <button class="addCar">加入购物车</button>
-            </p> -->
-            <p style="margin-top:60px;">
-                <button class="purchase" @click="buy()" :disabled='isDisabled'>立即购买</button>
+            <p>
+                <button class="addCar" @click="buy()">加入购物车</button>
+            </p>
+            <p style="margin-top:10px;">
+                <button class="purchase" @click="pay()" :disabled='isDisabled'>立即购买</button>
             </p>
         </div>
         <div style="clear:both;"></div>
@@ -204,7 +204,7 @@
         });
       },
         buy(){
-            this.$router.push('/shoppingcart/cart_article')
+            this.$router.push('/shoppingcart')
             // let self = this;
             // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
             //     article_id:this.list.author_id
@@ -219,6 +219,9 @@
             // }).catch(function(res){
             //     console.log(res)
             // })
+        },
+        pay(){
+            this.$router.push('/pay');
         },
         fn:function(){
             this.$router.push('/ContentBank')

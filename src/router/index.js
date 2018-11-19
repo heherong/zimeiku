@@ -8,9 +8,10 @@ import Reg from '@/pages/reg/reg'
 import Help from '@/pages/help/help'
 
 import BuyerOrder from '@/pages/BuyerOrder/main/buyerOrder'
-import ShoppingCart from '@/pages/shoppingCart/main/shopping'
+import ShoppingCart from '../pages/shoppingCart/main/shopping'
 import ContentBank from '@/pages/contentBank/main/ContentBank'
 import demandHall from '@/pages/demandHall/main/demandHall'
+import Pay from '../pages/pay/pay'
 
 //购物车二级路由
 import cartArticle from '@/pages/shoppingCart/children/cart_article'
@@ -56,7 +57,6 @@ export default new Router({
         title:'登录',
         requestAuto: true
       },
-      
     },
     {
       path: '/reg',
@@ -73,14 +73,14 @@ export default new Router({
       path: '/shoppingcart',
       name: 'shoppingcart',
       component: ShoppingCart,
-      children:[
-        {path:'cart_article',component:cartArticle},
-        {path:'cart_author',component:cartAuthor},
-        //营销账号 {path:'cart_distribution',component:cartDistribution}
-      ]
       // meta:{
       //   Login_required :false
       // }
+    },
+    {
+      path: '/Pay',
+      name: 'Pay',
+      component: Pay,
     },
     {
       path: '/ContentBank',
