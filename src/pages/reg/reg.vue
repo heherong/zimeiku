@@ -15,7 +15,10 @@
 						<el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
 							<p style="font-size: 14px;text-align: center;color:#9b9b9b;">( 打开微信，使用扫一扫 )</p>
 							<div style="width:200px;margin:0 auto;">
-								<img style="max-width:100%;" :src="qrcode" alt="">
+								<div v-if="qrcode==0" class="reg-loading">
+									<i class="el-icon-loading"></i>
+								</div>
+								<img v-if="qrcode" style="max-width:100%;" :src="qrcode" alt="">
 							</div>
 							<div class="register-bot-wrap">
 								<el-checkbox v-model="agree">
@@ -91,79 +94,20 @@
 	.reg-tab li{float: left;width: 50%;border-bottom: 1px solid #e2e4e7;padding-bottom: 16px;text-align: center;font-size: 16px;cursor: pointer;}
 	.reg-tab li:hover{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px solid #4895e7;}
 	li.regActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px solid #4895e7;}
-	.register-wrap {
-		min-height: 688px;
-		padding-top: 30px;
-		background: #eceff4;
-		height: 810px;
-	}
-	
-	.register-con-wrap {
-		width: 1170px;
-		height: 530px;
-		margin: 0 auto;
-		background: #fff;
-		border-radius: 2px;
-		padding: 102px 0;
-		padding-bottom: 50px;
-	}
-	
-	.register-el {
-		width: 292px;
-		margin: 0 auto;
-	}
-	
-	.register-tit-wrap {
-		text-align: center;
-		color: #303132;
-	}
-	
-	.register-tit-wrap>p {
-		font-size: 24px;
-	}
-	
-	.register-tit-wrap p:last-child {
-		width: 62px;
-		height: 2px;
-		margin: 8px auto 26px;
-		background: #6daaec;
-	}
-	
-	.register-from-wrap {
-		position: relative;
-	}
-	
-	.ip-code {
-		width: 118px;
-		height: 40px;
-		position: absolute;
-		right: 0;
-		top: 130px;
-	}
-	
-	.pic-code {
-		width: 118px;
-		height: 40px;
-		position: absolute;
-		right: 0;
-		top: 70px;
-	}
-	
-	.register-bot-wrap {
-		position: relative;
-		font-size: 12px;
-	}
-	
-	.register-login {
-		float: right;
-		color: #4895e7;
-		text-align: center;
-		cursor: pointer;
-	}
-	
-	.el-checkbox__label {
-		font-size: 10px;
-	}
+	.register-wrap{min-height:688px;padding-top:30px;background:#eceff4;height:810px;}
+	.register-con-wrap{width:1170px;height:530px;margin:0 auto;background:#fff;border-radius:2px;padding:102px 0;padding-bottom:50px;}
+	.register-el{width:292px;margin:0 auto;}
+	.register-tit-wrap{text-align:center;color:#303132;}
+	.register-tit-wrap>p{font-size:24px;}
+	.register-tit-wrap p:last-child{width:62px;height:2px;margin:8px auto 26px;background:#6daaec;}
+	.register-from-wrap{position:relative;}.ip-code{width:118px;height:40px;position:absolute;right:0;top:130px;}
+	.pic-code{width:118px;height:40px;position:absolute;right:0;top:70px;}
+	.register-bot-wrap{position:relative;font-size:12px;}
+	.register-login{float:right;color:#4895e7;text-align:center;cursor:pointer;}
+	.el-checkbox__label{font-size:10px;}
+	.reg-loading{text-align:center;margin-top:15px;}
+	.reg-loading i{display:inline-block;font-size:30px;}
+    
 </style>
 
 <script>
@@ -224,9 +168,10 @@
 				status: 1, //1为微信注册 2是手机号码注册
 				agree: true,
 				bol: true,
-				qrcode: 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTFdXN0Y4bTdlSDMxOHhlYzFzMUwAAgQhAeVbAwQAjScA' ,//二维码图片
+				qrcode: '0' ,//二维码图片
 				ticket: '',
-				getTicket:'/api/qrcode',
+				getTicket:'/api/qrcode', //获取ticket ?
+				judgeStatus:'/api/login', //重复调用，获取返回数据
 				ruleForm1: {
 					erwma: ''
 				},
@@ -263,21 +208,42 @@
 		},
 		mounted:function(){
 			let that = this;
-			//获取ticket
-			that.axios.get(that.getTicket
-			).then((response)=>{
-                console.log(response.data);
-                if(response.data.code==0){
-                	let listData = response.data.data.list;
-                	that.qrcode = listData.qrcode_url;
-                	//获取下一个接口
-                	
-                }
-            }).catch((response)=>{
-                console.log(response);
-            })
+			//获取Ticket
+			that.toGetTicket();
 		},
 		methods: {
+			//获取Ticket
+			toGetTicket:function(){
+				let that = this;
+				//获取ticket
+				that.axios.get(that.getTicket
+				).then((response)=>{
+//	                console.log(response.data);
+	                if(response.data.code==0){
+	                	let listData = response.data.data.list;
+	                	that.qrcode = listData.qrcode_url;
+	                	//获取下一个接口
+						setInterval(that.getStatus(listData.ticket), 1000);
+	                	
+	                }
+	            }).catch((response)=>{
+	                console.log(response);
+	            })
+			},
+			//判断注册状态
+			getStatus:function(ticket_){
+				let that = this;
+				//获取ticket
+				that.axios.post(that.judgeStatus,{
+						ticket:ticket_
+					}
+				).then((response)=>{
+	                console.log(response.data);
+	                
+	            }).catch((response)=>{
+	                console.log(response);
+	            })
+			},
 			onSubmit: function() {
 				console.log(1);
 			},

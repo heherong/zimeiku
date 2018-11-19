@@ -16,7 +16,11 @@
                             ( 打开微信，使用扫一扫 )
                         </div>
                         <div style="width:200px;margin:0 auto;">
-                            <img style="max-width:100%;" src="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=gQEW8TwAAAAAAAAAAS5odHRwOi8vd2VpeGluLnFxLmNvbS9xLzAyTFdXN0Y4bTdlSDMxOHhlYzFzMUwAAgQhAeVbAwQAjScA" alt="">
+                        	<div v-if="qrcode==0" class="reg-loading">
+								<i class="el-icon-loading"></i>
+							</div>
+							<img v-if="qrcode" style="max-width:100%;" :src="qrcode" alt="">
+                            
                         </div>
                         <div class="login-bot-wrap">
                             <span class="login-foget transAll" @click="loginFoget">忘记密码</span>
@@ -122,6 +126,10 @@ export default {
         checked:'',
         now:0,
         bol:true,
+        qrcode: '0' ,//二维码图片
+		ticket: '',
+		getTicket:'/api/qrcode', //获取ticket ?
+		judgeStatus:'/api/login', //重复调用，获取返回数据
         ruleForm2: {
           shoujihao: '',
           poCode:'',
@@ -142,7 +150,44 @@ export default {
         
       };
     },
+    mounted:function(){
+		let that = this;
+		//获取Ticket
+		that.toGetTicket();
+	},
     methods:{
+    	//获取Ticket
+		toGetTicket:function(){
+			let that = this;
+			//获取ticket
+			that.axios.get(that.getTicket
+			).then((response)=>{
+//	                console.log(response.data);
+                if(response.data.code==0){
+                	let listData = response.data.data.list;
+                	that.qrcode = listData.qrcode_url;
+                	//获取下一个接口
+					setInterval(that.getStatus(listData.ticket), 1000);
+                	
+                }
+            }).catch((response)=>{
+                console.log(response);
+            })
+		},
+		//判断注册状态
+		getStatus:function(ticket_){
+			let that = this;
+			//获取ticket
+			that.axios.post(that.judgeStatus,{
+					ticket:ticket_
+				}
+			).then((response)=>{
+                console.log(response.data);
+                
+            }).catch((response)=>{
+                console.log(response);
+            })
+		},
         onSubmit:function(){
             console.log(1);
         },
