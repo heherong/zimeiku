@@ -183,7 +183,7 @@
 				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
-		            serverUrl: 'http://lisheng.miaoting.me/',
+		            serverUrl: '/api/ueditor/server?action=config&noCache=1542597685533',
 		            // 你的UEditor资源存放的路径,相对于打包后的index.html
 		            UEDITOR_HOME_URL: './static/UEditor/',
 		            // 编辑器不自动被内容撑高
@@ -198,30 +198,30 @@
 			}
 		},
 		created:function(){
-//      this.getList();
-   	},
+        	this.getList();
+   		},
 		methods: {
-			getList(){
-//				let that = this;
-//				that.axios.get(that.getList_url,{
-//	                params:{
-//	                    page:that.curPage,
-//	                    pagesize:that.pagesize
-//	                }
-//	            }).then((response)=>{
-//	            	
-//	            	if(response.data.data.list.length>0){
-//	            		for(let i=0;i<response.data.data.list.length;i++){
-//	            			response.data.data.list[i].created_at = response.data.data.list[i].created_at.substring(0,10);
-//	            		}
-//	            		that.tableData = response.data.data.list;
-//	            		that.totalNum = response.data.data.count;
-//	            	}
-//	                
-//	                console.log(that.tableData);
-//	            }).catch((response)=>{
-//	                console.log(response);
-//	            })
+			getList:function(){
+				let that = this;
+				that.axios.get(that.getList_url,{
+	                params:{
+	                    page:that.curPage,
+	                    pagesize:that.pagesize
+	                }
+	            }).then((response)=>{
+	            	
+	            	if(response.data.data.list.length>0){
+	            		for(let i=0;i<response.data.data.list.length;i++){
+	            			response.data.data.list[i].created_at = response.data.data.list[i].created_at.substring(0,10);
+	            		}
+	            		that.tableData = response.data.data.list;
+	            		that.totalNum = response.data.data.count;
+	            	}
+	                
+	                console.log(that.tableData);
+	            }).catch((response)=>{
+	                console.log(response);
+	            })
 			},
 			currentChange: function(curPage){
                 this.curPage = curPage;
