@@ -1,7 +1,7 @@
-const host = process.env.NODE_ENV === 'production'
-  ? 'https://weixin.jcweixiaoyuan.com'
-  : process.env.NODE_ENV === 'test-production'
-    ? 'https://test-weixin.jcweixiaoyuan.com'
-    : 'http://dev-lumen.jcweixiaoyuan.cn'
-	
+const host = process.env.NODE_ENV === 'development'
+? '/api/'
+: process.env.NODE_ENV === 'production'
+    ? 'http://lisheng.miaoting.me/'
+    : '/api/'
+
 export default host

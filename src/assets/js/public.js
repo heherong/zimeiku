@@ -93,6 +93,9 @@ let contentTest = `<div class="para-title level-2" label-module="para-title">
 							<span class="sup-anchor" name="ref_[11]_9691939">&nbsp;</span>
 							23时18分09秒，2018天猫双11当日物流订单量超过10亿。</br><sup class="sup--normal" data-sup="12">
 [12]</br>`;
+//公共接口域名
+//const baseUrl = process.env.API_ROOT; 
+//console.log(process.env.API_ROOT);
 export { //很关键
  	CheckPassWord,contentTest
 }

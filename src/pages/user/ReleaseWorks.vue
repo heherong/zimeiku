@@ -274,6 +274,7 @@
 </template>
 
 <script>
+	import {baseUrl} from '@/api/index.js' //注意路径
 	export default {
 		data() {
 				return {
@@ -281,8 +282,8 @@
 					checkboxGroup: [], //实时状态
 					checkBoxPre: [], //当前状态
 					radio: '1',
-					getList_url: '/api/solicit/mylist',
-					addRequest: '/api/solicit/add',
+					getList_url:baseUrl+ 'solicit/mylist',
+					addRequest:baseUrl+ 'solicit/add',
 					curPage: 1, //当前页数
 					pagesize: 1, //一页10条
 					totalNum: 0, //总数

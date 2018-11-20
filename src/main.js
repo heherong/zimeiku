@@ -13,7 +13,6 @@ import VueAxios from 'vue-axios'
 
 Vue.use(VueAxios,axios);
 
-
 //加入elementUi组件
 Vue.use(ElementUI);
 

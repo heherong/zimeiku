@@ -163,6 +163,7 @@
 
 <script>
 	import VueUeditorWrap from 'vue-ueditor-wrap'
+	import {baseUrl} from '@/api/index.js' //注意路径
 	export default {
 		components: {
 		    VueUeditorWrap
@@ -171,8 +172,8 @@
 			return {
 				pageStatus:1, //列表页面1 ，新建页面2
 				status:1,
-				getList_url:'/api/article/mylist',
-				saveWork:'/api/article/add',
+				getList_url: baseUrl+'article/mylist',
+				saveWork:baseUrl+'article/add',
 				curPage:1, //当前页数
 				pagesize:10, //一页10条
 				totalNum:0,  //总数
@@ -183,7 +184,8 @@
 				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
-		            serverUrl: '/api/ueditor/server?action=config&noCache=1542597685533',
+//		            serverUrl: '/api/ueditor/server?action=config&noCache=1542597685533',
+		            serverUrl: baseUrl+'ueditor/server',
 		            // 你的UEditor资源存放的路径,相对于打包后的index.html
 		            UEDITOR_HOME_URL: './static/UEditor/',
 		            // 编辑器不自动被内容撑高
