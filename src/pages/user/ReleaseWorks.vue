@@ -281,8 +281,8 @@
 					checkboxGroup: [], //实时状态
 					checkBoxPre: [], //当前状态
 					radio: '1',
-					getList_url: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/mylist',
-					addRequest: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/add',
+					getList_url: '/api/solicit/mylist',
+					addRequest: '/api/solicit/add',
 					curPage: 1, //当前页数
 					pagesize: 1, //一页10条
 					totalNum: 0, //总数

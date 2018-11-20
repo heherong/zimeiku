@@ -171,8 +171,8 @@
 			return {
 				pageStatus:1, //列表页面1 ，新建页面2
 				status:1,
-				getList_url:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/mylist',
-				saveWork:'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/add',
+				getList_url:'/api/article/mylist',
+				saveWork:'/api/article/add',
 				curPage:1, //当前页数
 				pagesize:10, //一页10条
 				totalNum:0,  //总数

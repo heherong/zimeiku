@@ -170,7 +170,7 @@
 					checkboxGroup: [], //实时状态
 					checkBoxPre: [], //当前状态
 					radio: '1',
-					getList_url: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/info',
+					getList_url: '/api/solicit/info',
 					form: {
 						title: '',
 						checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
