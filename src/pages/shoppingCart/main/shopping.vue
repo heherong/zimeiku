@@ -10,22 +10,22 @@
                     </div>
                     <ul class="cart-tab-wrap">
                         <li>
-                            <router-link to='/shoppingcart/cart_article'>
-                                <span :class="{cartActive:nowIndex==0}" @click="nowIndex=0">作品<i class="js-cart-author-totle " :class="{iCartActive:nowIndex==0}">[{{Allnum}}]</i></span>
-                            </router-link>
+                            
+                                <span :class="{cartActive:nowIndex==0}" @click="nowIndex=0">作品<i class="js-cart-author-totle " :class="{iCartActive:nowIndex==0}">[{{tableData3.length}}]</i></span>
+                            
                         </li>
                         <li>
-                            <router-link to='/shoppingcart/cart_author'>
+                            
                                 <span :class="{cartActive:nowIndex==1}" @click="nowIndex=1">创作者<i class="js-cart-author-totle" :class="{iCartActive:nowIndex==1}">[{{Allnum}}]</i></span>
-                            </router-link>
+                            
                         </li>
                     </ul>
                     <div class="cart-tab-rt-wrap">
                         <div class="cart-selected-num-wrap">
-                            已选择<span :class="Allnum!=0">{{Allnum}}</span>个
+                            已选择<span :class="Allnum!=0">{{price.length}}</span>个
                         </div>
                         <div class="cart-article-totle-sum">
-                            合计<span class="color-orange pay-num">￥{{price}}</span>
+                            合计<span class="color-orange pay-num">￥{{total}}</span>
                         </div>
                         <div class="cart-buy-btn tranAll" style="background: #fd8226;">立即购买</div>
                     </div>
@@ -52,7 +52,8 @@
                             :data="tableData3"
                             tooltip-effect="dark"
                             style="width: 100%"
-                            @selection-change="handleSelectionChange">
+                            @selection-change="selsChange"
+                            >
                             <el-table-column
                             type="selection"
                             width="55">
@@ -84,7 +85,7 @@
                             label="原创报价"
                             width='230'>
                             <template slot-scope="scope">
-                                <span class="color-orange" style="text-align:center;line-height:50px;">{{scope.row.address}}</span>
+                                <span class="color-orange" style="text-align:center;line-height:50px;">{{scope.row.price}}</span>
                             </template>
                             </el-table-column>
                             <el-table-column
@@ -105,18 +106,18 @@
                     <div class="cart-bottom">
                         <div class="cart-bottom-le">
                             <el-button @click="toggleSelection(tableData3)">全选</el-button>
-                            <el-button @click='setCurrent()'>删除选中作品</el-button>
+                            <el-button @click='deleteRow()'>删除选中作品</el-button>
                             <el-button @click='setCurrent()' disabled>清空失效作品</el-button>
-                            <el-button @click='setCurrent()'>导出选中作品</el-button>
+                            <!-- <el-button @click='setCurrent()'>导出选中作品</el-button> -->
                         </div>
                         <div class="cart-bottom-ri">
                             <div class="cart-selected-num-wrap">
-                            已选择<span :class="Allnum!=0">{{Allnum}}</span>个
+                            已选择<span>{{price.length}}</span>个
                             </div>
                             <div class="cart-article-totle-sum">
-                                合计<span class="color-orange pay-num">￥{{price}}</span>
+                                合计<span class="color-orange pay-num">￥{{total}}</span>
                             </div>
-                            <div class="cart-buy-btn tranAll" style="background: #fd8226;">立即购买{{a}}</div>
+                            <div class="cart-buy-btn tranAll" style="background: #fd8226;" @click="buy()">立即购买</div>
                         </div>
                     </div>
                 </div>              
@@ -131,10 +132,10 @@
 .cart-tab-img{vertical-align: middle;border: none;width: 32px;}
 .cart-tab-wrap{float: left;text-align: center;}
 .cart-tab-wrap>li{float: left;padding: 0 20px;transition: all .2s ease-in-out;cursor: pointer;}
-.cart-tab-wrap>li>a{color: #48494a;}
-.cart-tab-wrap>li>a>span{display: inline-block;padding: 18px 0;color: #64676a;transition: all .2s ease-in-out;border-bottom: 2px solid transparent;font-size: 14px;}
-.cart-tab-wrap>li>a>span.cartActive{color: #4895e7;border-bottom: 2px solid #4895e7;}
-.cart-tab-wrap>li>a>span>i.iCartActive{color: #4895e7;}
+.cart-tab-wrap>li{color: #48494a;}
+.cart-tab-wrap>li>span{display: inline-block;padding: 18px 0;color: #64676a;transition: all .2s ease-in-out;border-bottom: 2px solid transparent;font-size: 14px;}
+.cart-tab-wrap>li>span.cartActive{color: #4895e7;border-bottom: 2px solid #4895e7;}
+.cart-tab-wrap>li>span>i.iCartActive{color: #4895e7;}
 .color-blue{color: #4895e7;}
 .color-orange{color: #fd8226;}
 .js-cart-author-totle{font-style: normal;font-size: 12px;color: #a9adb0;margin-left: 3px;}
@@ -169,52 +170,73 @@ export default {
     data:function(){
         return {
         Allnum:'0',
-        a:0,
         nowIndex:'0',
         lia:0,
-        price:this.caprice,
+        //选中行存储的地方
+        price:[],
         already:0,
         never:0,
         tableData3: [{
             date: '2016-05-03',
             name: '王小虎',
-            price: '150'
+            price: '1',
+            article_id:1234
             }, {
             date: '2016-05-02',
             name: '王小虎',
-            price: '150'
+            price: '2',
+            article_id:2313
             }, {
             date: '2016-05-04',
             name: '王小虎',
-            price: '150'
+            price: '3',
+            article_id:4532
             }, {
             date: '2016-05-01',
             name: '王小虎',
-            price: '150'
+            price: '4',
+            article_id:1543
             }, {
             date: '2016-05-08',
             name: '王小虎',
-            price: '150'
+            price: '5',
+            article_id:1254
             }, {
             date: '2016-05-06',
             name: '王小虎',
-            price: '150'
+            price: '6',
+            article_id:5694
             }, {
             date: '2016-05-07',
             name: '王小虎',
-            price: '150'
+            price: '7',
+            article_id:8976
             }],
-        multipleSelection: []
         }
     },
     computed:{
-        caprice:function(){
-            for(var i=0;i<tableData3.length;i++){
-                a+=tableData3[i].price;
+        total:function(){
+            let total = 0;
+            for(var i=0;i<this.price.length;i++){
+                 total += parseFloat(this.price[i].price);
             }
+            return total
+        },
+        article_id:function(){
+            let article_id = [];
+            for(var i=0;i<this.price.length;i++){
+                 article_id.push(this.price[i].article_id);
+            }
+            return article_id
         }
     },
     methods:{
+        //获取选中状态的值
+        selsChange(val){
+			this.price=val;
+            
+        },
+        //全选或者不全选
         toggleSelection(rows) {
             if (rows) {
             rows.forEach(row => {
@@ -224,16 +246,52 @@ export default {
             this.$refs.multipleTable.clearSelection();
             }
         },
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
-        },
+        //删除当前行
         deleteRow(index, rows) {
-            rows.splice(index, 1);
+            // rows.splice(index, 1);
+            // let row = rows
+            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
+            //     params:{
+            //         article_id:row
+            //     }
+            // }).then((response)=>{
+            //     this.tableData3=response;
+                
+            // }).catch((response)=>{
+            //     console.log(response);
+            // })
         },
-        setCurrent(row) {
-            this.$refs.singleTable.toggleSelection(row);
-            
+        //批量删除
+        deleteRow() {
+            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
+            //     params:{
+            //         article_id:this.article_id
+            //     }
+            // }).then((response)=>{
+            //     this.tableData3=response;
+                
+            // }).catch((response)=>{
+            //     console.log(response);
+            // })
         },
+        // 批量购买
+         buy(){
+        //     let self = this;
+        //     this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
+
+        //         article_id:self.article_id
+        //     }).then(function(res){
+        //         self.$message({
+        //             message:res.data.msg,
+        //              type: 'success'
+        //         });
+        //         if(res.data.msg=='购买成功'){
+        //             self.isDisabled = true;
+        //         }
+        //     }).catch(function(res){
+        //         console.log(res)
+        //     })
+         },
     }
 }
 </script>
