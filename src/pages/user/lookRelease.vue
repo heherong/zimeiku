@@ -219,17 +219,12 @@
 			methods: {
 				getData() {
 					let that = this;
-					that.axios.get(that.getList_url, {
-						params: {
-							solicit_id: 1
-						}
+					that.$fetch(that.getList_url,{
+						solicit_id: 1
 					}).then((response) => {
-						
-						console.log(response);
-						
-					}).catch((response) => {
-						console.log(response);
-					})
+				        console.log(response);
+				    })
+					
 				},
 				//返回
 				quit: function() {
