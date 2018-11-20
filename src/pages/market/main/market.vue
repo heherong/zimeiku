@@ -30,6 +30,13 @@
                         <div class="nav-btn">确定</div>
                     </div>
                 </div>
+                <div class="nav-wrap-shoppingcart" @click="shoppingcart()">
+                    <i class="icon-shoppingcart">
+                        <div class="cart-side-num">
+                            0
+                        </div>
+                    </i>
+                </div>
                 <!-- <MyconditionWrap type='作品字数:' :data1='infoNum' :bol1='false' :bol2='false'></MyconditionWrap>
                 <MyconditionWrap type='原  创  度:' :data1='infoOriginal' :bol1='false' :bol2='true' type2='原创度'></MyconditionWrap>
                 <MyconditionWrap type='买 断  价:' :data1='infoBuy' :bol1='false' :bol2='true' type2='元'></MyconditionWrap> -->
@@ -53,6 +60,9 @@ li.activeNav{color: #4895E7;background: #e5f0fc;border-radius: 2px;}
 .el-input:nth-child(1){margin-right:30px;}
 
 .nav-line{width:28px;height: 1px;position: absolute;background:#ccc;top:14px;left:80px;}
+.nav-wrap-shoppingcart{width:40px;height:40px;position: fixed;right:5px;background: #fff;border-radius: 2px;}
+.icon-shoppingcart{width: 40px;height: 40px;position: relative;display: inline-block;background:url('../../../assets/images/shoppingcart.png') no-repeat;background-size: 60%;background-position: center center;cursor: pointer;}
+.cart-side-num{position: absolute;right: -4px;top: -6px;background: #e16556;border-radius: 50%;min-width: 20px;font-size: 12px;line-height: 20px;color: #fff;text-align: center;z-index:2;}
 </style>
 
 <script>
@@ -96,6 +106,19 @@ export default {
             }).catch(function(res){
                 console.log(res);
             })
+        },
+        shoppingcart(){
+            
+            if(localStorage.getItem(token)!=''){
+                this.$router.push('shoppingcart');
+            }else{
+                this.$alert('请先登录', '提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        this.$router.push('login');
+                    }
+                });
+            }
         }
     },
     mounted:function(){
