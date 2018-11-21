@@ -29,7 +29,7 @@
                     <span class="time-active">58</span>
                     分钟
                 </span>
-                <span class="user-option">
+                <span class="user-option" @click="fn()">
                     我要投稿
                 </span>
             </div>
