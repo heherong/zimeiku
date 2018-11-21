@@ -9,7 +9,8 @@
                         <span>原创征稿</span>
                         <span>影评、明星微博找里面的槽点加以分析，撰写些比较简单的娱乐内容</span>
                     </div>
-                    <div class="container-demand-info">
+                    <div v-if="status==1">
+                    <div class="container-demand-info" v-if="status==1">
                         <ul>
                             <li>
                                 <div>
@@ -86,6 +87,51 @@
                                 </span>
                             </li>
                         </ul>
+                    </div>
+                    </div>
+                    <div class="moneyList" v-if="status==2">
+                        <el-form ref="form" :model="form" label-width="80px">
+                            <!--征稿标题-->
+                            <el-form-item>
+                                <el-row>
+                                    <el-col :span="3">
+                                        <label for=""><span class="input-must">*</span>文章标题</span></label>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-input v-model="form.title" class="add-title" placeholder="请输入标题，5~50个字"></el-input>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                            <!--选择标签-->
+                            <el-form-item>
+                                <el-row>
+                                    <el-col :span="3">
+                                        <label for=""><span class="input-must">*</span>分类(限一项)</span></label>
+                                    </el-col>
+                                    <el-col :span="20">
+                                        <el-checkbox-group v-model="checkboxGroup">
+                                            <el-checkbox v-for="item in form.checkedData" :key="item" :label="item"  @change="checkBoxs" class="release-checkBoxs"></el-checkbox>
+                                            <!--<el-checkbox v-for="item in form.checkedData" :key="item" :label="item" border class="release-checkBoxs"></el-checkbox>-->
+                                        </el-checkbox-group>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                            <!--征稿详细说明-->
+                            <el-form-item>
+                                <el-row>
+                                    <el-col :span="3">
+                                        <label for=""><span class="input-must">*</span>征稿详细说明</span></label>
+                                    </el-col>
+                                    <el-col :span="17">
+                                        <VueUeditorWrap v-model="content.msg" :config="myConfig"></VueUeditorWrap>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                            <el-form-item style="text-align: center;">
+                                <el-button @click="quit">取消</el-button>
+                                <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                            </el-form-item>
+                        </el-form>
                     </div>
                 </div>
                 <div class="container-right">
@@ -198,17 +244,17 @@
                 </div>
                 <div class="container-table">
                     <el-table
-                        data=""
+                        :data="SubmitRecordsData"
                         style="width: 100%"
                         max-height="250">
                         <el-table-column
                         fixed
-                        prop="date"
+                        prop="created_at"
                         label="日期"
                         width="250">
                         </el-table-column>
                         <el-table-column
-                        prop="name"
+                        prop="title"
                         label="稿件名称"
                         width="200">
                         </el-table-column>
@@ -224,7 +270,7 @@
                         width="120">
                         <template slot-scope="scope">
                             <el-button
-                            @click.native.prevent="deleteRow(scope.$index, tableData4)"
+                            @click.native.prevent="deleteRow(scope.$index, SubmitRecordsData)"
                             type="text"
                             size="small">
                             移除
@@ -239,6 +285,7 @@
 </template>
 
  <style>
+ @import url("../../../assets/css/user");
 .demand-detail-wrap{width: 1170px;margin: 0 auto;}
 .container-left{width: 870px;background: #fff;border-radius: 2px;padding-bottom: 50px;float: left;}
 .container-left-title{height: 70px;line-height: 70px;padding: 0 30px;position: relative;}
@@ -297,17 +344,130 @@ li.list-item-example>span:last-child{float: left;width: 700px;line-height: 30px;
 
 <script>
 import Myheader from '../../../components/header-nav-wrap'
+import VueUeditorWrap from 'vue-ueditor-wrap'
+import {baseUrl} from '@/api/index.js' 
 export default {
     components:{
-        Myheader
+        Myheader,
+        VueUeditorWrap
     },
     data:function(){
-        return {a:'buyerorder'}
+        return {a:'buyerorder',
+                status:2,
+                checkboxGroup: [], //实时状态
+                SubmitRecordsData:[
+                    {a:1,v:2}
+                ],
+                form: {
+						title: '',
+						checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
+						font: 2000, //稿子字数
+						gaoCont: 1, //稿子篇数
+						images:1,
+						baidu:50,
+						sogou:50,
+						b360:50,
+						bchrome:50,
+						checkOptions: [],
+						price: '10', //每篇价格
+//						lowPrice: 50, //最低值
+//						highPrice: 100, //最高值
+						checkTerm: '1', //周期
+						checkTermOptions: [{
+							value: '1',
+							label: '1'
+						}, {
+							value: '2',
+							label: '2'
+						}, {
+							value: '3',
+							label: '3'
+						}, {
+							value: '4',
+							label: '4'
+						},{
+							value: '5',
+							label: '5'
+						}, {
+							value: '6',
+							label: '6'
+						}, {
+							value: '7',
+							label: '7'
+						}],
+						content: '',
+						startTime: '' //开始时间
+                    },
+                    content:{
+					msg:'<h2>Hello World!</h2>',
+					title:''
+                        },
+                        myConfig: {
+                            // 如果需要上传功能,找后端小伙伴要服务器接口地址
+        //		            serverUrl: '/api/ueditor/server?action=config&noCache=1542597685533',
+                            serverUrl: baseUrl+'ueditor/server',
+                            // 你的UEditor资源存放的路径,相对于打包后的index.html
+                            UEDITOR_HOME_URL: './static/UEditor/',
+                            // 编辑器不自动被内容撑高
+                            autoHeightEnabled: false,
+                            // 初始容器高度
+                            initialFrameHeight: 540,
+                            // 初始容器宽度
+                            initialFrameWidth: '100%',
+                            // 关闭自动保存
+                            enableAutoSave: false
+                    }
+                }
     },
     beforeRouteEnter:(to,form,next)=>{
         next(vm=>{
             vm.a = form.params.name
         })
+    },
+    created:function(){
+        this.SubmitRecords()
+        
+    },
+    methods:{
+        //投稿记录
+        SubmitRecords(){
+            var self = this;
+            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
+            params:{
+
+            }
+            }).then(function(res){
+                console.log(res);
+                self.SubmitRecordsData = res.data.data.list;
+            }).catch(function(res){
+                console.log(res);
+            })
+        },
+        //打开投稿页面
+        onSubmit(){
+            this.status=2;
+        },
+
+        //投稿记录删除当前行
+        deleteRow(index, rows) {
+            rows.splice(index, 1);
+            
+        },
+        checkBoxs: function() {
+            let that = this;
+            if(that.checkboxGroup.length > 1) {
+                that.checkBoxPre = [];
+                that.checkBoxPre.push(that.checkboxGroup[1]);
+                
+                that.checkboxGroup = that.checkBoxPre;
+            } else {
+                that.checkBoxPre = that.checkboxGroup;
+            }
+        },
+        //返回
+        quit: function() {
+            this.status = 1;
+        },
     }
 }
 </script>

@@ -254,7 +254,8 @@
                         <el-pagination
                             background
                             layout="prev, pager, next"
-                            :total="100">
+                            @current-change="currentChange"
+                            :total='totalNum'>
                         </el-pagination>
                     </div>
                     
@@ -334,6 +335,9 @@ export default {
             tabActive:'market',
             type2:'',
             downm:'',
+            curPage:'0',
+            pagesize:'3',
+            totalNum:0,
             nowIndex:0,
             active:0,
             a:1,
@@ -375,18 +379,29 @@ export default {
             }
         },
         fn:function(){
+            let self = this;
             this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
                 params:{
-                    page:"1",
-                    pagesize:'2'
+                    page:self.curPage,
+                    pagesize:self.pagesize
                 }
             }).then((response)=>{
                 this.data=response.data.data.list;
-                
+                console.log(response);
+                if(response.data.data.list.length>0){
+                    for(let i=0;i<response.data.data.list.length;i++){
+                        response.data.data.list[i].created_at = response.data.data.list[i].created_at.substring(0,10);
+                    }
+                    self.tableData = response.data.list;
+                    self.totalNum = response.data.count;
+                }
             }).catch((response)=>{
                 console.log(response);
             })
             
+        },
+        currentChange: function(curPage){
+            this.curPage = curPage;
         },
         amend() {
             const h = this.$createElement;
