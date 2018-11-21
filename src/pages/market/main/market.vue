@@ -3,12 +3,10 @@
         <Myheader :active ='tabActive'></Myheader>
         <div class="market" style="margin-top:105px;">
             <div class="condition-wrap">
-                
                 <div class="condition-item">
                     <span class="tit">作品类型:</span>
                     <ul class="use-scenes" :style="{height:downm}">
-                        <li v-for="(item , index) in infoType" :class="{activeNav:nowIndex==index}" @click="nowIndex=index">{{item.name}}</li>
-                        
+                        <li v-for="(item , index) in infoType" :class="{activeNav:nowIndex==index}" @click="nowIndex=index">{{item.name}}</li> 
                     </ul>
                     <div style="float:left" v-show='true'>
                         <More @height ='fheight'></More>
@@ -16,9 +14,7 @@
                     <div class="count" v-if="false">type
                         <el-input
                             size="mini"
-
                             style="width:80px;float:left;"
-                        
                             v-model="inputStrat">
                         </el-input>
                         <div class="nav-line"></div>
@@ -33,7 +29,7 @@
                 <div class="nav-wrap-shoppingcart" @click="shoppingcart()">
                     <i class="icon-shoppingcart">
                         <div class="cart-side-num">
-                            0
+                            {{shoppingcartNum}}    
                         </div>
                     </i>
                 </div>
@@ -41,7 +37,229 @@
                 <MyconditionWrap type='原  创  度:' :data1='infoOriginal' :bol1='false' :bol2='true' type2='原创度'></MyconditionWrap>
                 <MyconditionWrap type='买 断  价:' :data1='infoBuy' :bol1='false' :bol2='true' type2='元'></MyconditionWrap> -->
             </div>
-            <OriginalContentListWrap></OriginalContentListWrap>
+            <div class="original-content-list-wrap">
+                <div class="title-wrap">
+                    <span >作品列表</span>
+                    <p id="p">
+                        <span class="check-codition active-condition" >综合</span>
+                        <span>|</span>
+                        <span class="check-codition">最新</span>
+                        <span>|</span>
+                        <span class="check-codition">价格从高到低</span>
+                        <span>|</span>
+                        <span class="check-codition">价格从低到高</span>
+                    </p>
+                </div>
+                <ul class="original-works-list-wrap">
+                    <li v-for="(item , index) in data">
+                        <div class="img-box">
+                            <router-link to='/ContentBank' target="_blank">
+                                <img :src="item.img_count" alt="" style="width:100%;" v-if="!(item.img_count=='' || item.img_count == null)">
+                                <img src="../../../assets/images/1.jpg" alt="" style="width:100%;" v-else>
+                            </router-link>
+                        </div>
+                        <div class="works-info-wrap">
+                            <div class="works-info-tit-wrap">
+                                <strong @click="fn()" style="cursor: pointer;">{{item.title}}</strong>
+                                <span class="word-num-wrap">（1638字0图片）</span>
+                            </div>
+                            <div class="works-time">
+                                <span class="work-author" style="cursor:pointer">
+                                    <span>作者：</span>
+                                        {{item.field}}
+                                    <div class="float-author">
+                                        <p class="author-float-info">
+                                            <img :src="item.img_count" alt="" v-if="item.img_count!=null" />
+                                            <img src="http://cdn.yuanrongbank.com/3896/1539755290323/微信图片_20181017134756.jpg" v-else />
+                                            
+                                            <span>{{item.field}}</span>
+                                        </p>
+                                        <p>
+                                            创作形式
+                                            <span>{{item.type}}</span>
+                                        </p>
+                                        <p>
+                                            擅长领域
+                                            <span>{{item.words_count}}</span>
+                                        </p>
+                                        <p>
+                                            作品数量
+                                            <span>2</span>
+                                        </p>
+                                        <p class="popluarity">
+                                            人&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp气
+                                            <span>441</span>
+                                        </p>
+                                        <p class="jump_detail">
+                                            <div class="btn-more">查看详情</div>
+                                        </p>
+                                    </div>
+                                </span>
+                                <span class="work-lebal">{{item.created_at}}</span>
+                                <span class="item-label" style="float:right;" v-show="isDisabled">
+                                    <span class="work-label">买断价</span>
+                                    <span class="work-con">￥{{item.money}}</span>
+                                </span>
+                            </div>
+                            <div class="item-describe">
+                                {{item.content}}
+                            </div>
+                            <p class="work-label-wrap">
+                                <span class="item-label">
+                                    <span class="work-label">分类：</span>
+                                    <span class="work-con">{{item.original_degree}}</span>
+                                </span>
+                                <span class="item-label">
+                                    <span class="work-label">高频词：</span>
+                                    <span class="work-con" >
+                                        <span v-for="item in item.words_count" v-if="item.words_count!=null">
+                                            {{item}}<span class="work-label"> | </span>
+                                        </span>
+                                        <span v-else>
+                                            女人<span class="work-label" > | </span>
+                                            恨嫁<span class="work-label"> | </span>
+                                            女追男<span class="work-label"> | </span>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span class="item-label" >
+                                    <span class="work-label">浏览量:</span>
+                                    <span class="work-con">106</span>
+                                    
+                                </span>
+                                <span class="item-label" v-show="isDisabled">
+                                    <span class="work-label">陶梦指数：</span>
+                                    <span class="work-con" v-if="item.original_degree!=null">{{item.original_degree}}</span>
+                                    <span class="work-con" v-else>65.35</span>
+                                </span>
+                                
+                            </p>
+                        </div>
+                        <div class="works-right-wrap"  v-show="!isDisabled">
+                            <p>
+                                <i class="icon-help" @click="amend"></i>
+                                <span class="price-pub">买断价:</span>
+                                <span class="price">¥{{item.money}}</span>
+                            </p>
+                            <p>
+                                <button class="addCar" @click="buy()" disabled>加入购物车</button>
+                            </p>
+                            <p style="margin-top:10px;">
+                                <button class="purchase" @click="pay()">立即购买</button>
+                            </p>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </li>
+                    <!-- 撑高度用的假数据 -->
+                    <li v-for="(item , index) in data">
+                        <div class="img-box">
+                            <router-link to='/ContentBank' target="_blank">
+                                <img :src="item.img_count" alt="" style="width:100%;" v-if="!(item.img_count=='' || item.img_count == null)">
+                                <img src="../../../assets/images/1.jpg" alt="" style="width:100%;" v-else>
+                            </router-link>
+                        </div>
+                        <div class="works-info-wrap">
+                            <div class="works-info-tit-wrap">
+                                <strong @click="fn()" style="cursor: pointer;">{{item.title}}</strong>
+                                <span class="word-num-wrap">（1638字0图片）</span>
+                            </div>
+                            <div class="works-time">
+                                <span class="work-author" style="cursor:pointer">
+                                    <span>作者：</span>
+                                        {{item.field}}
+                                    <div class="float-author">
+                                        <p class="author-float-info">
+                                            <img :src="item.img_count" alt="" v-if="item.img_count!=null" />
+                                            <img src="http://cdn.yuanrongbank.com/3896/1539755290323/微信图片_20181017134756.jpg" v-else />
+                                            
+                                            <span>{{item.field}}</span>
+                                        </p>
+                                        <p>
+                                            创作形式
+                                            <span>{{item.type}}</span>
+                                        </p>
+                                        <p>
+                                            擅长领域
+                                            <span>{{item.words_count}}</span>
+                                        </p>
+                                        <p>
+                                            作品数量
+                                            <span>2</span>
+                                        </p>
+                                        <p class="popluarity">
+                                            人&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp气
+                                            <span>441</span>
+                                        </p>
+                                        <p class="jump_detail">
+                                            <div class="btn-more">查看详情</div>
+                                        </p>
+                                    </div>
+                                </span>
+                                <span class="work-lebal">{{item.created_at}}</span>
+                                <span class="item-label" style="float:right;" v-show="isDisabled">
+                                    <span class="work-label">买断价</span>
+                                    <span class="work-con">￥{{item.money}}</span>
+                                </span>
+                            </div>
+                            <div class="item-describe">
+                                {{item.content}}
+                            </div>
+                            <p class="work-label-wrap">
+                                <span class="item-label">
+                                    <span class="work-label">分类：</span>
+                                    <span class="work-con">{{item.original_degree}}</span>
+                                </span>
+                                <span class="item-label">
+                                    <span class="work-label">高频词：</span>
+                                    <span class="work-con" >
+                                        <span v-for="item in item.words_count" v-if="item.words_count!=null">
+                                            {{item}}<span class="work-label"> | </span>
+                                        </span>
+                                        <span v-else>
+                                            女人<span class="work-label" > | </span>
+                                            恨嫁<span class="work-label"> | </span>
+                                            女追男<span class="work-label"> | </span>
+                                        </span>
+                                    </span>
+                                </span>
+                                <span class="item-label" >
+                                    <span class="work-label">浏览量:</span>
+                                    <span class="work-con">106</span>
+                                    
+                                </span>
+                                <span class="item-label" v-show="isDisabled">
+                                    <span class="work-label">陶梦指数：</span>
+                                    <span class="work-con" v-if="item.original_degree!=null">{{item.original_degree}}</span>
+                                    <span class="work-con" v-else>65.35</span>
+                                </span>
+                                
+                            </p>
+                        </div>
+                        <div class="works-right-wrap"  v-show="!isDisabled">
+                            <p>
+                                <i class="icon-help" @click="amend"></i>
+                                <span class="price-pub">买断价:</span>
+                                <span class="price">¥{{item.money}}</span>
+                            </p>
+                            <p>
+                                <button class="addCar" @click="buy()">加入购物车</button>
+                            </p>
+                            <p style="margin-top:10px;">
+                                <button class="purchase" @click="pay()" :disabled='isDisabled'>立即购买</button>
+                            </p>
+                        </div>
+                        <div style="clear:both;"></div>
+                    </li>
+                    <div style="text-align:center;">
+                        <el-pagination
+                            background
+                            layout="prev, pager, next"
+                            :total="100">
+                        </el-pagination>
+                    </div>
+                    
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -63,17 +281,47 @@ li.activeNav{color: #4895E7;background: #e5f0fc;border-radius: 2px;}
 .nav-wrap-shoppingcart{width:40px;height:40px;position: fixed;right:5px;background: #fff;border-radius: 2px;}
 .icon-shoppingcart{width: 40px;height: 40px;position: relative;display: inline-block;background:url('../../../assets/images/shoppingcart.png') no-repeat;background-size: 60%;background-position: center center;cursor: pointer;}
 .cart-side-num{position: absolute;right: -4px;top: -6px;background: #e16556;border-radius: 50%;min-width: 20px;font-size: 12px;line-height: 20px;color: #fff;text-align: center;z-index:2;}
+.original-content-list-wrap{margin-top:23px;}
+.title-wrap{width: 100%;border-bottom: 1px solid #e9ecf1;height: 48px;line-height: 48px;background: #fff;}
+.title-wrap>span{margin-left: 29px;color: #64676a;font-size: 16px;}
+.title-wrap p{float: right; margin-right: 21px;}
+.title-wrap>p>span{margin-right: 8px;color: #64676a;padding: 4px 9px;cursor: pointer;font-size: 12px;border-radius: 2px;}
+.check-codition{}
+span.active-condition{color: #4895e7 !important;background: #e5f0fc;}
+/* .original-works-list-wrap{min-height: 520px;} */
+.original-works-list-wrap>li{padding: 28px 0;margin-bottom: 11px;background: #fff;}
+.img-box {float: left;width: 240px;height: 136px;position: relative;overflow: hidden;margin-left: 26px;}
+.works-info-wrap{float: left;width: 700px;margin-left: 20px;}
+.works-info-tit-wrap strong{font-size: 18px;color: #48494a;font-weight: bold;float: left;}
+.word-num-wrap{line-height: 24px;float: left;font-size: 14px;}
+.works-time{line-height: 32px;height: 32px;font-size: 12px;position: relative;float: left;width:100%;}
+.work-author{float: left;display: block;width: 164px;height: 32px;position: relative;line-height: 32px;}
+.float-author{display: none;  position: absolute;width: 140px;left: 0;top: 32px;background: #fff;border: 1px solid #f2f4f6;border-radius: 2px;padding: 13px 42px;z-index:2;box-shadow: 0px 0px 43px #e4dede;}
+.work-author:hover div.float-author{display: block;}
+.float-author p{line-height: 24px;font-size: 12px;color: #303132;margin-top: 11px;}
+.author-float-info>span{margin-top:10px;}
+.float-author p>span{float:right;vertical-align: middle;margin-left: 8px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 77px;display: inline-block;text-align: left;font-size: 14px;}
+.author-float-info>img{width: 50px;height: 50px;border-radius: 50%;vertical-align: middle;}
+.btn-more{display: block;text-align: center; line-height: 34px;width: 120px;height: 34px;background: #4895e7;color: #fff;font-size: 12px;margin: 0 auto;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 2px;}
+.item-describe{float: left; line-height: 22px;height: 42px;color: #727477;max-height: 49px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;font-size: 14px;}
+.work-label-wrap{margin-top: 20px;font-size: 12px;float: left;width:100%;}
+.item-label{margin-right: 55px;}
+.works-right-wrap{float: right;width: 132px;margin-right: 31px;text-align: center;}
+.works-right-wrap>p:nth-of-type(1){width: 100%;text-align: center;margin-bottom: 18px;}
+
+.price-pub{color: #64676a;font-size: 12px;margin-right:2px;}
+.price{display: inline-block;color: #F5B923;font-size: 18px;}
+.addCar{width: 106px;height: 40px;border: 1px solid #dfeaf8;background: #f6faff;color: #4895e7;font-size: 14px;cursor: pointer;border-radius: 2px;}
+.purchase{width: 106px;height: 40px;font-size: 14px;color: #fff;background: #4895e7;cursor: pointer;border-radius: 2px;    outline: none;resize: none;border:none;}
 </style>
 
 <script>
 // import MyconditionWrap from '../conditionWrap'
-import OriginalContentListWrap from '../originalContentListWrap'
 import Myheader from '../../../components/header-nav-wrap'
 import More from '../hide.vue'
 export default {
     components:{
     //   MyconditionWrap,
-      OriginalContentListWrap,
       Myheader,
       More
     },
@@ -87,6 +335,12 @@ export default {
             type2:'',
             downm:'',
             nowIndex:0,
+            active:0,
+            a:1,
+            data:'',
+            isDisabled:false,
+            shoppingcartNum:0,
+            bol:true
         }
     },
     beforeRouteEnter:(to,form,next)=>{
@@ -108,7 +362,7 @@ export default {
             })
         },
         shoppingcart(){
-            
+
             if(localStorage.getItem(token)!=''){
                 this.$router.push('shoppingcart');
             }else{
@@ -119,10 +373,126 @@ export default {
                     }
                 });
             }
-        }
+        },
+        fn:function(){
+            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
+                params:{
+                    page:"1",
+                    pagesize:'2'
+                }
+            }).then((response)=>{
+                this.data=response.data.data.list;
+                
+            }).catch((response)=>{
+                console.log(response);
+            })
+            
+        },
+        amend() {
+            const h = this.$createElement;
+            this.$msgbox({
+            
+            message: h('div', {style:`max-height: 415.333px;  
+                overflow-y: auto;  
+                background:url('../../assets/images/bg_content.jpg')
+                padding: 20px 30px;
+                width: 100%;
+                color: #64676a;
+                min-height: 110px;`}, [
+                h('h3', {style:'text-align:center;margin-bottom: 30px;'},'标题'),
+                h('article', { style:"line-height: 24px;"}, 'msg '),
+                h('div', { style: `background-color: #f9f9f9;
+                    border: 1px dashed #9e9e9e;
+                    color: #4895e7;line-height: 24px;
+                    padding: 10px;` }, 'msg'),
+                h('div',{style:'text-align:center'},[
+                    h('button',{style:`background-color: #4895e7;
+                        color: #fff;
+                        padding: 3px 5px;
+                        text-align: center;
+                        margin-top: 30px;
+                        padding: 10px 20px;
+                        border: none;
+                        cursor: pointer;
+                        outline: none;
+                        resize: none;`},'换一篇试试看'),
+                    h('p',{style:`padding-top: 12px;
+                        text-align: center;
+                        font-size: 12px;`})
+                ])
+            ]),
+            showCancelButton: true,
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            beforeClose: (action, instance, done) => {
+                if (action === 'confirm') {
+                instance.confirmButtonLoading = true;
+                instance.confirmButtonText = '执行中...';
+                setTimeout(() => {
+                    done();
+                    setTimeout(() => {
+                    instance.confirmButtonLoading = false;
+                    }, 300);
+                }, 3000);
+                } else {
+                done();
+                }
+            }
+            }).then(action => {
+            this.$message({
+                type: 'info',
+                message: 'action: ' + action
+            });
+            });
+        },
+        buy(){
+            //购物车数字
+            // if(this.bol){
+            //     this.shoppingcartNum++;
+            //     this.bol=false;
+            // }
+            
+            // this.$router.push('/shoppingcart')
+            // let self = this;
+            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
+            //     article_id:this.list.author_id
+            // }).then(function(res){
+            //     self.$message({
+            //         message:res.data.msg,
+            //          type: 'success'
+            //     });
+            //     if(res.data.msg=='购买成功'){
+            //         self.isDisabled = true;
+            //     }
+            // }).catch(function(res){
+            //     console.log(res)
+            // })
+        },
+        pay(){
+            this.$router.push('/pay');
+        },
+        // fn:function(){
+        //     this.$router.push('/ContentBank')
+        //     console.log(1);
+        // },
     },
     mounted:function(){
-        this.getAjax()
+        this.getAjax();
+        var list = document.getElementById('p').getElementsByTagName("span");
+        for(var i = 0; i < list.length; i++){
+            (function(n){
+                list[n].onclick = function(){
+                    for(var j = 0; j < list.length; j++){
+                        list[j].className = '';
+                    }
+                    list[n].className = "active-condition";
+                }
+            
+            }(i))
+        }
+    },
+    created:function(){
+        this.fn();
     }
 }
 </script>

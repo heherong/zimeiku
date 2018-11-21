@@ -14,6 +14,7 @@ import VueAxios from 'vue-axios'
 Vue.use(VueAxios,axios);
 
 import {post,fetch,patch,put} from './api/http'
+
 //定义全局变量
 Vue.prototype.$post=post;
 Vue.prototype.$fetch=fetch;
