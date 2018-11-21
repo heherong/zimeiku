@@ -74,7 +74,7 @@
 			listenToNav:function(data){
 				let that = this;
 				that.tabActive = data;
-				console.log(data);
+//				console.log(data);
 			},
 			
 		},
