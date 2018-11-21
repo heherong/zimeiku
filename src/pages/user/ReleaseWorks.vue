@@ -336,25 +336,21 @@
 			methods: {
 				getList() {
 					let that = this;
-					that.axios.get(that.getList_url, {
-						params: {
-							page: that.curPage,
-							pagesize: that.pagesize
-						}
+					
+					that.$fetch(that.getList_url,{
+						page:that.curPage,
+                 		pagesize:that.pagesize
 					}).then((response) => {
-
-						if(response.data.data.list.length > 0) {
-							for(let i = 0; i < response.data.data.list.length; i++) {
-								response.data.data.list[i].start_at = response.data.data.list[i].start_at.substring(0, 10);
+				        console.log(response);
+				        if(response.data.list.length > 0) {
+							for(let i = 0; i < response.data.list.length; i++) {
+								response.data.list[i].start_at = response.data.list[i].start_at.substring(0, 10);
 							}
-							that.tableData = response.data.data.list;
-							that.totalNum = response.data.data.count;
+							that.tableData = response.data.list;
+							that.totalNum = response.data.count;
 						}
-
-//						console.log(that.tableData);
-					}).catch((response) => {
-						console.log(response);
-					})
+				    })
+					
 				},
 				currentChange: function(curPage) {
 					this.curPage = curPage;
