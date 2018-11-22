@@ -17,11 +17,52 @@
                <div style="width:870px;">
                     <div class="demand-contanier" style=" float:left">
                         <ul class="demand-list">
-                            <MyItem></MyItem>
-                            <MyItem></MyItem>
-                            <MyItem></MyItem>
-                            <MyItem></MyItem>
-                            <MyItem></MyItem>
+                            <li v-for='item in solicitData' >
+                                <div class="item-status">
+                                    <span v-if="item.status!=null">{{item.status}}</span>
+                                    <span>招募中</span>
+                                </div>
+                                <div class="demand-list-item-title">
+                                    <div class="demand-list-title-top">
+                                        <span class="demand-title-type" v-if="item.field!=null">{{item.field}}</span>
+                                        <span class="demand-title-type">原创征稿</span>
+                                        <span class="demand-title-name" @click="fn">{{item.price}}</span>
+                                        <span>
+                                            <span >￥{{item.price}}</span>
+                                            <span class="demand-list-unit">
+                                                <span style="color:#a9adb0">/篇</span>
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="demand-list-title-bottom">
+                                        <span>
+                                            征稿数量
+                                            <span class="title-bottom-num">{{item.number}}</span>
+                                            篇
+                                        </span>
+                                        <span class="title-bottom-time">
+                                            报名剩余
+                                            <span class="time-active">{{item.days}}</span>
+                                            天
+                                            <span class="time-active">12</span>
+                                            小时
+                                            <span class="time-active">58</span>
+                                            分钟
+                                        </span>
+                                        <span class="user-option" @click="fn(item)">
+                                            我要投稿
+                                        </span>
+                                    </div>
+                                    <div class="cut-off"></div>
+                                    <div class="demand-list-item-content">
+                                        <span>{{item.content}} 2.要求字数:{{item.words}}字</span>
+                                        <p @click="fn">查看更多></p>
+                                    </div>
+                                    <div class="demand-list-item-tag">
+                                        <span>文章</span>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -93,7 +134,25 @@
 .demand-help .marketing-type div:first-child > div:first-child{margin-bottom: 5px;font-size: 24px;color: #9B76F8;;}
 .demand-help .marketing-type div:first-child > div:nth-child(n+2){font-size: 16px;color: rgba(155,118,248,0.60);;line-height: 16px;}
 .pag-wrap{width: 870px;padding: 40px 0 20px;color: #797b7e;float: left;text-align: center;}
+.item-status{position: absolute;top: 0;width: 60px;height: 20px;line-height: 20px;text-align: center;font-size: 12px;background: #89BC62;color: #fff;border-radius: 0 0 2px 2px;}
+.demand-list-item-title{margin-top: 25px;}
+.demand-list-title-top>span:first-child{display: inline-block;width: 56px;height: 22px;line-height: 19px;text-align: center;font-size: 12px;color: #89BC62;border: 1px solid rgba(137,188,98,0.50);border-radius: 2px;margin-right: 6px;position: relative;top: -2px;}
+.demand-title-name{font-size: 20px;color: #48494a;cursor: pointer;display: inline-block;height: 26px;width: 500px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
+.demand-list-title-top span:nth-child(3){float: right;font-size: 24px;color: #F5B923;}
+.demand-list-unit{font-size: 12px;color: #82868A;}
+.time-active{color: #4895E7;}
+.demand-list-title-bottom{height: 36px;line-height: 36px;}
+.demand-list-title-bottom>span:nth-child(1){color: #82868A;margin-right: 81px;}
+.title-bottom-time{margin-left: 10px;color: #82868A;}
+.user-option{float: right;width: 84px;height: 36px;line-height: 36px;text-align: center;cursor: pointer;color: #fff;background: #4895E7;border-radius: 2px;}
+.cut-off{height: 14px;border-bottom: 1px dotted #e9ebec;}
+.demand-list-item-content{height: 44px;line-height: 22px;overflow: hidden;margin: 12px 0 15px 0;font-size: 14px;color: #64676A;}
+.demand-list-item-content>p{color: #4895E7;cursor: pointer;}
+.demand-list-item-tag {position: relative;top: -6px;}
+.demand-list-item-tag>span{display: inline-block;height: 20px;line-height: 20px;padding: 0 6px;font-size: 12px;color: #82868a;background: #F4F6F9;border-radius: 2px; margin-right: 20px;}
 </style>
+
+
 
 <script>
 import Myheader from '../../../components/header-nav-wrap'
@@ -106,21 +165,28 @@ export default {
     data:function(){
         return{
             a:'buyerorder',
-            now:0
+            now:0,
+            solicitData:[]
         }
     },
     methods:{
         getAjax:function(){
+            var self= this;
             this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
                 params:{
                     page:'1',
                     pagesize:'5'
                 }
             }).then(function(res){
-                console.log(res)
+                // console.log(res);
+                self.solicitData = res.data.data.list
             }).catch(function(res){
                 console.log(res);
             })
+        },
+        fn:function(val){
+            this.$router.push({path:'/demandHall',query:{airtcle:val}});
+            console.log(val)
         }
     },
     beforeRouteEnter:(to,form,next)=>{
@@ -130,6 +196,11 @@ export default {
         },
     created:function(){
         this.getAjax();
+        
+    },
+    mounted(){
+        
+        console.log(this.solicitData);
     }
 }
 </script>

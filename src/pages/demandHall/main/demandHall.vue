@@ -5,7 +5,7 @@
             <div class="demand-detail-wrap">
                 <div class="container-left">
                     <div class="container-left-title">
-                        <div>招募中</div>
+                        <div>{{airtcleCon.status}}</div>
                         <span>原创征稿</span>
                         <span>影评、明星微博找里面的槽点加以分析，撰写些比较简单的娱乐内容</span>
                     </div>
@@ -14,7 +14,7 @@
                         <ul>
                             <li>
                                 <div>
-                                    <span>￥15</span>
+                                    <span>￥{{airtcleCon.price}}</span>
                                     /篇
                                 </div>
                                 <span>
@@ -25,7 +25,7 @@
                             <li class="lineq"></li>
                             <li>
                                 <div>
-                                    <span>4</span>
+                                    <span>{{airtcleCon.number}}</span>
                                     
                                 </div>
                                 <span>
@@ -74,11 +74,11 @@
                             </li>
                             <li>
                                 <span>字数要求:</span>
-                                <span>1000-2000字</span>
+                                <span>{{airtcleCon.words}}</span>
                             </li>
                             <li class="create-require">
-                                <span>字数要求:</span>
-                                <span style="line-height: 30px;">1、影评、明星微博找里面的槽点加以分析，可通过刷最新的剧，截取一些片段再撰写些比较简单的娱乐内容，如果喜欢看电影、电视、综艺，那么就可以把电影的槽点、狗血剧情写出来，加以分析，找素材点之后要去抛出自己的观点。文章一定要具有可读性，要有深度，有看点，自己的观点明确 ， 2、原创度70%以上 3、配图要求与图文内容相关，一段落字数的字数不要太长，最好在200字以内，图片要求 高清无码，无水印，图片大小相似 （统一横屏或者统一竖屏）图片可截取视频中的。如果写微博，也可以截图微博照片，或评论</span>
+                                <span>创作要求:</span>
+                                <span style="line-height: 30px;">{{airtcleCon.content}}</span>
                             </li>
                             <li class="list-item-example">
                                 <span>参考样稿:</span>
@@ -102,6 +102,24 @@
                                     </el-col>
                                 </el-row>
                             </el-form-item>
+                            <!--投稿作者-->
+                            <el-form-item>
+                                <el-row>
+                                    <el-col :span="3">
+                                        <label for=""><span class="input-must">*</span>创 作 者</span></label>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-select v-model="form.value" placeholder="请选择">
+                                            <el-option
+                                            v-for="item in form.options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
                             <!--选择标签-->
                             <el-form-item>
                                 <el-row>
@@ -116,20 +134,51 @@
                                     </el-col>
                                 </el-row>
                             </el-form-item>
-                            <!--征稿详细说明-->
+                            <!--投稿内容-->
+                            <div style="padding: 10px;margin-bottom:30px;">
+                                <VueUeditorWrap v-model="form.content" :config="myConfig"></VueUeditorWrap>
+                            </div>
                             <el-form-item>
                                 <el-row>
                                     <el-col :span="3">
-                                        <label for=""><span class="input-must">*</span>征稿详细说明</span></label>
+                                        <label for=""><span class="input-must">*</span>上传封面</span></label>
                                     </el-col>
-                                    <el-col :span="17">
-                                        <VueUeditorWrap v-model="content.msg" :config="myConfig"></VueUeditorWrap>
+                                    <el-col :span="12">
+                                        <el-upload
+                                            class="upload-img"
+                                            drag
+                                            action="https://jsonplaceholder.typicode.com/posts/"
+                                            multiple>
+                                            <i class="el-icon-upload"></i>
+                                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                                        </el-upload>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-row>
+                                    <el-col :span="3">
+                                        <label for=""><span class="input-must">*</span>发布形式</span></label>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-radio v-model="form.radio" label="1">未发布</el-radio>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                            <el-form-item>
+                                <el-row>
+                                    <el-col :span="3">
+                                        <label for=""><span class="input-must">*</span>买断价格</span></label>
+                                    </el-col>
+                                    <el-col :span="12">
+                                        <el-input v-model="form.price" class="add-title" placeholder="一口价"></el-input>
                                     </el-col>
                                 </el-row>
                             </el-form-item>
                             <el-form-item style="text-align: center;">
                                 <el-button @click="quit">取消</el-button>
-                                <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                                <el-button type="primary" @click="onSubmit">提交投稿</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -139,7 +188,7 @@
                         <div class="author-desc">
                             <img src="http://cdn.yuanrongbank.com/3781/1539579564341/12123.jpg" alt="" class="author-img">
                             <div class="author-name" style="width:100%;">
-                                一颗执着的心 
+                                {{airtcleCon.user_id}} 
                             </div>
                             <div class="author-article">
                                 <dl>
@@ -210,7 +259,7 @@
                         </ul>   
                     </nav>
                 </div>
-                <div class="container-bottom">
+                <div class="container-bottom" v-if="status==1">
                     <div>
                         <span>投稿须知</span>
                     </div>
@@ -237,7 +286,7 @@
                                 <span class="unm-unit" style="color:#82868A">/篇</span>
                             </i>
                         </div>
-                        <span>
+                        <span @click="status=2">
                             提交作品
                         </span>
                     </div>
@@ -353,69 +402,47 @@ export default {
     },
     data:function(){
         return {a:'buyerorder',
-                status:2,
+                status:1,
                 checkboxGroup: [], //实时状态
                 SubmitRecordsData:[
                     {a:1,v:2}
                 ],
+                airtcleCon:this.$route.query.airtcle,
                 form: {
-						title: '',
-						checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
+                        title: '',
+                        content:'<h2>Hello World!</h2>' ,
+						checkedData: ['文章', '视频', '漫画', '其他'],
 						font: 2000, //稿子字数
-						gaoCont: 1, //稿子篇数
-						images:1,
-						baidu:50,
-						sogou:50,
-						b360:50,
-						bchrome:50,
-						checkOptions: [],
+                        //创作者
+                        options:[
+                            {
+                            value: '选项1',
+                            label: '侠名'
+                            },
+                            {
+                            value: '选项2',
+                            label: '用户姓名'
+                            },
+                        ],
+                        //发布状态
+                        radio:1,
 						price: '10', //每篇价格
-//						lowPrice: 50, //最低值
-//						highPrice: 100, //最高值
 						checkTerm: '1', //周期
-						checkTermOptions: [{
-							value: '1',
-							label: '1'
-						}, {
-							value: '2',
-							label: '2'
-						}, {
-							value: '3',
-							label: '3'
-						}, {
-							value: '4',
-							label: '4'
-						},{
-							value: '5',
-							label: '5'
-						}, {
-							value: '6',
-							label: '6'
-						}, {
-							value: '7',
-							label: '7'
-						}],
-						content: '',
-						startTime: '' //开始时间
                     },
-                    content:{
-					msg:'<h2>Hello World!</h2>',
-					title:''
-                        },
-                        myConfig: {
-                            // 如果需要上传功能,找后端小伙伴要服务器接口地址
-        //		            serverUrl: '/api/ueditor/server?action=config&noCache=1542597685533',
-                            serverUrl: baseUrl+'ueditor/server',
-                            // 你的UEditor资源存放的路径,相对于打包后的index.html
-                            UEDITOR_HOME_URL: './static/UEditor/',
-                            // 编辑器不自动被内容撑高
-                            autoHeightEnabled: false,
-                            // 初始容器高度
-                            initialFrameHeight: 540,
-                            // 初始容器宽度
-                            initialFrameWidth: '100%',
-                            // 关闭自动保存
-                            enableAutoSave: false
+                    myConfig: {
+                        // 如果需要上传功能,找后端小伙伴要服务器接口地址
+    //		            serverUrl: '/api/ueditor/server?action=config&noCache=1542597685533',
+                        serverUrl: baseUrl+'ueditor/server',
+                        // 你的UEditor资源存放的路径,相对于打包后的index.html
+                        UEDITOR_HOME_URL: './static/UEditor/',
+                        // 编辑器不自动被内容撑高
+                        autoHeightEnabled: false,
+                        // 初始容器高度
+                        initialFrameHeight: 340,
+                        // 初始容器宽度
+                        initialFrameWidth: '100%',
+                        // 关闭自动保存
+                        enableAutoSave: false
                     }
                 }
     },
@@ -428,6 +455,9 @@ export default {
         this.SubmitRecords()
         
     },
+    mounted(){
+        console.log(this.airtcleCon)
+    },
     methods:{
         //投稿记录
         SubmitRecords(){
@@ -437,7 +467,7 @@ export default {
 
             }
             }).then(function(res){
-                console.log(res);
+                // console.log(res);
                 self.SubmitRecordsData = res.data.data.list;
             }).catch(function(res){
                 console.log(res);
