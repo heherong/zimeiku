@@ -84,7 +84,6 @@
 		</div>
 		<div class="moneyList" v-if="status==2">
 			<h4>征稿需求 </h4>
-
 			<el-form ref="form" :model="form" label-width="80px">
 				<!--征稿标题-->
 				<el-form-item>
@@ -105,8 +104,8 @@
 						</el-col>
 						<el-col :span="18">
 							<el-checkbox-group v-model="checkboxGroup">
-								<el-checkbox v-for="item in form.checkedData" :key="item" :label="item"  @change="checkBoxs" class="release-checkBoxs"></el-checkbox>
-								<!--<el-checkbox v-for="item in form.checkedData" :key="item" :label="item" border class="release-checkBoxs"></el-checkbox>-->
+								<el-checkbox v-for="item in form.checkedData" :key="item.id" :label="item.name"  @change="checkBoxs" class="release-checkBoxs"></el-checkbox>
+								
 							</el-checkbox-group>
 						</el-col>
 					</el-row>
@@ -282,14 +281,16 @@
 					checkboxGroup: [], //实时状态
 					checkBoxPre: [], //当前状态
 					radio: '1',
-					getList_url:baseUrl+ 'solicit/mylist',
-					addRequest:baseUrl+ 'solicit/add',
+					getList_url:baseUrl+ 'solicit/mylist',  //获取列表
+					addRequest:baseUrl+ 'solicit/add',  //创建列表
+//					getCategory:baseUrl+ 'fields/list',  //类别
+					getCategory: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/fields/list',  //类别
 					curPage: 1, //当前页数
 					pagesize: 1, //一页10条
 					totalNum: 0, //总数
 					form: {
 						title: '',
-						checkedData: ['时事热点', '情感', '美妆时尚', '旅游', '商业软文', '生活窍门', 'IT互联网', '电影音乐', '星座占卜2', '时事热点2', '情感2', '美妆时尚2'],
+						checkedData: [],  //类别选择
 						font: 2000, //稿子字数
 						gaoCont: 1, //稿子篇数
 						images:1,
@@ -302,28 +303,7 @@
 //						lowPrice: 50, //最低值
 //						highPrice: 100, //最高值
 						checkTerm: '1', //周期
-						checkTermOptions: [{
-							value: '1',
-							label: '1'
-						}, {
-							value: '2',
-							label: '2'
-						}, {
-							value: '3',
-							label: '3'
-						}, {
-							value: '4',
-							label: '4'
-						},{
-							value: '5',
-							label: '5'
-						}, {
-							value: '6',
-							label: '6'
-						}, {
-							value: '7',
-							label: '7'
-						}],
+						checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'},{value:'5',label:'5'},{value:'6',label:'6'},{value:'7',label:'7'}],
 						content: '',
 						startTime: '' //开始时间
 					},
@@ -331,17 +311,19 @@
 				}
 			},
 			created: function() {
+				//获取列表数据
 				this.getList();
+				//获取领域列表
+				this.getCategoryFun();
 			},
 			methods: {
-				getList() {
+				getList:function() {
 					let that = this;
-					
 					that.$fetch(that.getList_url,{
 						page:that.curPage,
                  		pagesize:that.pagesize
 					}).then((response) => {
-				        console.log(response);
+//				        console.log(response);
 				        if(response.data.list.length > 0) {
 							for(let i = 0; i < response.data.list.length; i++) {
 								response.data.list[i].start_at = response.data.list[i].start_at.substring(0, 10);
@@ -351,6 +333,13 @@
 						}
 				    })
 					
+				},
+				getCategoryFun:function(){
+					let that = this;
+					that.$fetch(that.getCategory).then((response) => {
+//				        console.log(response);
+				        that.form.checkedData = response.data.list;
+				    })
 				},
 				currentChange: function(curPage) {
 					this.curPage = curPage;

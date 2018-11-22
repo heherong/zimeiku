@@ -7,6 +7,7 @@ import { Message } from 'element-ui';
 
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL = baseUrl;
+axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
@@ -50,7 +51,7 @@ export function fetch(url,params={}){
   return new Promise((resolve,reject) => {
     axios.get(url,{
       params:params
-    },{'xhrFields' : {withCredentials: true},crossDomain: true})
+    },{withCredentials: true,crossDomain: true})
     .then(response => {
       resolve(response.data);
     })
