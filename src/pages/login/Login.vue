@@ -90,7 +90,9 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 
 
 <script>
+
 import Myheader from '../../components/loginHeader'
+import {baseUrl} from '@/api/index.js' //注意路径
 export default {
     components:{
         Myheader
@@ -128,8 +130,8 @@ export default {
         bol:true,
         qrcode: '0' ,//二维码图片
 		ticket: '',
-		getTicket:'/api/qrcode', //获取ticket ?
-		judgeStatus:'/api/login', //重复调用，获取返回数据
+		getTicket: baseUrl+'qrcode', //获取ticket ?
+		judgeStatus: baseUrl+'login', //重复调用，获取返回数据
         ruleForm2: {
           shoujihao: '',
           poCode:'',
@@ -160,19 +162,32 @@ export default {
 		toGetTicket:function(){
 			let that = this;
 			//获取ticket
-			that.axios.get(that.getTicket
-			).then((response)=>{
-//	                console.log(response.data);
-                if(response.data.code==0){
-                	let listData = response.data.data.list;
-                	that.qrcode = listData.qrcode_url;
-                	//获取下一个接口
-					setInterval(that.getStatus(listData.ticket), 1000);
-                	
-                }
-            }).catch((response)=>{
-                console.log(response);
-            })
+			that.$fetch(that.getTicket).then((response) => {
+			        console.log(response);
+			        if(response.code==0){
+	                	let listData = response.data.list;
+	                	that.qrcode = listData.qrcode_url;
+	                	console.log(that.qrcode);
+	                	Cookies.set('ticket', listData.ticket,{ expires: 7 });
+	                	
+	                	//获取下一个接口
+						setInterval(that.getStatus(listData.ticket), 1000);
+	                	
+	                }
+			    })
+//			that.axios.get(that.getTicket
+//			).then((response)=>{
+////	                console.log(response.data);
+//              if(response.data.code==0){
+//              	let listData = response.data.data.list;
+//              	that.qrcode = listData.qrcode_url;
+//              	//获取下一个接口
+//					setInterval(that.getStatus(listData.ticket), 1000);
+//              	
+//              }
+//          }).catch((response)=>{
+//              console.log(response);
+//          })
 		},
 		//判断注册状态
 		getStatus:function(ticket_){

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {baseUrl} from '@/api/index'
 import { Message } from 'element-ui';
-
+import Cookies from 'js-cookie'
 //host 是域名 后面加接口
 //export const getUuid = () => axios.get(host + '/school/backend/login/getUuid');
 
@@ -11,14 +11,15 @@ axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded'
 //http request 拦截器
 axios.interceptors.request.use(
   config => {
-    // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
+  	
+       const token = Cookies.get('ticket');//注意使用的时候需要引入cookie方法，推荐js-cookie
     config.data = JSON.stringify(config.data);
     config.headers = {
       'Content-Type':'application/x-www-form-urlencoded'
     }
-    // if(token){
-    //   config.params = {'token':token}
-    // }
+       if(token){
+         config.params = {'token':token}
+       }
     return config;
   },
   error => {
