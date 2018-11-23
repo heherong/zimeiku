@@ -13,6 +13,33 @@
                             </router-link>
                         </p>
                     </li>
+                    <li class="menu-li">
+                        <p class="menu-li-p">
+                            <router-link to='/platform/platform'>
+                                <i class="icon-nor-xiangguan icon-nav"></i>
+                                <i class="icon-act-xiangguan icon-nav"></i>
+                                <span class="nav-act">账号信息</span>
+                            </router-link>
+                        </p>
+                    </li>
+                    <li class="menu-li">
+                        <p class="menu-li-p">
+                            <router-link to='/platform/platform'>
+                                <i class="icon-nor-xiangguan icon-nav"></i>
+                                <i class="icon-act-xiangguan icon-nav"></i>
+                                <span class="nav-act">平台指南</span>
+                            </router-link>
+                        </p>
+                    </li>
+                    <li class="menu-li">
+                        <p class="menu-li-p">
+                            <router-link to='/platform/platform'>
+                                <i class="icon-nor-xiangguan icon-nav"></i>
+                                <i class="icon-act-xiangguan icon-nav"></i>
+                                <span class="nav-act">平台相关</span>
+                            </router-link>
+                        </p>
+                    </li>
                 </ul>
             </div>
         </div>

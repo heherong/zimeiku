@@ -1,48 +1,5 @@
 <template>
-    <li>
-        <div class="item-status">
-            <span>招募中</span>
-        </div>
-        <div class="demand-list-item-title">
-            <div class="demand-list-title-top">
-                <span class="demand-title-type">原创征稿</span>
-                <span class="demand-title-name" @click="fn">宋闻名人物专访</span>
-                <span>
-                    <span >￥200</span>
-                    <span class="demand-list-unit">
-                        <span style="color:#a9adb0">/篇</span>
-                    </span>
-                </span>
-            </div>
-            <div class="demand-list-title-bottom">
-                <span>
-                    征稿数量
-                    <span class="title-bottom-num">1</span>
-                    篇
-                </span>
-                <span class="title-bottom-time">
-                    报名剩余
-                    <span class="time-active">9</span>
-                    天
-                    <span class="time-active">12</span>
-                    小时
-                    <span class="time-active">58</span>
-                    分钟
-                </span>
-                <span class="user-option" @click="fn()">
-                    我要投稿
-                </span>
-            </div>
-            <div class="cut-off"></div>
-            <div class="demand-list-item-content">
-                <span>1、根据互动百科宋闻名（http://www.baike.com/wiki/%E5%AE%8B%E9%97%BB%E5%90%8D）  写人物传记。但是不能照抄  </span>
-                <p @click="fn">查看更多></p>
-            </div>
-            <div class="demand-list-item-tag">
-                <span>文章</span>
-            </div>
-        </div>
-    </li>
+    
 </template>
 
 <style>
@@ -70,9 +27,7 @@
 <script>
 export default {
     methods:{
-        fn:function(){
-            this.$router.push('/demandHall')
-        }
+        
     }
 }
 </script>

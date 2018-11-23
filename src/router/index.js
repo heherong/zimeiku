@@ -95,7 +95,10 @@ export default new Router({
     {
       path:'/help',
       name:'help',
-      component:Help
+      component:Help,
+      // children:[
+      //   {path:'/platform',}
+      // ]
     }
   ]
 })
