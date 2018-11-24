@@ -4,65 +4,67 @@
         <div class="inner-wrap" style="margin-top:105px;">
             <div class="aside-wrap transAll" style="min-height:273px;">
                 <ul class="menu-ul-wrap transAll">
-                    <li class="menu-li">
-                        <p class="menu-li-p">
-                            <router-link to='/platform/platform'>
-                                <i class="icon-nor-xiangguan icon-nav"></i>
-                                <i class="icon-act-xiangguan icon-nav"></i>
-                                <span class="nav-act">平台相关</span>
-                            </router-link>
-                        </p>
-                    </li>
-                    <li class="menu-li">
-                        <p class="menu-li-p">
-                            <router-link to='/platform/platform'>
-                                <i class="icon-nor-xiangguan icon-nav"></i>
-                                <i class="icon-act-xiangguan icon-nav"></i>
-                                <span class="nav-act">账号信息</span>
-                            </router-link>
-                        </p>
-                    </li>
-                    <li class="menu-li">
-                        <p class="menu-li-p">
-                            <router-link to='/platform/platform'>
-                                <i class="icon-nor-xiangguan icon-nav"></i>
-                                <i class="icon-act-xiangguan icon-nav"></i>
-                                <span class="nav-act">平台指南</span>
-                            </router-link>
-                        </p>
-                    </li>
-                    <li class="menu-li">
-                        <p class="menu-li-p">
-                            <router-link to='/platform/platform'>
-                                <i class="icon-nor-xiangguan icon-nav"></i>
-                                <i class="icon-act-xiangguan icon-nav"></i>
-                                <span class="nav-act">平台相关</span>
-                            </router-link>
-                        </p>
-                    </li>
+                    <item  txt='平台相关' mark='platform' :sel='selected' @change='getVal'>
+                        <img src="../../assets/images/nav-relat-act.png" slot="activeImg"/>
+                        <img src="../../assets/images/nav-relat-nor.png" slot="normalImg"/>
+                    </item>
+                    <item  txt='账户信息' mark='helpinfo' :sel='selected' @change='getVal'>
+                        <img src="../../assets/images/nav-per-act.png" slot="activeImg"/>
+                        <img src="../../assets/images/nav-per-nor.png" slot="normalImg"/>
+                    </item>
+                    <item  txt='买家指南' mark='buyerguide' :sel='selected' @change='getVal'>
+                        <img src="../../assets/images/zhinan-act.png" slot="activeImg"/>
+                        <img src="../../assets/images/zhinan-nor.png" slot="normalImg"/>
+                    </item>
+                    <item  txt='卖家指南' mark='sellerguide' :sel='selected' @change='getVal'>
+                        <img src="../../assets/images/question-nor.png" slot="activeImg"/>
+                        <img src="../../assets/images/question-act.png" slot="normalImg"/>
+                    </item>
+                    <item  txt='作品审核标准' mark='auditstandards' :sel='selected' @change='getVal'>
+                        <img src="../../assets/images/nav-buld-act.png" slot="activeImg"/>
+                        <img src="../../assets/images/nav-buld-nor.png" slot="normalImg"/>
+                    </item>
+                    <item  txt='付款与结算' mark='paymentsettlement' :sel='selected' @change='getVal'>
+                        <img src="../../assets/images/nav-bus-act.png" slot="activeImg"/>
+                        <img src="../../assets/images/nav-bus-nor.png" slot="normalImg"/>
+                    </item>
                 </ul>
+            </div>
+            <div class="main-wrap">
+                <router-view></router-view>
             </div>
         </div>
     </div>
 </template>
 
 <style>
-.aside-wrap{background: #fff;border-radius: 2px;float: left;width: 200px;}
-.menu-ul-wrap{position: relative;height: 100%;color: #64676a;overflow: hidden;}
-.menu-li{width: 100%;cursor: pointer;font-size: 14px;box-sizing: border-box;}
-.menu-li-p{position: relative;border-left:solid 3px #4895e7;}
-.menu-li-p a{text-align: left;padding-left: 44px;height: 44px;line-height: 44px;padding-right: 18px;display: inline-block;width: 100%;color: #64676a;}
-.icon-nav{display: block;width:15px;height: 15px;float: left;}
-.nav-act{color: #4895e7;}
+.aside-wrap{background: #fff;border-radius: 2px;float: left;width:200px;position: fixed;top: 105px;z-index: 3;}
+.menu-ul-wrap{position: relative;height: 100%;color: #64676a;overflow: hidden;border-radius: 5px;}
+.main-wrap{width: 970px;margin-left: 220px;margin-bottom: 20px;}
+.introduction-help-center{ padding: 0 30px 50px;background-color: #fff;text-align: left;}
+
 
 </style>
 
 
 <script>
 import Myheader from '../../components/header-nav-wrap'
+import item from './helpnavitem'
 export default {
     components:{
-        Myheader
+        Myheader,
+        item
+    },
+    data:function(){
+            return {
+                selected:'platform'
+            }
+        },
+    methods:{
+        getVal:function(val){
+            this.selected = val;
+            console.log(val)
+        }
     },
     
 }

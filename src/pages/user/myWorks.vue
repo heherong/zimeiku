@@ -25,83 +25,61 @@
 				<el-table 
 					:data="tableData.slice((curPage-1)*pagesize,curPage*pagesize)"
 					 style="width: 100%">
-					<el-table-column type="index" width="60" label="序号" align="center"></el-table-column>
-					<el-table-column label="标题" width="100">
+					 <el-table-column type="expand">
+					<template slot-scope="props">
+						<el-form label-position="left" inline class="table-expand">
+						<el-form-item label="总原创度:">
+							<span>{{ props.row.name }}</span>
+						</el-form-item>
+						<el-form-item label="百度:">
+							<span>{{ props.row.shop }}</span>
+						</el-form-item>
+						<el-form-item label="搜狗:">
+							<span>{{ props.row.id }}</span>
+						</el-form-item>
+						<el-form-item label="360:">
+							<span>{{ props.row.shopId }}</span>
+						</el-form-item>
+						<el-form-item label="谷歌:">
+							<span>{{ props.row.category }}</span>
+						</el-form-item>
+						<el-form-item label="关键词:">
+							<span>{{ props.row.address }}</span>
+						</el-form-item>
+						<el-form-item label="领域:">
+							<span>{{ props.row.desc }}</span>
+						</el-form-item>
+						<el-form-item label="创建时间:">
+							<span>{{ props.row.desc }}</span>
+						</el-form-item>
+						<el-form-item label="文章状态:">
+							<span>{{ props.row.desc }}</span>
+						</el-form-item>
+						<el-form-item label="投稿时间:">
+							<span>{{ props.row.desc }}</span>
+						</el-form-item>
+						<el-form-item label="购买人账号:">
+							<span>{{ props.row.desc }}</span>
+						</el-form-item>
+						<el-form-item label="内容:">
+							<span>{{ props.row.desc }}</span>
+						</el-form-item>
+						</el-form>
+					</template>
+					</el-table-column>
+					<el-table-column type="index" width="180" label="序号" align="center"></el-table-column>
+					
+					<el-table-column label="标题" width="180">
 						<template slot-scope="scope">
 							<span>{{ scope.row.title }}</span>
 						</template>
 					</el-table-column>
-					<el-table-column label="内容" width="150">
-						<template slot-scope="scope">
-							<span>{{ scope.row.content }}</span>
-						</template>
-					</el-table-column>
 					<el-table-column label="字数">
-						<template slot-scope="scope" width="80">
+						<template slot-scope="scope" width="180">
 							<span>{{ scope.row.words_count }}</span>
 						</template>
 					</el-table-column>
-					<el-table-column label="图片数" width="80">
-						<template slot-scope="scope">
-							<span>{{ scope.row.img_count }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="总原创度" width="80">
-						<template slot-scope="scope">
-							<span>{{ scope.row.original_degree }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="百度" width="80">
-						<template slot-scope="scope">
-							<span>{{ scope.row.baidu }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="搜狗" width="80">
-						<template slot-scope="scope">
-							<span>{{ scope.row.sogou }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="360" width="80">
-						<template slot-scope="scope">
-							<span>{{ scope.row.b360 }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="谷歌" width="80">
-						<template slot-scope="scope">
-							<span>没有找到字段</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="关键词" width="100">
-						<template slot-scope="scope">
-							<span>没有找到字段</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="领域" width="80">
-						<template slot-scope="scope">
-							<span>{{ scope.row.field }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="创建时间" width="90">
-						<template slot-scope="scope">
-							<span>{{ scope.row.created_at }}</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="文章状态" width="80">
-						<template slot-scope="scope">
-							<span>没有找到字段</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="投稿时间" width="90">
-						<template slot-scope="scope">
-							<span>没有找到字段</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="购买人账号" width="100">
-						<template slot-scope="scope">
-							<span>没有找到字段</span>
-						</template>
-					</el-table-column>
-					<el-table-column label="购买时间" width="90">
+					<el-table-column label="购买时间" width="180">
 						<template slot-scope="scope">
 							<span>没有找到字段</span>
 						</template>
@@ -177,7 +155,39 @@
 				curPage:1, //当前页数
 				pagesize:10, //一页10条
 				totalNum:0,  //总数
-				tableData: [],
+				tableData: [{
+					id: '12987122',
+					name: '好滋好味鸡蛋仔',
+					category: '江浙小吃、小吃零食',
+					desc: '荷兰优质淡奶，奶香浓而不腻',
+					address: '上海市普陀区真北路',
+					shop: '王小虎夫妻店',
+					shopId: '10333'
+					}, {
+					id: '12987123',
+					name: '好滋好味鸡蛋仔',
+					category: '江浙小吃、小吃零食',
+					desc: '荷兰优质淡奶，奶香浓而不腻',
+					address: '上海市普陀区真北路',
+					shop: '王小虎夫妻店',
+					shopId: '10333'
+					}, {
+					id: '12987125',
+					name: '好滋好味鸡蛋仔',
+					category: '江浙小吃、小吃零食',
+					desc: '荷兰优质淡奶，奶香浓而不腻',
+					address: '上海市普陀区真北路',
+					shop: '王小虎夫妻店',
+					shopId: '10333'
+					}, {
+					id: '12987126',
+					name: '好滋好味鸡蛋仔',
+					category: '江浙小吃、小吃零食',
+					desc: '荷兰优质淡奶，奶香浓而不腻',
+					address: '上海市普陀区真北路',
+					shop: '王小虎夫妻店',
+					shopId: '10333'
+					}],
 				form:{
 					msg:'<h2>Hello World!</h2>',
 					title:''
@@ -345,5 +355,17 @@
 	.border-p{
 		border-bottom: 1px solid #ddd;
 		margin-bottom: 20px;
+	}
+	.table-expand {
+    font-size: 0;
+	}
+	.table-expand label {
+		width: 90px;
+		color: #99a9bf;
+	}
+	.table-expand .el-form-item {
+		margin-right: 0;
+		margin-bottom: 0;
+		width: 50%;
 	}
 </style>

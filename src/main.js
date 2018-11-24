@@ -11,7 +11,7 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Cookies from 'js-cookie'
-
+import qs from 'qs'
 Vue.use(VueAxios,axios);
 
 import {post,fetch,patch,put} from './api/http'
@@ -21,6 +21,8 @@ Vue.prototype.$post=post;
 Vue.prototype.$fetch=fetch;
 Vue.prototype.$patch=patch;
 Vue.prototype.$put=put;
+
+Vue.prototype.$Cookies = Cookies; 
 
 //加入elementUi组件
 Vue.use(ElementUI);
@@ -48,5 +50,5 @@ new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
 })

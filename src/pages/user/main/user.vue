@@ -55,13 +55,13 @@
 			Setting, //账号设置
 //			Release, //发布稿件
 			MyWorks, //我的稿件
-			WorksStatus, //我的投稿
+			WorksStatus, //卖稿记录
 			ReleaseWorks, //发布征稿
 			BuyWorks, //已购稿件
 		},
 		data: function() {
 			return {
-				 tabActive:'5',
+				 tabActive:'1',
 				 a:'user'
 			}
 		},

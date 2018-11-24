@@ -13,10 +13,13 @@ import ContentBank from '@/pages/contentBank/main/ContentBank'
 import demandHall from '@/pages/demandHall/main/demandHall'
 import Pay from '../pages/pay/pay'
 
-//购物车二级路由
-import cartArticle from '@/pages/shoppingCart/children/cart_article'
-import cartAuthor from '@/pages/shoppingCart/children/cart_author'
-// import cartDistribution from '@/pages/shoppingCart/children/cart_distribution'
+//帮助中心二级路由
+import Platform from '@/pages/help/children/platform'
+import Helpinfo from '@/pages/help/children/helpinfo'
+import Buyerguide from '@/pages/help/children/buyerguide'
+import Sellerguide from '@/pages/help/children/sellerguide'
+import Paymentsettlement from '@/pages/help/children/paymentsettlement'
+import Auditstandards from '@/pages/help/children/auditstandards'
 
 Vue.use(Router)
 
@@ -96,9 +99,14 @@ export default new Router({
       path:'/help',
       name:'help',
       component:Help,
-      // children:[
-      //   {path:'/platform',}
-      // ]
+      children:[
+        {path:'platform',component:Platform},
+        {path:'helpinfo',component:Helpinfo},
+        {path:'buyerguide',component:Buyerguide},
+        {path:'sellerguide',component:Sellerguide},
+        {path:'auditstandards',component:Auditstandards},
+        {path:'paymentsettlement',component:Paymentsettlement}
+      ]
     }
   ]
 })
