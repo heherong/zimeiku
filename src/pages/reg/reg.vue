@@ -216,33 +216,41 @@
 			toGetTicket:function(){
 				let that = this;
 				//获取ticket
-				that.axios.get(that.getTicket
-				).then((response)=>{
-//	                console.log(response.data);
-	                if(response.data.code==0){
-	                	let listData = response.data.data.list;
+				that.$fetch(that.getTicket).then((response) => {
+			        // console.log(response);
+			        if(response.code==0){
+	                	let listData = response.data.list;
 	                	that.qrcode = listData.qrcode_url;
-	                	//获取下一个接口
-						setInterval(that.getStatus(listData.ticket), 1000);
+	                	// console.log(that.qrcode);
+	                	that.$Cookies.set('ticket', listData.ticket,{ expires: 7 });
 	                	
+	                	//获取下一个接口
+						that.getStatus(listData.ticket)
 	                }
-	            }).catch((response)=>{
-	                console.log(response);
-	            })
+			    })
 			},
 			//判断注册状态
 			getStatus:function(ticket_){
 				let that = this;
-				//获取ticket
-				that.axios.post(that.judgeStatus,{
-						ticket:ticket_
-					}
-				).then((response)=>{
-	                console.log(response.data);
-	                
-	            }).catch((response)=>{
-	                console.log(response);
-	            })
+	            let data = qs.stringify({
+				  ticket: ticket_,
+				});
+				// 获取ticket
+	//			await this.axios.post(this.judgeStatus,`ticket=${ticket_}`
+				let interval_ = setInterval(judge, 1000);
+				function judge(){
+					that.$post(that.judgeStatus,data
+					).then((response)=>{
+						
+		                console.log(response.data);
+		                if(response.data.code==0){
+		                	that.$router.push({name: 'index'});
+		                	window.clearInterval(interval_);
+		                }
+		            }).catch((response)=>{
+		                console.log(response);
+		            })
+				}
 			},
 			onSubmit: function() {
 				console.log(1);
