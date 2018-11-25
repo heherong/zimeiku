@@ -1,9 +1,9 @@
 <template>
-    <div class="wrap tansAll" v-if="airtcleCon.is_expire==0">
+    <div class="wrap tansAll">
         <Myheader :active='a'></Myheader>
         <div class="market" style="margin-top:105px;">
             <div class="demand-detail-wrap">
-                <div class="container-left">
+                <div class="container-left"  v-if="airtcleCon.is_expire==0">
                     <div class="container-left-title">
                         <div>{{airtcleCon.status}}</div>
                         <span>原创征稿</span>
@@ -102,6 +102,19 @@
                                     </el-col>
                                 </el-row>
                             </el-form-item>
+                            <el-form-item>
+                                <el-row>
+                                    <el-col :span="4">
+                                        <span>文章类型：</span>
+                                    </el-col>
+                                    <el-col :span="20">
+                                        <el-checkbox-group v-model="form.quareForm.type">
+                                            <el-checkbox v-for="type in form.quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
+                                        </el-checkbox-group>
+                                    </el-col>
+                                </el-row>
+                            </el-form-item>
+                            
                             <!--投稿内容-->
                             <div style="padding: 10px;margin-bottom:30px;">
                                 <VueUeditorWrap v-model="form.content" :config="myConfig"></VueUeditorWrap>
@@ -333,6 +346,7 @@
 import Myheader from '../../../components/header-nav-wrap'
 import VueUeditorWrap from 'vue-ueditor-wrap'
 import {baseUrl} from '@/api/index.js' 
+import qs from 'qs'
 export default {
     components:{
         Myheader,
@@ -341,14 +355,22 @@ export default {
     data:function(){
         return {a:'buyerorder',
                 status:1,
+                //投稿记录
                 SubmitRecordsData:[],
                 //文章详情页的值
                 solicit_id:this.$route.query.id,
+                //文章详情页
                 airtcleCon:'',
+                //对话框
                 dialogTableVisible:false,
                 form: {
                         title: '',
                         content:'<h2>Hello World!</h2>' ,
+                        quareForm:{
+                            typeBox:['教育', '科学', '情感', '广告'],
+                            type: ['情感' ],
+                            checkBoxPre:[], //默认保存选一个
+                        },
                     },
                     myConfig: {
                         // 如果需要上传功能,找后端小伙伴要服务器接口地址
@@ -364,6 +386,7 @@ export default {
                         // 关闭自动保存
                         enableAutoSave: false
                     },
+                    //对话框的表格
                     caogaoform :[{
                         date: '2016-05-02',
                         name: '王小虎',
@@ -384,11 +407,6 @@ export default {
                     multipleSelection:[]
                 }
     },
-    beforeRouteEnter:(to,form,next)=>{
-        next(vm=>{
-            vm.a = form.params.name
-        })
-    },
     created:function(){
         var self = this;
         this.SubmitRecords()
@@ -404,8 +422,10 @@ export default {
         console.log(this.airtcleCon)
     },
     methods:{
+        //对话框
         shade(){
             this.dialogTableVisible =true
+
         },
         tougao(){
             console.log(this.multipleSelection);
@@ -416,11 +436,22 @@ export default {
                 console.log(val[i].date);
             }
         },
-
+        //多选
+        checkBoxs: function() {
+            let that = this;
+            if(that.form.quareForm.type.length > 1) {
+                that.checkBoxPre = [];
+                that.checkBoxPre.push(that.form.quareForm.type[1]);
+                
+                that.form.quareForm.type = that.checkBoxPre;
+            } else {
+                that.checkBoxPre = that.form.quareForm.type;
+            }
+        },
         //投稿记录
         SubmitRecords(){
             var self = this;
-            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
+            this.axios.get('/api/solicit/list',{
             params:{
             }
             }).then(function(res){
@@ -437,14 +468,29 @@ export default {
         },
         //切换至新建稿件
         onSubmit(){
-            this.status = 2;
+            let data = qs.stringify({
+              solicit_id:this.solicit_id,article_id:1
+			});
+            this.axios.post('/api/solicit/add_article',data
+            ).then(function(res){
+                console.log(res);
+            }).catch(function(res){
+                console.log(res);
+            })
+            
         },
         //返回
         quit: function() {
             this.status = 1;
             this.dialogTableVisible = false;
         },
-    }
+    },
+    beforeRouteEnter:(to,form,next)=>{
+        next(vm=>{
+            vm.a = form.params.name
+        })
+    },
+    
 }
 </script>
 

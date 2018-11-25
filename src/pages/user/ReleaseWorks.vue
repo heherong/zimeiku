@@ -4,7 +4,7 @@
 			<h4>我的征稿 </h4>
 			<el-button type="primary" class="release-gao" @click="toWrite">发布征稿 <i class="el-icon-edit el-icon--right"></i></el-button>
 			<p class="border-p"></p>
-			<el-table :data="tableData.slice((curPage-1)*pagesize,curPage*pagesize)" style="width: 100%">
+			<el-table :data="tableData" style="width: 100%">
 				<el-table-column type="index" width="60" label="序号" align="center"></el-table-column>
 				<el-table-column label="标题" width="110" align="center">
 					<template slot-scope="scope">
@@ -99,8 +99,9 @@
 					</template>
 				</el-table-column>
 			</el-table>
+			<!--!!!!!!!!!!!!!!!!!分页!!!!!!!!!!!!!!!! -->
 			<div class="pages">
-				<el-pagination @current-change="currentChange" :current-page="curPage" layout="prev, pager, next" :total="totalNum">
+				<el-pagination @current-change="currentChange"  :current-page="curPage" layout="prev, pager, next" :total="totalNum">
 				</el-pagination>
 			</div>
 		</div>
@@ -322,20 +323,20 @@
 			},
 			created: function() {
 				//获取列表数据
-				this.getList();
+				this.getList(this.curPage,this.pagesize);
 				//获取领域列表
 				this.getCategoryFun();
 			},
 			methods: {
-				getList:function() {
+				getList:function(curPage,pagesize) {
 					let that = this;
-					that.$fetch(that.getList_url+'?page='+that.curPage+'&pagesize='+that.pagesize).then((response) => {
-//				        console.log(response);
+					that.$fetch(that.getList_url+'?page='+curPage+'&pagesize='+pagesize).then((response) => {
+			        console.log(response);
 				        if(response.data.list.data.length > 0) {
 							for(let i = 0; i < response.data.list.data.length; i++) {
 								response.data.list.data[i].created_at = response.data.list.data[i].created_at.substring(0, 10);
 							}
-							console.log(response.data.list.data,response.data.list.total);
+							// console.log(response.data.list.data,response.data.list.total);
 							that.tableData = response.data.list.data;
 							that.totalNum = response.data.list.total;
 						}
@@ -353,6 +354,7 @@
 				},
 				currentChange: function(curPage) {
 					this.curPage = curPage;
+					this.getList(this.curPage,this.pagesize);
 					console.log(this.curPage) //点击第几页
 				},
 				handleEdit(index, row) {
