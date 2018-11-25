@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div style="width:100%;min-height:366px;">
+    <div style="">
       <router-view/>
     </div>
     <Myfooter></Myfooter>
@@ -16,6 +16,7 @@ export default {
     
     Myfooter
   },
+  
 }
 </script>
 
