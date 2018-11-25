@@ -191,7 +191,7 @@
                 </div>
                 <div class="container-bottom" v-if="status==1">
                     <div>
-                        <span>投稿须知</span>
+                        <span>投稿须知</span> 
                     </div>
                     <div>
                         <ul>

@@ -1,5 +1,5 @@
 <template>
-    <div class="transAll" style="height: 100%;width:100%;">
+    <div class="transAll" style="width:100%;">
         <Myheader></Myheader>
         <div class="inner-wrap" style="margin-top:105px;">
             <div class="aside-wrap transAll" style="min-height:273px;">

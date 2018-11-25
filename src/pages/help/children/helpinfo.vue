@@ -29,3 +29,17 @@
     </div>
 </template>
 
+<script>
+export default {
+    data:function(){
+    return {h:document.documentElement.clientHeight}
+  },
+  beforeCreate(){
+    this.$nextTick(function () {
+      document.querySelector('.introduction-help-center').style.height =(this.h-280)+'px';
+    })
+  }
+}
+</script>
+
+

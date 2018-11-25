@@ -134,8 +134,6 @@
     </div>
 </template>
 
-<style scoped="scoped">
-body,html{height:auto;}
-</style>
+
 
 
