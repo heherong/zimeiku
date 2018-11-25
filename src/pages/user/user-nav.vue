@@ -1,6 +1,6 @@
 <template>
 	<div class="condition-wrap">
-		<el-menu default-active="3-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :default-openeds="openeds">
+		<el-menu default-active="1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :default-openeds="openeds">
 			<el-submenu index="1">
 				<template slot="title">
 					<span>我要卖稿</span>
@@ -42,7 +42,7 @@
 	export default {
 		data: function() {
 			return {
-				openeds: ['3-1'],
+				openeds: ['1-1'],
 				activeId: '5',
 				moneyPage: false
 			}

@@ -209,6 +209,7 @@
 				quareForm:{
 					typeBox:['教育', '科学', '情感', '广告'],
 					type: ['情感' ],
+					checkBoxPre:[], //默认保存选一个
 				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
@@ -350,13 +351,13 @@
 //					    <el-checkbox v-for="type in quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
 //					</el-checkbox-group>
 				let that = this;
-				if(that.checkboxGroup.length > 1) {
+				if(that.quareForm.type.length > 1) {
 					that.checkBoxPre = [];
-					that.checkBoxPre.push(that.checkboxGroup[1]);
+					that.checkBoxPre.push(that.quareForm.type[1]);
 					
-					that.checkboxGroup = that.checkBoxPre;
+					that.quareForm.type = that.checkBoxPre;
 				} else {
-					that.checkBoxPre = that.checkboxGroup;
+					that.checkBoxPre = that.quareForm.type;
 				}
 			},
 			quit:function(){
