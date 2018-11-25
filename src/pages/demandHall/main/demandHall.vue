@@ -102,80 +102,10 @@
                                     </el-col>
                                 </el-row>
                             </el-form-item>
-                            <!--投稿作者-->
-                            <el-form-item>
-                                <el-row>
-                                    <el-col :span="3">
-                                        <label for=""><span class="input-must">*</span>创 作 者</span></label>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-select v-model="form.value" placeholder="请选择">
-                                            <el-option
-                                            v-for="item in form.options"
-                                            :key="item.value"
-                                            :label="item.label"
-                                            :value="item.value">
-                                            </el-option>
-                                        </el-select>
-                                    </el-col>
-                                </el-row>
-                            </el-form-item>
-                            <!--选择标签-->
-                            <el-form-item>
-                                <el-row>
-                                    <el-col :span="3">
-                                        <label for=""><span class="input-must">*</span>分类(限一项)</span></label>
-                                    </el-col>
-                                    <el-col :span="20">
-                                        <el-checkbox-group v-model="checkboxGroup">
-                                            <el-checkbox v-for="item in form.checkedData" :key="item" :label="item"  @change="checkBoxs" class="release-checkBoxs"></el-checkbox>
-                                            <!--<el-checkbox v-for="item in form.checkedData" :key="item" :label="item" border class="release-checkBoxs"></el-checkbox>-->
-                                        </el-checkbox-group>
-                                    </el-col>
-                                </el-row>
-                            </el-form-item>
                             <!--投稿内容-->
                             <div style="padding: 10px;margin-bottom:30px;">
                                 <VueUeditorWrap v-model="form.content" :config="myConfig"></VueUeditorWrap>
                             </div>
-                            <el-form-item>
-                                <el-row>
-                                    <el-col :span="3">
-                                        <label for=""><span class="input-must">*</span>上传封面</span></label>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-upload
-                                            class="upload-img"
-                                            drag
-                                            action="https://jsonplaceholder.typicode.com/posts/"
-                                            multiple>
-                                            <i class="el-icon-upload"></i>
-                                            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                                            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                                        </el-upload>
-                                    </el-col>
-                                </el-row>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-row>
-                                    <el-col :span="3">
-                                        <label for=""><span class="input-must">*</span>发布形式</span></label>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-radio v-model="form.radio" label="1">未发布</el-radio>
-                                    </el-col>
-                                </el-row>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-row>
-                                    <el-col :span="3">
-                                        <label for=""><span class="input-must">*</span>买断价格</span></label>
-                                    </el-col>
-                                    <el-col :span="12">
-                                        <el-input v-model="form.price" class="add-title" placeholder="一口价"></el-input>
-                                    </el-col>
-                                </el-row>
-                            </el-form-item>
                             <el-form-item style="text-align: center;">
                                 <el-button @click="quit">取消</el-button>
                                 <el-button type="primary" @click="onSubmit">提交投稿</el-button>
@@ -286,10 +216,76 @@
                                 <span class="unm-unit" style="color:#82868A">/篇</span>
                             </i>
                         </div>
-                        <span @click="status=2">
+                        <span @click="shade()">
                             提交作品
                         </span>
+                        
                     </div>
+                    <el-dialog title="原创度" :visible.sync="dialogTableVisible" center>
+                        <el-table :data="caogaoform" style="width: 100%" @selection-change="handleSelectionChange">>
+                            <el-table-column
+                            type="selection"
+                            width="55">
+                            </el-table-column>
+                            <el-table-column type="index" width="60" label="序号" align="center"></el-table-column>
+                            <el-table-column label="标题" width="100">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="百度原创度" width="100">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="搜狗原创度" width="100">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="360原创度" width="100">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="谷歌原创度" width="100">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="字数" width="80">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="图片数" width="80">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="分类" width="80">
+                                <template slot-scope="scope">
+                                    <span>{{ scope.row.date }}</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="详情" width="200">
+                                <template slot-scope="scope">
+                                    <span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ scope.row.address }}</span>
+                                </template>
+                            </el-table-column>
+                            <!-- <el-table-column label="操作">
+                                <template slot-scope="scope">
+                                    <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+                                </template>
+                            </el-table-column> -->
+                        </el-table>
+                        <el-row>
+                            <div style="margin:0 auto;text-align:center;margin-top:25px;">
+                                <el-button @click="tougao">投稿</el-button>
+                                <el-button type="primary" @click="status = 2">新建稿件</el-button>
+                            </div>
+                        </el-row>
+                    </el-dialog>
                 </div>
                 <div class="container-table">
                     <el-table
@@ -332,6 +328,117 @@
         </div>
     </div>
 </template>
+
+<script>
+import Myheader from '../../../components/header-nav-wrap'
+import VueUeditorWrap from 'vue-ueditor-wrap'
+import {baseUrl} from '@/api/index.js' 
+export default {
+    components:{
+        Myheader,
+        VueUeditorWrap
+    },
+    data:function(){
+        return {a:'buyerorder',
+                status:1,
+                SubmitRecordsData:[],
+                //文章详情页的值
+                airtcleCon:this.$route.query.airtcle,
+                dialogTableVisible:false,
+                form: {
+                        title: '',
+                        content:'<h2>Hello World!</h2>' ,
+                    },
+                    myConfig: {
+                        // 如果需要上传功能,找后端小伙伴要服务器接口地址
+                        serverUrl: baseUrl+'ueditor/server',
+                        // 你的UEditor资源存放的路径,相对于打包后的index.html
+                        UEDITOR_HOME_URL: './static/UEditor/',
+                        // 编辑器不自动被内容撑高
+                        autoHeightEnabled: false,
+                        // 初始容器高度
+                        initialFrameHeight: 340,
+                        // 初始容器宽度
+                        initialFrameWidth: '100%',
+                        // 关闭自动保存
+                        enableAutoSave: false
+                    },
+                    caogaoform :[{
+                        date: '2016-05-02',
+                        name: '王小虎',
+                        address: '上海市普陀区金沙江路 1518 弄'
+                        }, {
+                        date: '2016-05-04',
+                        name: '王小虎',
+                        address: '上海市普陀区金沙江路 1518 弄'
+                        }, {
+                        date: '2016-05-01',
+                        name: '王小虎',
+                        address: '上海市普陀区金沙江路 1518 弄'
+                        }, {
+                        date: '2016-05-03',
+                        name: '王小虎',
+                        address: '上海市普陀区金沙江路 1518 弄'
+                        }],
+                    multipleSelection:[]
+                }
+    },
+    beforeRouteEnter:(to,form,next)=>{
+        next(vm=>{
+            vm.a = form.params.name
+        })
+    },
+    created:function(){
+        this.SubmitRecords()
+        
+    },
+    mounted(){
+        console.log(this.airtcleCon)
+    },
+    methods:{
+        shade(){
+            this.dialogTableVisible =true
+        },
+        tougao(){
+            console.log(this.multipleSelection);
+        },
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+            for(var i=0;i<val.length;i++){
+                console.log(val[i].date);
+            }
+        },
+        //投稿记录
+        SubmitRecords(){
+            var self = this;
+            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
+            params:{
+
+            }
+            }).then(function(res){
+                // console.log(res);
+                self.SubmitRecordsData = res.data.data.list;
+            }).catch(function(res){
+                console.log(res);
+            })
+        },
+        //投稿记录删除当前行
+        deleteRow(index, rows) {
+            rows.splice(index, 1);
+            
+        },
+        //切换至新建稿件
+        onSubmit(){
+            this.status = 2;
+        },
+        //返回
+        quit: function() {
+            this.status = 1;
+            this.dialogTableVisible = false;
+        },
+    }
+}
+</script>
 
  <style>
  @import url("../../../assets/css/user");
@@ -390,115 +497,4 @@ li.list-item-example>span:last-child{float: left;width: 700px;line-height: 30px;
 .process-guide ul li span:first-child{background: #ECEFF4;display: inline-block;width: 20px;height: 20px;border-radius: 50%;text-align: center;margin-right: 20px;}
 .container-table{width: 825px;border-radius: 2px;background: #fff;margin-top: 20px;border-radius: 2px;padding: 20px 20px 22px 25px;float: left;margin-bottom: 20px;}
 </style>
-
-<script>
-import Myheader from '../../../components/header-nav-wrap'
-import VueUeditorWrap from 'vue-ueditor-wrap'
-import {baseUrl} from '@/api/index.js' 
-export default {
-    components:{
-        Myheader,
-        VueUeditorWrap
-    },
-    data:function(){
-        return {a:'buyerorder',
-                status:1,
-                checkboxGroup: [], //实时状态
-                SubmitRecordsData:[
-                    {a:1,v:2}
-                ],
-                airtcleCon:this.$route.query.airtcle,
-                form: {
-                        title: '',
-                        content:'<h2>Hello World!</h2>' ,
-						checkedData: ['文章', '视频', '漫画', '其他'],
-						font: 2000, //稿子字数
-                        //创作者
-                        options:[
-                            {
-                            value: '选项1',
-                            label: '侠名'
-                            },
-                            {
-                            value: '选项2',
-                            label: '用户姓名'
-                            },
-                        ],
-                        //发布状态
-                        radio:1,
-						price: '10', //每篇价格
-						checkTerm: '1', //周期
-                    },
-                    myConfig: {
-                        // 如果需要上传功能,找后端小伙伴要服务器接口地址
-    //		            serverUrl: '/api/ueditor/server?action=config&noCache=1542597685533',
-                        serverUrl: baseUrl+'ueditor/server',
-                        // 你的UEditor资源存放的路径,相对于打包后的index.html
-                        UEDITOR_HOME_URL: './static/UEditor/',
-                        // 编辑器不自动被内容撑高
-                        autoHeightEnabled: false,
-                        // 初始容器高度
-                        initialFrameHeight: 340,
-                        // 初始容器宽度
-                        initialFrameWidth: '100%',
-                        // 关闭自动保存
-                        enableAutoSave: false
-                    }
-                }
-    },
-    beforeRouteEnter:(to,form,next)=>{
-        next(vm=>{
-            vm.a = form.params.name
-        })
-    },
-    created:function(){
-        this.SubmitRecords()
-        
-    },
-    mounted(){
-        console.log(this.airtcleCon)
-    },
-    methods:{
-        //投稿记录
-        SubmitRecords(){
-            var self = this;
-            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
-            params:{
-
-            }
-            }).then(function(res){
-                // console.log(res);
-                self.SubmitRecordsData = res.data.data.list;
-            }).catch(function(res){
-                console.log(res);
-            })
-        },
-        //打开投稿页面
-        onSubmit(){
-            this.status=2;
-        },
-
-        //投稿记录删除当前行
-        deleteRow(index, rows) {
-            rows.splice(index, 1);
-            
-        },
-        checkBoxs: function() {
-            let that = this;
-            if(that.checkboxGroup.length > 1) {
-                that.checkBoxPre = [];
-                that.checkBoxPre.push(that.checkboxGroup[1]);
-                
-                that.checkboxGroup = that.checkBoxPre;
-            } else {
-                that.checkBoxPre = that.checkboxGroup;
-            }
-        },
-        //返回
-        quit: function() {
-            this.status = 1;
-        },
-    }
-}
-</script>
 
