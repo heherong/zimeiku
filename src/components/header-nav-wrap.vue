@@ -10,14 +10,14 @@
                     </div>
                 </router-link>
             </div>
-            <ul class="header-list-wrap flleft transAll" style="width:560px;"  v-if="this.$route.path!='/login'">
+            <ul class="header-list-wrap flleft transAll" style="width:560px;"  >
                 <Myitem mark='index' :sel='selected' txt='首  页' @change='getVal' ></Myitem>
                 <Myitem mark='market' :sel='selected' txt='文章广场' @change='getVal'></Myitem>
-                <Myitem mark='user' :sel='selected' txt='个人中心' @change='getVal'></Myitem>
+                <!--<Myitem mark='user' :sel='selected' txt='个人中心' @change='getVal'></Myitem>-->
                 <Myitem mark='buyerorder' :sel='selected' txt='征文大厅' @change='getVal'></Myitem>
                 <Myitem mark='help' :sel='selected' txt='帮助中心' @change='getVal'></Myitem>
             </ul>
-            <div class="publish-btn flleft" v-if="this.$route.path!='/login'">
+            <div class="publish-btn flleft" >
                 <el-button @click="getLogin">登录</el-button>
                 <el-button @click="getReg">注册</el-button>
             </div>

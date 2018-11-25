@@ -6,9 +6,10 @@
 			<el-row>
 				<!--头像-->
 				<el-col :span="24" class="col-head">
-					<div @click="toChangeHead" class="head-image">
+					<!--<div @click="toChangeHead" class="head-image">-->
+					<div class="head-image">
 						<img :src=headImg />
-						<p>点击修改头像</p>
+						<!--<p>点击修改头像</p>-->
 					</div>
 				</el-col>
 			</el-row>
@@ -34,32 +35,32 @@
 					<el-col :span="6" v-else><span class="col-change" @click="quitIdentification(2)">去认证</span></el-col>
 				</el-row>
 				<!--绑定手机-->
-				<el-row>
+				<!--<el-row>
 					<el-col :span="6"><span>绑定手机：</span></el-col>
 					<el-col :span="12" v-if="iphone"><span>{{iphone}}</span><i class="el-icon-circle-check"></i></el-col>
 					<el-col :span="12" v-else><span>未绑定</span></el-col>
 
 					<el-col :span="6" v-if="iphone"><span class="col-change" @click="toChangePhone(1)">修改</span></el-col>
 					<el-col :span="6" v-else><span class="col-change" @click="toChangePhone(2)">去绑定</span></el-col>
-				</el-row>
+				</el-row>-->
 				<!--微信-->
-				<el-row>
+				<!--<el-row>
 					<el-col :span="6"><span>绑定微信：</span></el-col>
 					<el-col :span="12" v-if="weixin"><span>已绑定</span><i class="el-icon-circle-check"></i></el-col>
 					<el-col :span="12" v-else><span>未绑定</span></el-col>
 
 					<el-col :span="6" v-if="weixin"><span class="col-change" @click="toChangeWeixin(1)">修改</span></el-col>
 					<el-col :span="6" v-else><span class="col-change" @click="toChangeWeixin(2)">去绑定</span></el-col>
-				</el-row>
+				</el-row>-->
 				<!--登录密码-->
-				<el-row>
+				<!--<el-row>
 					<el-col :span="6"><span>登录密码：</span></el-col>
 					<el-col :span="12" v-if="loginPassword"><span>已设定</span><i class="el-icon-circle-check"></i></el-col>
 					<el-col :span="12" v-else><span>未设定</span></el-col>
 
 					<el-col :span="6" v-if="loginPassword"><span class="col-change" @click="toChangeLogin(1)">更换</span></el-col>
 					<el-col :span="6" v-else><span class="col-change" @click="toChangeLogin(2)">去设定</span></el-col>
-				</el-row>
+				</el-row>-->
 
 			</div>
 		</div>

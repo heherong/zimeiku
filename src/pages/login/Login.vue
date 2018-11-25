@@ -94,6 +94,7 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 import Myheader from '../../components/loginHeader'
 import {baseUrl} from '@/api/index.js' //注意路径
 import qs from 'qs';
+import jpg1 from '@/assets/images/1.jpg';
 export default {
     components:{
         Myheader
@@ -170,7 +171,7 @@ export default {
                 	let listData = response.data.list;
                 	that.qrcode = listData.qrcode_url;
                 	// console.log(that.qrcode);
-                	that.$Cookies.set('ticket', listData.ticket,{ expires: 7 });
+                	
                 	
                 	//获取下一个接口
 					that.getStatus(listData.ticket)
@@ -191,8 +192,16 @@ export default {
 				that.$post(that.judgeStatus,data
 				).then((response)=>{
 					
-//	                console.log(response.data);
-	                if(response.data.code==0){
+	                console.log(response);
+	                if(response.code==0){  //xxxxx
+						//保存登陆的数据
+						let userInfo = {
+							name:'herong',
+							headeImg:jpg1
+						}
+						that.$Cookies.set('token', response.data.list.token,{ expires: 7 });
+						that.$Cookies.set('userInfo', userInfo,{ expires: 7 });
+						
 	                	that.$router.push({name: 'index'});
 	                	window.clearInterval(interval_);
 	                }
