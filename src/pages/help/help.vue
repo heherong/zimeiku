@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="transAll" style="height: 100%;width:100%;">
         <Myheader></Myheader>
         <div class="inner-wrap" style="margin-top:105px;">
             <div class="aside-wrap transAll" style="min-height:273px;">
@@ -42,6 +42,24 @@
 .menu-ul-wrap{position: relative;height: 100%;color: #64676a;overflow: hidden;border-radius: 5px;}
 .main-wrap{width: 970px;margin-left: 220px;margin-bottom: 20px;}
 .introduction-help-center{ padding: 0 30px 50px;background-color: #fff;text-align: left;}
+.introduction-help-center>h3{   
+    font-weight: 400;
+    font-size: 18px;
+    padding: 13px 0;
+    border-bottom: 1px solid #eff1f3;
+    font-size: 18px;
+    }
+.introduction-help-center>h4{    
+    font-weight: 400;
+    font-size: 16px;
+    padding: 15px 0;
+    font-size: 16px;
+    }
+.introduction-help-center p{
+    margin-left: 30px;
+    line-height: 30px;
+    color: #64676a;
+    }
 
 
 </style>
@@ -66,6 +84,8 @@ export default {
             console.log(val)
         }
     },
+
+    
     
 }
 </script>

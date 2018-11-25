@@ -77,27 +77,6 @@
     </div>
 </template>
 
-<style  scoped>
-.introduction-help-center>h3{   
-    font-weight: 400;
-    font-size: 18px;
-    padding: 13px 0;
-    border-bottom: 1px solid #eff1f3;
-    font-size: 18px;
-    }
-.introduction-help-center>h4{    
-    font-weight: 400;
-    font-size: 16px;
-    padding: 15px 0;
-    font-size: 16px;
-    }
-.introduction-help-center p{
-    margin-left: 30px;
-    line-height: 30px;
-    color: #64676a;
-    }
-
-</style>
 
 
 

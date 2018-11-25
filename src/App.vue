@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-
-    <div>
+    <div style="width:100%;height:100%;">
       <router-view/>
     </div>
     <Myfooter></Myfooter>

@@ -265,6 +265,11 @@
     </div>
 </template>
 
+<style scoped>
+body{height: 100%;}
+</style>
+
+
 <style>
 .condition-wrap{padding:20px 0;overflow: hidden;background:#fff;}
 

@@ -9,7 +9,7 @@
 </template>
 
 <style>
-footer{text-align: center;width: 100%;min-width: 1200px;color: #a8a8a8;background: #373d41;font-size: 14px;float: left;padding-top: 25px;}
+footer{text-align: center;width: 100%;min-width: 1200px;color: #a8a8a8;background: #373d41;font-size: 14px;float: left;padding-top: 25px;position: relative;bottom:0;}
 footer p{margin-top: 10px;}
 </style>
 
