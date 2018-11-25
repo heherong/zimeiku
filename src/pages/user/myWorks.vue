@@ -227,8 +227,13 @@
 		       }
 			}
 		},
-		created:function(){
-        	this.getList();
+		mounted:function(){
+			if(!this.$Cookies.get('token')){
+				this.$router.push('/index')
+			}else{
+				this.getList();
+			}
+        	
    		},
 		methods: {
 			getList:function(){

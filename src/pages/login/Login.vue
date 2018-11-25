@@ -15,12 +15,14 @@
                         <div class="openWx">
                             ( 打开微信，使用扫一扫 )
                         </div>
-                        <div style="width:200px;margin:0 auto;">
+                        <div v-if="qrcode==1" >
+                        	<p style="font-size: 13px;height: 70px;padding-top: 30px;text-align: center">(提示：当前二维码已失效，请刷新页面重新获取)</p>
+                        </div>
+                        <div v-else style="width:200px;margin:0 auto;">
                         	<div v-if="qrcode==0" class="reg-loading">
 								<i class="el-icon-loading"></i>
 							</div>
 							<img v-if="qrcode" style="max-width:100%;" :src="qrcode" alt="">
-                            
                         </div>
                         <div class="login-bot-wrap">
                             <span class="login-foget transAll" @click="loginFoget">忘记密码</span>
@@ -93,8 +95,7 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 
 import Myheader from '../../components/loginHeader'
 import {baseUrl} from '@/api/index.js' //注意路径
-import qs from 'qs';
-import jpg1 from '@/assets/images/1.jpg';
+import qs from 'qs'
 export default {
     components:{
         Myheader
@@ -166,13 +167,9 @@ export default {
 			let that = this;
 			//获取ticket
 			that.$fetch(that.getTicket).then((response) => {
-		        // console.log(response);
 		        if(response.code==0){
                 	let listData = response.data.list;
                 	that.qrcode = listData.qrcode_url;
-                	// console.log(that.qrcode);
-                	
-                	
                 	//获取下一个接口
 					that.getStatus(listData.ticket)
                 }
@@ -181,35 +178,34 @@ export default {
 		//判断注册状态
 		getStatus:function(ticket_){
             let that = this;
-            
             let data = qs.stringify({
 			  ticket: ticket_,
 			});
-			// 获取ticket
-//			await this.axios.post(this.judgeStatus,`ticket=${ticket_}`
 			let interval_ = setInterval(judge, 3000);
 			function judge(){
-				that.$post(that.judgeStatus,data
-				).then((response)=>{
-					
+				that.$post(that.judgeStatus,data).then((response)=>{
 	                console.log(response);
 	                if(response.code==0){  //xxxxx
 						//保存登陆的数据
 						let userInfo = {
 							name:'herong',
-							headeImg:jpg1
+							headeImg:0
 						}
 						that.$Cookies.set('token', response.data.list.token,{ expires: 7 });
-						that.$Cookies.set('userInfo', userInfo,{ expires: 7 });
-						
+						that.$Cookies.set('name', "herong",{ expires: 7 });
+						that.$Cookies.set('headeImg', "0",{ expires: 7 });
+						window.clearInterval(interval_);
 	                	that.$router.push({name: 'index'});
-	                	window.clearInterval(interval_);
+	                	
 	                }
-	            }).catch((response)=>{
-	            	debugger
+	           }).catch((response)=>{
 	                window.clearInterval(interval_);
 	                //重新获取ticket
-//	                that.toGetTicket();
+	                that.$message({
+			          message: '当前二维码已失效，请刷新页面重新获取',
+			          type: 'warning'
+			        });
+			        that.qrcode = 1;
 	            })
 			}
 		},

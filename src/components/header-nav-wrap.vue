@@ -17,12 +17,17 @@
                 <Myitem mark='buyerorder' :sel='selected' txt='征文大厅' @change='getVal'></Myitem>
                 <Myitem mark='help/platform' :sel='selected' txt='帮助中心' @change='getVal'></Myitem>
             </ul>
-            <div class="publish-btn flleft" v-if="loginStatus">
+            <div class="publish-btn flleft" v-if="!loginMsg.status">
                 <el-button @click="getLogin">登录</el-button>
                 <el-button @click="getReg">注册</el-button>
             </div>
-            <div class="publish-btn flleft" v-if="!loginStatus">
-                <img src=""/>
+            <div class="publish-btn flleft" v-else @mouseenter="enter()" @mouseleave="leave()">
+                <img :src="loginMsg.headImg" style="width: 50px;height: 50px;border-radius: 50px;margin-top: -5px;"/>
+                <span style="position: relative;top: -18px; left: 5px;cursor: pointer;">{{loginMsg.name }}</span>
+                <div v-if="moveShow==1" class="chose-module" style="position: fixed;margin-left: 55px;">
+                	<el-button @click="personCenter">个人中心</el-button><br />
+                	<el-button @click="quitLogin">退出</el-button>
+                </div>
             </div>
         </div>
     </div>
@@ -47,6 +52,7 @@ li.Bactive{border-bottom:2px solid #4895E7}
 
 <script>
 import Myitem from './header-nav-item'
+import jpg1 from '@/assets/images/head.png';  //头像
 export default {
     props:['active'],
     components:{
@@ -54,9 +60,13 @@ export default {
     },
     data:function(){
         return {
-        	loginStatus:false,
             selected:"index",
-            headImg:'',
+            loginMsg:{     //登录信息
+            	status:false,
+            	headImg:'',
+            	name:''
+            },
+			moveShow:0,  //鼠标放到头像中显示
             search: '',
             select: '',
             bol:false,
@@ -81,11 +91,19 @@ export default {
     mounted:function(){
     	//判断是否登陆注册
     	let that = this;
-    	console.log(that.$Cookies.get('userInfo'))
-    	if(that.$Cookies.get('userInfo')){
+    	console.log( that.$Cookies.get('name'))
+    	if(that.$Cookies.get('headeImg')){
     		//隐藏登陆注册 显示头像和名称
-    		that.loginStatus = true;
+    		that.loginMsg.status = true;
+    		if(that.$Cookies.get('headeImg') == 0){
+    			that.loginMsg.headImg = jpg1 ;
+    		}else{
+    			that.loginMsg.headImg = that.$Cookies.get('userInfo').headeImg;
+    		}
     		
+    		that.loginMsg.name = that.$Cookies.get('name');
+    	}else{
+    		that.loginMsg.status = false;
     	}
     },
     methods:{
@@ -97,6 +115,23 @@ export default {
         },
         getReg:function(){
             this.$router.push('/reg')
+        },
+        enter:function(){
+        	this.moveShow = 1;
+        },
+        leave:function(){
+        	this.moveShow = 0;
+        },
+        quitLogin:function(){
+        	//退出登录 清空所有cookie 刷新页面
+        	this.$Cookies.remove('name');
+        	this.$Cookies.remove('headeImg');
+        	this.$Cookies.remove('token');
+        	this.$router.go(0)
+        },
+        personCenter:function(){
+        	//跳到个人中心
+        	this.$router.push('/user')
         }
     }
 }
