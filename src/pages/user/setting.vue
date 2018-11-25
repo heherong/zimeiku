@@ -21,19 +21,19 @@
 					<el-col :span="12" v-if="name"><span>{{name}}</span><i class="el-icon-circle-check"></i></el-col>
 					<el-col :span="12" v-else><span>未设定</span></el-col>
 
-					<el-col :span="6" v-if="name"><span class="col-change" @click="toChangeName(1)">修改</span></el-col>
-					<el-col :span="6" v-else><span class="col-change" @click="toChangeName(2)">去设定</span></el-col>
+					<!--<el-col :span="6" v-if="name"><span class="col-change" @click="toChangeName(1)">修改</span></el-col>-->
+					<!--<el-col :span="6" v-else><span class="col-change" @click="toChangeName(2)">去设定</span></el-col>-->
 				</el-row>
 
 				<!--认证状态-->
-				<el-row>
+				<!--<el-row>
 					<el-col :span="6"><span>认证状态：</span></el-col>
 					<el-col :span="12" v-if="identificationStatus"><span>已认证</span><i class="el-icon-circle-check"></i></el-col>
 					<el-col :span="12" v-else><span>未认证</span></el-col>
 
 					<el-col :span="6" v-if="identificationStatus"><span class="col-change" @click="quitIdentification(1)">查看</span></el-col>
 					<el-col :span="6" v-else><span class="col-change" @click="quitIdentification(2)">去认证</span></el-col>
-				</el-row>
+				</el-row>-->
 				<!--绑定手机-->
 				<!--<el-row>
 					<el-col :span="6"><span>绑定手机：</span></el-col>

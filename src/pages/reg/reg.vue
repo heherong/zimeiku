@@ -14,7 +14,10 @@
 					<div class="register-from-wrap" v-if="status==1">
 						<el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" class="demo-ruleForm">
 							<p style="font-size: 14px;text-align: center;color:#9b9b9b;">( 打开微信，使用扫一扫 )</p>
-							<div style="width:200px;margin:0 auto;">
+							<div v-if="qrcode==1" >
+	                        	<p style="font-size: 13px;height: 70px;padding-top: 30px;text-align: center">(提示：当前二维码已失效，请刷新页面重新获取)</p>
+	                        </div>
+	                        <div v-else style="width:200px;margin:0 auto;">
 								<div v-if="qrcode==0" class="reg-loading">
 									<i class="el-icon-loading"></i>
 								</div>
@@ -112,7 +115,8 @@
 
 <script>
 	import Myheader from '../../components/loginHeader'
-	import jpg1 from '@/assets/images/1.jpg';
+	import jpg1 from '@/assets/images/1.jpg'
+	import qs from 'qs'
 	export default {
 		components: {
 			Myheader
@@ -217,13 +221,9 @@
 				let that = this;
 				//获取ticket
 				that.$fetch(that.getTicket).then((response) => {
-			        // console.log(response);
 			        if(response.code==0){
 	                	let listData = response.data.list;
 	                	that.qrcode = listData.qrcode_url;
-	                	// console.log(that.qrcode);
-	                	that.$Cookies.set('ticket', listData.ticket,{ expires: 7 });
-	                	
 	                	//获取下一个接口
 						that.getStatus(listData.ticket)
 	                }
@@ -236,19 +236,30 @@
 				  ticket: ticket_,
 				});
 				// 获取ticket
-	//			await this.axios.post(this.judgeStatus,`ticket=${ticket_}`
 				let interval_ = setInterval(judge, 1000);
 				function judge(){
-					that.$post(that.judgeStatus,data
-					).then((response)=>{
-						
-		                console.log(response.data);
-		                if(response.data.code==0){
+					that.$post(that.judgeStatus,data).then((response)=>{
+//		                console.log(response);
+		                if(response.code==0){  
+							//保存登陆的数据
+							let userInfo = {
+								name:'herong',
+								headeImg:0
+							}
+							that.$Cookies.set('token', response.data.list.token,{ expires: 7 });
+							that.$Cookies.set('name', "herong",{ expires: 7 });
+							that.$Cookies.set('headeImg', "0",{ expires: 7 });
+							window.clearInterval(interval_);
 		                	that.$router.push({name: 'index'});
-		                	window.clearInterval(interval_);
 		                }
-		            }).catch((response)=>{
-		                console.log(response);
+		           }).catch((response)=>{
+		                window.clearInterval(interval_);
+		                //重新获取ticket
+		                that.$message({
+				          message: '当前二维码已失效，请刷新页面重新获取',
+				          type: 'warning'
+				        });
+				        that.qrcode = 1;
 		            })
 				}
 			},
