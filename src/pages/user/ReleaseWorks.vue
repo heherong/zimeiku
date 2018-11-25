@@ -33,12 +33,12 @@
 				</el-table-column>
 				<el-table-column label="字数" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.start_at }}</span>
+						<span>{{ scope.row.words }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="图片数" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.start_at }}</span>
+						<span>{{ scope.row.img_num }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="篇数" width="90" align="center">
@@ -48,17 +48,19 @@
 				</el-table-column>
 				<el-table-column label="投稿数" align="center">
 					<template slot-scope="scope" width="70">
-						<span>{{ scope.row.price }}</span>
+						<span>0</span>
+						<!--<span>{{ scope.row.price }}</span>-->
 					</template>
 				</el-table-column>
 				<el-table-column label="采纳数" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.number }}</span>
+						<span>0</span>
+						<!--<span>{{ scope.row.number }}</span>-->
 					</template>
 				</el-table-column>
 				<el-table-column label="开始时间" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.start_at }}</span>
+						<span>{{ scope.row.created_at }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="周期天数（天）" width="80" align="center">
@@ -66,11 +68,31 @@
 						<span>{{ scope.row.days }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="状态" align="center">
+				<el-table-column label="百度原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.baidu_degree }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="搜狗原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.soguo_degree }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="360原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.threesixzero_degree }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="综合原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.average_degree }}</span>
+					</template>
+				</el-table-column>
+				<!--<el-table-column label="状态" align="center">
 					<template slot-scope="scope">
 						<span>{{ scope.row.status }}</span>
 					</template>
-				</el-table-column>
+				</el-table-column>-->
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
@@ -104,7 +126,8 @@
 						</el-col>
 						<el-col :span="18">
 							<el-checkbox-group v-model="checkboxGroup">
-								<el-checkbox v-for="item in form.checkedData" :key="item.id" :label="item.name"  @change="checkBoxs" class="release-checkBoxs"></el-checkbox>
+								<el-checkbox v-for="item in form.checkedData" :key="item.id" :label="item.id" 
+									 @change="checkBoxs" class="release-checkBoxs">{{item.name}}</el-checkbox>
 								
 							</el-checkbox-group>
 						</el-col>
@@ -135,10 +158,10 @@
 							<label for=""><span class="input-must">*</span>图片数</span></label>
 						</el-col>
 						<el-col :span="8">
-							<el-input v-model="form.images"></el-input>
+							<el-input v-model="form.images" @change="toChangeImg()"></el-input>
 						</el-col>
 						<el-col :span="3">
-							<p style="margin-left:10px;">张 左右</p>
+							<p style="margin-left:10px;">张 以上</p>
 						</el-col>
 					</el-row>
 				</el-form-item>
@@ -213,7 +236,7 @@
 							<label for=""><span class="input-must">*</span>每篇价格</span></label>
 						</el-col>
 						<el-col :span="10">
-							<el-input v-model="form.price"></el-input>
+							<el-input v-model="form.price"  @change="toChangePrice"></el-input>
 						</el-col>
 						<el-col :span="3">
 							<p style="margin-left: 10px;">元</p>
@@ -238,19 +261,6 @@
 					</el-row>
 				</el-form-item>
 				
-				<!--征稿开始时间-->
-				<el-form-item>
-					<el-row>
-						<el-col :span="5">
-							<label for=""><span class="input-must">*</span>开始时间</span></label>
-						</el-col>
-						<el-col :span="10">
-							<el-date-picker v-model="form.startTime" type="date" placeholder="选择日期">
-							</el-date-picker>
-
-						</el-col>
-					</el-row>
-				</el-form-item>
 				<!--征稿详细说明-->
 				<el-form-item>
 					<el-row>
@@ -273,7 +283,8 @@
 </template>
 
 <script>
-	import {baseUrl} from '@/api/index.js' //注意路径
+//	import {baseUrl} from '@/api/index.js' //注意路径
+	import qs from 'qs'
 	export default {
 		data() {
 				return {
@@ -281,12 +292,11 @@
 					checkboxGroup: [], //实时状态
 					checkBoxPre: [], //当前状态
 					radio: '1',
-					getList_url:baseUrl+ 'solicit/mylist',  //获取列表
-					addRequest:baseUrl+ 'solicit/add',  //创建列表
-//					getCategory:baseUrl+ 'fields/list',  //类别
-					getCategory: 'http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/fields/list',  //类别
+					getList_url: '/api/solicit/mylist',  //获取列表
+					addRequest:'/api/solicit/add',  //创建列表
+					getCategory:'/api/fields/list',  //类别
 					curPage: 1, //当前页数
-					pagesize: 1, //一页10条
+					pagesize: 3, //一页10条
 					totalNum: 0, //总数
 					form: {
 						title: '',
@@ -319,26 +329,26 @@
 			methods: {
 				getList:function() {
 					let that = this;
-					that.$fetch(that.getList_url,{
-						page:that.curPage,
-                 		pagesize:that.pagesize
-					}).then((response) => {
+					that.$fetch(that.getList_url+'?page='+that.curPage+'&pagesize='+that.pagesize).then((response) => {
 //				        console.log(response);
-				        if(response.data.list.length > 0) {
-							for(let i = 0; i < response.data.list.length; i++) {
-								response.data.list[i].start_at = response.data.list[i].start_at.substring(0, 10);
+				        if(response.data.list.data.length > 0) {
+							for(let i = 0; i < response.data.list.data.length; i++) {
+								response.data.list.data[i].created_at = response.data.list.data[i].created_at.substring(0, 10);
 							}
-							that.tableData = response.data.list;
-							that.totalNum = response.data.count;
+							console.log(response.data.list.data,response.data.list.total);
+							that.tableData = response.data.list.data;
+							that.totalNum = response.data.list.total;
 						}
 				    })
 					
 				},
 				getCategoryFun:function(){
+					//获取类别
 					let that = this;
 					that.$fetch(that.getCategory).then((response) => {
-//				        console.log(response);
-				        that.form.checkedData = response.data.list;
+				        if(response.data.list){
+				        	that.form.checkedData = response.data.list;
+				        }
 				    })
 				},
 				currentChange: function(curPage) {
@@ -367,54 +377,46 @@
 							if(that.checkBoxPre.length < 1) {
 								that.$message.error('请至少选择一项标签');
 							} else {
-//								if(that.form.startTime) {
-//									if(that.form.content && that.form.content.length > 50) {
-//										//调用接口
-//										let priceStr = ''
-//										if(that.form.checkValue == 1) {
-//											priceStr = '200-500';
-//										} else if(that.form.checkValue == 2) {
-//											priceStr = '500-1000';
-//										} else if(that.form.checkValue == 3) {
-//											priceStr = '1000-1200';
-//										} else {
-//											priceStr = that.form.lowPrice + '-' + that.form.highPrice;
-//										}
-//
-//										that.axios.post(that.addRequest, {
-//										    content: that.form.content,
-//										    title: that.form.title,
-//										    price:priceStr,
-//										    number:that.form.gaoCont,
-//										    start_at:that.form.startTime,
-//										    days:that.form.checkTerm*7,
-//										    field:that.checkBoxPre.join(','),
-//										    words:that.form.font
-//										  })
-//										  .then(function (response) {
-////										  	console.log(response);
-//										    if(response.data.code==0){
-//										    	that.$message({
-//										          	message: '创建成功！',
-//										          	type: 'success'
-//										        });
-//										        that.quit();
-//										    }else{
-//										    	
-//										    }
-//										  })
-//										  .catch(function (error) {
-//										    console.log(error);
-//										  });
-//									} else {
-//										that.$message.error('征稿详细说明字数要大于50');
-//									}
-//								} else {
-//									that.$message.error('请选择开始时间');
-//								}
-
+								if(that.form.images && that.form.images>=1) {
+									if(that.form.content && that.form.content.length > 50) {
+										//调用接口
+										let addData = qs.stringify({
+										    content: that.form.content,
+										    title: that.form.title,
+										    price:that.form.price,
+										    number:that.form.gaoCont,
+										    days:that.form.checkTerm*7,
+										    field:that.checkBoxPre.join(','),
+										    words:that.form.font,
+										    img_num:that.form.images,
+										    baidu_degree:that.form.baidu,
+										    soguo_degree:that.form.sogou,
+										    threesixzero_degree:that.form.b360,
+										    average_degree:that.form.bchrome,
+										 })
+										that.$post(that.addRequest, addData)
+										  .then(function (response) {
+//										  	console.log(response);
+										    if(response.code==0){
+										    	that.$message({
+										          	message: '创建成功！',
+										          	type: 'success'
+										        });
+										        that.quit();
+										    }else{
+										    	
+										    }
+										  })
+										  .catch(function (error) {
+										    console.log(error);
+										  });
+									} else {
+										that.$message.error('征稿详细说明字数要大于50');
+									}
+								} else {
+									that.$message.error('图片数量不小于 1 张');
+								}
 							}
-
 						}
 					} else {
 						that.$message.error('征稿标题不能为空');
@@ -424,6 +426,7 @@
 				//多选
 				checkBoxs: function() {
 					let that = this;
+					console.log(that.checkboxGroup)
 					if(that.checkboxGroup.length > 1) {
 						that.checkBoxPre = [];
 						that.checkBoxPre.push(that.checkboxGroup[1]);
@@ -447,6 +450,13 @@
 					}
 					that.form.font = parseInt(that.form.font);
 				},
+				toChangeImg:function(){ 
+					let that = this;
+					if((!Number.isInteger(parseInt(that.form.images)))){
+						that.form.images = 1;
+					}
+					that.form.images = parseInt(that.form.images);
+				},
 				//改变稿子数
 				toChangeCont: function(index) {
 					let that = this;
@@ -461,9 +471,13 @@
 					}
 					that.form.gaoCont = parseInt(that.form.gaoCont);
 				},
-				//下拉框
-				toChangecheck: function() {
+				//改变价格
+				toChangePrice:function(){
 					let that = this;
+					if((!Number.isInteger(parseInt(that.form.price)))){
+						that.form.price = 10;
+					}
+					that.form.price = parseInt(that.form.price);
 				},
 				//返回
 				quit: function() {
