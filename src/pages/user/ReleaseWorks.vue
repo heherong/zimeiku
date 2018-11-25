@@ -171,7 +171,7 @@
 				<el-form-item>
 					<el-row>
 						<el-col :span="3">
-							<label for=""><span class="input-must">*</span>百度原创度</span></label>
+							<label for=""><span class="input-must">*</span>百度原创度</label>
 						</el-col>
 						<el-col :span="6">
 							<el-slider v-model="form.baidu"></el-slider>
@@ -180,7 +180,7 @@
 							<p style="text-align: right;">( {{ form.baidu}} )%</p>
 						</el-col>
 						<el-col :span="3">
-							<label for=""><span class="input-must">*</span>搜狗原创度</span></label>
+							<label for=""><span class="input-must">*</span>搜狗原创度</label>
 						</el-col>
 						<el-col :span="6">
 							<el-slider v-model="form.sogou"></el-slider>
@@ -193,7 +193,7 @@
 				<el-form-item>
 					<el-row>
 						<el-col :span="3">
-							<label for=""><span class="input-must">*</span>360原创度</span></label>
+							<label for=""><span class="input-must">*</span>360原创度</label>
 						</el-col>
 						<el-col :span="6" >
 							<el-slider v-model="form.b360"></el-slider>
@@ -202,7 +202,7 @@
 							<p style="text-align: right;">( {{ form.b360}} )%</p>
 						</el-col>
 						<el-col :span="3">
-							<label for=""><span class="input-must">*</span>综合原创度</span></label>
+							<label for=""><span class="input-must">*</span>综合原创度</label>
 						</el-col>
 						<el-col :span="6">
 							<el-slider v-model="form.bchrome"></el-slider>

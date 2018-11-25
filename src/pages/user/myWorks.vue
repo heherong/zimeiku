@@ -1,6 +1,6 @@
 <template>
 	<div class="inform">
-		<div v-if="pageStatus == 1">
+		<div v-show="pageStatus == 1">
 			<div class="myMoney">
 				<h4>我的稿件 </h4>
 				<el-button type="primary" class="release-gao" @click="toAddGao">新建稿件 <i class="el-icon-edit el-icon--right"></i></el-button>
@@ -103,7 +103,7 @@
 			</div>
 		</div>
 		
-		<div v-if="pageStatus == 2">
+		<div v-show="pageStatus == 2">
 			<div class="myMoney">
 				<h4>新建稿件  <i class="el-icon-edit-outline"></i></h4>
 			</div>
@@ -115,18 +115,28 @@
 					<el-input v-model="form.title" class="add-title" placeholder="请输入标题"></el-input>
 				</el-col>
 			</el-row>
+			<el-row>
+			  	<el-col :span="3">
+			  		<label for=""><span class="input-must">*</span>文章类型</span></label>
+			  	</el-col>
+			  	<el-col :span="20">
+			  		<el-checkbox-group v-model="quareForm.type">
+					    <el-checkbox v-for="item in quareForm.typeBox" :label="item.id" :key="item.id"  @change="checkBoxs">{{item.name}}</el-checkbox>
+					</el-checkbox-group>
+			  	</el-col>
+			</el-row>
 			<div>
 				<vue-ueditor-wrap v-model="form.msg" :config="myConfig"></vue-ueditor-wrap>
 			</div>
 			<div style="position: absolute;left: 100%;top: 170px;">
-				<el-row>
+				<!--<el-row>
 					<el-button type="success" plain icon="el-icon-check" @click="toSave(2)">保存并返回</el-button>
+				</el-row>-->
+				<el-row>
+					<el-button type="success" plain icon="el-icon-check" @click="toSave">保存至草稿箱</el-button>
 				</el-row>
 				<el-row>
-					<el-button type="success" plain icon="el-icon-check" @click="toSave(1)">保存至草稿箱</el-button>
-				</el-row>
-				<el-row>
-					<el-button type="primary" plain icon="el-icon-upload2" @click="toupload()">发稿（文章广场）</el-button>
+					<el-button type="primary" plain icon="el-icon-upload2" @click="toUpload">发稿（文章广场）</el-button>
 				</el-row>
 				<el-row>
 					<el-button type="danger" plain icon="el-icon-close" @click="quit">取消</el-button>
@@ -134,19 +144,25 @@
 			</div>
 		</div>
 		
-		<div v-if="pageStatus == 3">
+		<div v-show="pageStatus == 3">
 			<div class="myMoney">
-				<h4>{{form.title}}  <i class="el-icon-edit-outline"></i></h4>
+				<h4>{{form.title}} - 系统检测结果 <i class="el-icon-edit-outline"></i></h4>
 			</div>
 			<div>
 				<el-row>
 				  	<el-col :span="4">
-				  		<span>文章类型：</span>
+				  		<span>文章字数：</span>
 				  	</el-col>
 				  	<el-col :span="20">
-				  		<el-checkbox-group v-model="quareForm.type">
-						    <el-checkbox v-for="type in quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
-						</el-checkbox-group>
+				  		<span>{{gaoForm.num}} 字</span>
+				  	</el-col>
+				</el-row>
+				<el-row>
+				  	<el-col :span="4">
+				  		<span>图片数：</span>
+				  	</el-col>
+				  	<el-col :span="20">
+				  		<span>{{gaoForm.img}} 张</span>
 				  	</el-col>
 				</el-row>
 				<el-row>
@@ -157,26 +173,85 @@
 				  		<el-tag>护肤品</el-tag>
 				  	</el-col>
 				</el-row>
-				<p style="    text-align: center;color: rgb(158, 158, 158);font-size: 14px;border-bottom: dotted 1px #eaeaea;margin: 0px 0 15px 0;padding-bottom: 10px;">文章原创度</p>
+				<p style="text-align: center;color: rgb(158, 158, 158);font-size: 14px;border-bottom: dotted 1px #eaeaea;margin: 0px 0 15px 0;padding-bottom: 10px;">文章原创度</p>
 				<el-row>
 					<el-col :span="3">
-						<label for=""><span class="input-must">*</span>百度原创度</span></label>
+						<label for="">百度原创度</label>
 					</el-col>
 					<el-col :span="6">
-						<el-slider v-model="form.baidu"></el-slider>
+						<el-slider v-model="gaoForm.baidu" :disabled="true"></el-slider>
 					</el-col>
 					<el-col :span="2" style="margin-right:30px;color:#333;">
-						<p style="text-align: right;">( {{ form.baidu}} )%</p>
+						<p style="text-align: right;">( {{ gaoForm.baidu}} )%</p>
 					</el-col>
 					<el-col :span="3">
-						<label for=""><span class="input-must">*</span>搜狗原创度</span></label>
+						<label for="">搜狗原创度</label>
 					</el-col>
 					<el-col :span="6">
-						<el-slider v-model="form.sogou"></el-slider>
+						<el-slider v-model="gaoForm.sogou" :disabled="true"></el-slider>
 					</el-col>
 					<el-col :span="2">
-						<p style="text-align: right;color:#333;">( {{ form.sogou}} )%</p>
+						<p style="text-align: right;color:#333;">( {{ gaoForm.sogou}} )%</p>
 					</el-col>
+				</el-row>
+				<el-row>
+					<el-col :span="3">
+						<label for="">360原创度</label>
+					</el-col>
+					<el-col :span="6" >
+						<el-slider v-model="gaoForm.b360" :disabled="true"></el-slider>
+					</el-col>
+					<el-col :span="2" style="margin-right:30px;color:#333;">
+						<p style="text-align: right;">( {{ gaoForm.b360}} )%</p>
+					</el-col>
+					<el-col :span="3">
+						<label for="">综合原创度</label>
+					</el-col>
+					<el-col :span="6">
+						<el-slider v-model="gaoForm.bchrome" :disabled="true"></el-slider>
+					</el-col>
+					<el-col :span="2">
+						<p style="text-align: right;color:#333;">( {{ gaoForm.bchrome}} )%</p>
+					</el-col>
+				</el-row>
+				<p style="text-align: center;font-size: 18px;color:#ff8547;">情感偏正向</p>
+				<el-row>
+					<el-col :span="4">
+						<span style="font-size: 14px; color: #696969;">正向情感&nbsp;&nbsp;</span>
+						<img :src="gaoForm.happyImg" style="width: 50px;position: relative;top: 15px;"/>
+					</el-col>
+					<el-col :span="15">
+						
+						<p class="emation-tiao" ></p>
+						<span class="emation-unhappy"></span>
+					</el-col>
+					<el-col :span="4" style="margin-left: 15px;">
+						<img :src="gaoForm.unhappyImg" style="width: 50px;position: relative;top: 15px;"/>
+						<span style="font-size: 14px; color: #696969;">负向情感</span>
+					</el-col>
+				</el-row>
+				<br />
+				<el-row>
+				  	<el-col :span="4">
+				  		<label for=""><span class="input-must">*</span>文章价格:</label>
+				  	</el-col>
+				  	<el-col :span="6">
+				  		<el-input v-model="quareForm.price" placeholder="请输入价格"></el-input>
+				  	</el-col>
+				  	<el-col :span="2">
+				  		<span style="margin-left:10px;">元</span>
+				  	</el-col>
+				</el-row>
+				<el-row>
+				  	<el-col :span="4">
+				  		<label for=""><span class="input-must">*</span>文章价格:</label>
+				  	</el-col>
+				  	<el-col :span="6">
+				  		<el-input v-model="quareForm.price" placeholder="请输入价格"></el-input>
+				  	</el-col>
+				  	<el-col :span="2">
+				  		<span style="margin-left:10px;">元</span>
+				  	</el-col>
 				</el-row>
 			</div>
 			
@@ -187,16 +262,20 @@
 <script>
 	import VueUeditorWrap from 'vue-ueditor-wrap'
 	import {baseUrl} from '@/api/index.js' //注意路径
+	import happy from '@/assets/images/happy.png';  //正向
+	import unhappy from '@/assets/images/unhappy.png';  //负向
+	import qs from 'qs'
 	export default {
 		components: {
 		    VueUeditorWrap
 		},
 		data() {
 			return {
-				pageStatus:3, //列表页面1 ，新建页面2,3是点击保存到文章广场之后的返回数据
+				pageStatus:1, //列表页面1 ，新建页面2,3是点击保存到文章广场之后的返回数据
 				status:1,  //列表页面的切换lab
-				getList_url: baseUrl+'article/mylist',
-				saveWork:baseUrl+'article/add',
+				getList_url: '/api/article/mylist',
+				saveWork:'/api/article/add',
+				getCategory:'/api/fields/list',  //类别
 				curPage:1, //当前页数
 				pagesize:10, //一页10条
 				totalNum:0,  //总数
@@ -238,9 +317,20 @@
 					title:'123'
 				},
 				quareForm:{
-					typeBox:['教育', '科学', '情感', '广告'],
-					type: ['情感' ],
+					typeBox:[],
+					type: [ ],
 					checkBoxPre:[], //默认保存选一个
+					price:50,
+				},
+				gaoForm:{
+					num:120,
+					img:10,
+					baidu:10,
+					sogou:30,
+					b360:50,
+					bchrome:70,
+					happyImg:happy,
+					unhappyImg:unhappy,
 				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
@@ -265,16 +355,15 @@
 			}else{
 				this.getList();
 			}
-        	
+        	//获取类别
+        	this.getCategoryFun();
    		},
 		methods: {
 			getList:function(){
 				let that = this;
-				console.log(this.getList_url)
-				that.$fetch(that.getList_url,{
-						page:that.curPage,
-                 		pagesize:that.pagesize
-				}).then((response) => {
+				
+				that.$fetch(that.getList_url+'?page='+that.curPage+'&pagesize='+that.pagesize).then((response) => {
+
 			        console.log(response);
 			        if(response.data.list.length>0){
 	            		for(let i=0;i<response.data.list.length;i++){
@@ -283,6 +372,20 @@
 	            		that.tableData = response.data.list;
 	            		that.totalNum = response.data.count;
 	            	}
+			    })
+			},
+			getCategoryFun:function(){
+//				quareForm:{
+//					typeBox:[],
+//					type: [ ],
+//					checkBoxPre:[], //默认保存选一个
+//				},
+				//获取类别
+				let that = this;
+				that.$fetch(that.getCategory).then((response) => {
+			        if(response.data.list){
+			        	that.quareForm.typeBox = response.data.list;
+			        }
 			    })
 			},
 			currentChange: function(curPage){
@@ -303,84 +406,102 @@
 			toAddGao:function(){
 				this.pageStatus = 2;
 			},
-			toSave:function(index){
-				if(index==1){
-					//保存 发布投稿：1 文章广场：2 草稿箱: 3
-					let that = this;
-					if(that.form.title){
-						that.axios.post(that.saveWork, {
-						    content: that.form.msg,
-						    title: that.form.title,
-						    type:2
-						  })
-						  .then(function (response) {
-						    let res  = response.data;
-						    if(res.code==0){
-						    	that.$message({
-						          message: '保存成功！',
-						          type: 'success'
-						        });
-						    }else{
-						    	that.$message.error('保存失败，请重新保存');
-						    }
-						  })
-						  .catch(function (error) {
-						    console.log(error);
-						  });
-					}else{
-						that.$message.error('标题不能为空');
-						return;
-					}
-					
-				}else{
-					//保存
-					let that = this;
-					if(that.form.title){
-						that.axios.post(that.saveWork, {
-						    content: that.form.msg,
-						    title: that.form.title,
-						    type:2
-						  })
-						  .then(function (response) {
-						  	let res  = response.data;
-						    if(res.code==0){
-						    	that.$message({
-						          message: '保存成功！',
-						          type: 'success'
-						        });
-						    }else{
-						    	that.$message.error('保存失败，请重新保存');
-						    }
-						    that.quit();
-						  })
-						  .catch(function (error) {
-						    console.log(error);
-						  });
-					}else{
-						that.$message.error('标题不能为空');
-						return;
-					}
-				}
-			},
-			//发稿到文章广场
-			toupload:function(){
+			toSave(){
 				
+				//保存 发布投稿：1 文章广场：2 草稿箱: 3
 				let that = this;
-				//xxxxx
 				if(that.form.title){
-					that.pageStatus = 3;
+					if(that.quareForm.type.length>0){
+						//掉接口 post xxxxx
+					let addData = qs.stringify({
+					    title: 1,
+					    field:1,
+					    content:111,
+					    type:3,  //发布投稿：1 文章广场：2 草稿箱: 3
+					    status:0,
+					    img_count:1
+					 })
+					console.log({
+					    title: that.form.title,
+					    type:that.quareForm.type[0],
+					    content:that.form.msg
+					 });
+					that.axios.post(that.saveWork, addData)
+						.then(function (response) {
+							console.log(response);
+//					    if(response.code==0){
+//					    	that.$message({
+//					          	message: '创建成功！',
+//					          	type: 'success'
+//					        });
+//					        that.quit();
+//					    }else{
+//					    	
+//					    }
+//						that.pageStatus = 3;
+					 }).catch(function (error) {
+					    console.log(error);
+					  });
+					  
+					}else{
+						that.$message.error('请选择文章类型！');
+					}
 				}else{
 					that.$message.error('标题不能为空');
 					return;
 				}
+					
 				
+			},
+			//发稿到文章广场
+			toUpload:function(){
 				
+				let that = this;
+//				if(that.form.title){
+//					if(that.quareForm.type.length>0){
+//						//掉接口 post xxxxx
+//					let addData = qs.stringify({
+//					    title: that.form.title,
+//					    field:that.quareForm.type[0],
+//					    content:that.form.msg,
+//					    type:3,  //发布投稿：1 文章广场：2 草稿箱: 3
+//					    status:0,
+//					    img_count:1
+//					 })
+//					console.log({
+//					    title: that.form.title,
+//					    type:that.quareForm.type[0],
+//					    content:that.form.msg
+//					 });
+//					that.$post(that.saveWork, addData)
+//						.then(function (response) {
+//							console.log(response);
+////					    if(response.code==0){
+////					    	that.$message({
+////					          	message: '创建成功！',
+////					          	type: 'success'
+////					        });
+////					        that.quit();
+////					    }else{
+////					    	
+////					    }
+////						that.pageStatus = 3;
+//					 }).catch(function (error) {
+//					    console.log(error);
+//					  });
+//					  
+//					}else{
+//						that.$message.error('请选择文章类型！');
+//					}
+//				}else{
+//					that.$message.error('标题不能为空');
+//					return;
+//				}
+//				
+				that.pageStatus = 3;
 			},
 			//多选
 			checkBoxs: function() {
-//				<el-checkbox-group v-model="quareForm.type">
-//					    <el-checkbox v-for="type in quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
-//					</el-checkbox-group>
 				let that = this;
 				if(that.quareForm.type.length > 1) {
 					that.checkBoxPre = [];
@@ -451,5 +572,25 @@
 		margin-right: 0;
 		margin-bottom: 0;
 		width: 50%;
+	}
+	.emation-tiao{
+		width: 98%;
+	    height: 20px;
+	    background-color: #e6a23c;
+	    display: inline-block;
+	    border-radius: 10px;
+	    position: relative;
+    	top: 30px;
+	}
+	.emation-unhappy{
+	    display: inline-block;
+	    width: 30%;
+	    height: 20px;
+	    background-color: #67c23a;
+	    position: relative;
+	    z-index: 999;
+	    top: 6px;
+	    float: right;
+	    border-radius:0 10px 10px 0;
 	}
 </style>
