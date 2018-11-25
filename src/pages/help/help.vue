@@ -84,9 +84,6 @@ export default {
             console.log(val)
         }
     },
-
-    
-    
 }
 </script>
 

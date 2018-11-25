@@ -11,7 +11,7 @@
                     <div style="float:left" v-show='true'>
                         <More @height ='fheight'></More>
                     </div>
-                    <div class="count" v-if="false">type
+                    <!-- <div class="count" v-if="false">
                         <el-input
                             size="mini"
                             style="width:80px;float:left;"
@@ -22,9 +22,10 @@
                             size="mini"
                             style="width:80px;float:left"
                             v-model="inputEnd">
-                        </el-input><span style="float:left;text-indent: 5px;dispaly:block;width:50px;">{{type2}}</span>
+                        </el-input>
+                        <span style="float:left;text-indent: 5px;dispaly:block;width:50px;"></span>
                         <div class="nav-btn">确定</div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="nav-wrap-shoppingcart" @click="shoppingcart()">
                     <i class="icon-shoppingcart">
@@ -51,7 +52,7 @@
                     </p>
                 </div>
                 <ul class="original-works-list-wrap">
-                    <li v-for="(item , index) in data">
+                    <li v-for="(item , index) in data.list">
                         <div class="img-box">
                             <router-link to='/ContentBank' target="_blank">
                                 <img :src="item.img_count" alt="" style="width:100%;" v-if="!(item.img_count=='' || item.img_count == null)">
@@ -151,7 +152,7 @@
                         <div style="clear:both;"></div>
                     </li>
                     <!-- 撑高度用的假数据 -->
-                    <li v-for="(item , index) in data">
+                    <li v-for="(item , index) in data.list">
                         <div class="img-box">
                             <router-link to='/ContentBank' target="_blank">
                                 <img :src="item.img_count" alt="" style="width:100%;" v-if="!(item.img_count=='' || item.img_count == null)">
@@ -324,7 +325,8 @@ span.active-condition{color: #4895e7 !important;background: #e5f0fc;}
 <script>
 // import MyconditionWrap from '../conditionWrap'
 import Myheader from '../../../components/header-nav-wrap'
-import More from '../hide.vue'
+import More from '../hide.vue' 
+
 export default {
     components:{
     //   MyconditionWrap,
@@ -338,18 +340,16 @@ export default {
             infoOriginal:['不限','20%以下','20%-40%','40%-60%','60%-80%','80%-100%'],
             infoBuy:['不限','2元以下','2-5元','5-10元','10-30元','30元-50元','50-100元','100元以上'],
             tabActive:'market',
-            type2:'',
             downm:'',
-            curPage:'0',
-            pagesize:'3',
+            curPage:1,
+            pagesize:3,
             totalNum:0,
             nowIndex:0,
-            active:0,
-            a:1,
             data:'',
             isDisabled:false,
             shoppingcartNum:0,
-            bol:true
+            bol:true,
+
         }
     },
     beforeRouteEnter:(to,form,next)=>{
@@ -363,9 +363,9 @@ export default {
         },
         getAjax:function(){
             let self =this;
-            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/fields/list').then(function(res){
-                self.infoType = res.data.data.list;
-                console.log(self.infoType);
+            self.$fetch(`/api/fields/list`,).then(function(res){
+                self.infoType = res.data;
+                // console.log(res)
             }).catch(function(res){
                 console.log(res);
             })
@@ -385,14 +385,9 @@ export default {
         },
         fn:function(){
             let self = this;
-            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
-                params:{
-                    page:self.curPage,
-                    pagesize:self.pagesize
-                }
-            }).then((response)=>{
-                this.data=response.data.data.list;
-                console.log(response);
+            self.$fetch(`/api/article/list?page=${self.curPage}&pagesize=${self.pagesize}`).then((response)=>{
+                this.data=response.data;
+                // console.log(this.data.list);
                 if(response.data.data.list.length>0){
                     for(let i=0;i<response.data.data.list.length;i++){
                         response.data.data.list[i].created_at = response.data.data.list[i].created_at.substring(0,10);
@@ -408,6 +403,37 @@ export default {
         currentChange: function(curPage){
             this.curPage = curPage;
         },
+        
+        buy(){
+            //购物车数字
+            // if(this.bol){
+            //     this.shoppingcartNum++;
+            //     this.bol=false;
+            // }
+            
+            // this.$router.push('/shoppingcart')
+            // let self = this;
+            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
+            //     article_id:this.list.author_id
+            // }).then(function(res){
+            //     self.$message({
+            //         message:res.data.msg,
+            //          type: 'success'
+            //     });
+            //     if(res.data.msg=='购买成功'){
+            //         self.isDisabled = true;
+            //     }
+            // }).catch(function(res){
+            //     console.log(res)
+            // })
+        },
+        pay(){
+            this.$router.push('/pay');
+        },
+        // fn:function(){
+        //     this.$router.push('/ContentBank')
+        //     console.log(1);
+        // },
         amend() {
             const h = this.$createElement;
             this.$msgbox({
@@ -465,36 +491,6 @@ export default {
             });
             });
         },
-        buy(){
-            //购物车数字
-            // if(this.bol){
-            //     this.shoppingcartNum++;
-            //     this.bol=false;
-            // }
-            
-            // this.$router.push('/shoppingcart')
-            // let self = this;
-            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
-            //     article_id:this.list.author_id
-            // }).then(function(res){
-            //     self.$message({
-            //         message:res.data.msg,
-            //          type: 'success'
-            //     });
-            //     if(res.data.msg=='购买成功'){
-            //         self.isDisabled = true;
-            //     }
-            // }).catch(function(res){
-            //     console.log(res)
-            // })
-        },
-        pay(){
-            this.$router.push('/pay');
-        },
-        // fn:function(){
-        //     this.$router.push('/ContentBank')
-        //     console.log(1);
-        // },
     },
     mounted:function(){
         this.getAjax();

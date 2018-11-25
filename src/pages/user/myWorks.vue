@@ -238,7 +238,7 @@
 		methods: {
 			getList:function(){
 				let that = this;
-				
+				console.log(this.getList_url)
 				that.$fetch(that.getList_url,{
 						page:that.curPage,
                  		pagesize:that.pagesize

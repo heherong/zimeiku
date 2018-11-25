@@ -30,17 +30,17 @@ Vue.use(ElementUI);
 Vue.config.productionTip = false
 
 
-// 路由拦截
+//路由拦截
 // router.beforeEach((to, from, next) => {
-//   //判断是否登录，使用vuex好点
-//   const loggin_in = true;
+//   //判断是否登录
+//   const loggin_in = false;
 //   if(to.name!=='/login'){
-//     if(loggin_in && to.matched.some(function(item){
-//     return item.meta.Login_required
-//     })){
-//       next('/login');
-//     }else{
+//     console.log(to)
+//     if(token){
 //       next();
+      
+//     }else{
+//       next('/login');
 //     }
 //   }
 // })
