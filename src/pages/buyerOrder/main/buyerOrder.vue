@@ -102,7 +102,8 @@
                 <el-pagination
                     background
                     layout="prev, pager, next"
-                    :total="1000">
+                    @current-change="currentChange"
+                    :total='totalNum'>
                 </el-pagination>
             </div>
         </div>
@@ -124,15 +125,19 @@ export default {
             now:0,
             solicitData:[],
             page:1,
-            pagesize:10
+            pagesize:5,
+            totalNum:0,
         }
     },
     methods:{
-        getAjax:function(){
+        getAjax:function(page,pagesize){
             var self= this;
             this.$fetch(`/api/solicit/list?page=${this.page}&pagesize=${this.pagesize}`).then(function(res){
+                
+                self.solicitData = res.data.list.data
+                self.totalNum = res.data.list.total
                 console.log(res);
-                self.solicitData = res.data.list
+                console.log(self.solicitData);
             }).catch(function(res){
                 console.log(res);
             })
@@ -140,7 +145,12 @@ export default {
         fn:function(val){
             this.$router.push({path:'/demandHall',query:{id:val}});
             console.log(val)
-        }
+        },
+        currentChange: function(curPage){
+            this.page = curPage;
+            console.log(curPage)
+            this.getAjax(this.page,this.pagesize);
+        },
     },
     beforeRouteEnter:(to,form,next)=>{
 			next(vm=>{
@@ -148,13 +158,10 @@ export default {
 			})
         },
     created:function(){
-        this.getAjax();
+        this.getAjax(this.page,this.pagesize);
         
     },
-    mounted(){
-        
-        // console.log(this.solicitData);
-    }
+    
 }
 </script>
 
