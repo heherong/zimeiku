@@ -1,5 +1,5 @@
 <template>
-    <div class="wrap tansAll">
+    <div class="wrap tansAll" v-if="airtcleCon.is_expire==0">
         <Myheader :active='a'></Myheader>
         <div class="market" style="margin-top:105px;">
             <div class="demand-detail-wrap">
@@ -7,7 +7,7 @@
                     <div class="container-left-title">
                         <div>{{airtcleCon.status}}</div>
                         <span>原创征稿</span>
-                        <span>影评、明星微博找里面的槽点加以分析，撰写些比较简单的娱乐内容</span>
+                        <span>{{airtcleCon.title}}</span>
                     </div>
                     <div v-if="status==1">
                     <div class="container-demand-info" v-if="status==1">
@@ -47,11 +47,11 @@
                             <li class="lineq" ></li>
                             <li>
                                 <div>
-                                    <span>0</span>
+                                    <span>{{airtcleCon.diff_day}}</span>
                                     天
-                                    <span>9</span>
+                                    <span>{{airtcleCon.diff_hours}}</span>
                                     小时
-                                    <span>48</span>
+                                    <span>{{airtcleCon.diff_minutes}}</span>
                                     分
                                 </div>
                                 <span>
@@ -343,7 +343,8 @@ export default {
                 status:1,
                 SubmitRecordsData:[],
                 //文章详情页的值
-                airtcleCon:this.$route.query.airtcle,
+                solicit_id:this.$route.query.id,
+                airtcleCon:'',
                 dialogTableVisible:false,
                 form: {
                         title: '',
@@ -389,8 +390,15 @@ export default {
         })
     },
     created:function(){
+        var self = this;
         this.SubmitRecords()
-        
+        this.$fetch(`/api/solicit/info?solicit_id=${this.solicit_id}`).then(function(res){
+            self.airtcleCon = res.data.list;
+            console.log(self.airtcleCon);
+            
+        }).catch(function(res){
+            console.log(res)
+        })
     },
     mounted(){
         console.log(this.airtcleCon)
@@ -408,12 +416,12 @@ export default {
                 console.log(val[i].date);
             }
         },
+
         //投稿记录
         SubmitRecords(){
             var self = this;
             this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
             params:{
-
             }
             }).then(function(res){
                 // console.log(res);

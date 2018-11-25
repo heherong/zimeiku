@@ -1,6 +1,6 @@
 <template>
 	<div class="inform">
-		<div v-if="pageStatus == 1">
+		<div v-show="pageStatus == 1">
 			<div class="myMoney">
 				<h4>我的稿件 </h4>
 				<el-button type="primary" class="release-gao" @click="toAddGao">新建稿件 <i class="el-icon-edit el-icon--right"></i></el-button>
@@ -103,7 +103,7 @@
 			</div>
 		</div>
 		
-		<div v-if="pageStatus == 2">
+		<div v-show="pageStatus == 2">
 			<div class="myMoney">
 				<h4>新建稿件  <i class="el-icon-edit-outline"></i></h4>
 			</div>
@@ -129,11 +129,11 @@
 				<vue-ueditor-wrap v-model="form.msg" :config="myConfig"></vue-ueditor-wrap>
 			</div>
 			<div style="position: absolute;left: 100%;top: 170px;">
-				<el-row>
+				<!--<el-row>
 					<el-button type="success" plain icon="el-icon-check" @click="toSave(2)">保存并返回</el-button>
-				</el-row>
+				</el-row>-->
 				<el-row>
-					<el-button type="success" plain icon="el-icon-check" @click="toSave(1)">保存至草稿箱</el-button>
+					<el-button type="success" plain icon="el-icon-check" @click="toSave">保存至草稿箱</el-button>
 				</el-row>
 				<el-row>
 					<el-button type="primary" plain icon="el-icon-upload2" @click="toUpload">发稿（文章广场）</el-button>
@@ -144,7 +144,7 @@
 			</div>
 		</div>
 		
-		<div v-if="pageStatus == 3">
+		<div v-show="pageStatus == 3">
 			<div class="myMoney">
 				<h4>{{form.title}} - 系统检测结果 <i class="el-icon-edit-outline"></i></h4>
 			</div>
@@ -214,10 +214,10 @@
 						<p style="text-align: right;color:#333;">( {{ gaoForm.bchrome}} )%</p>
 					</el-col>
 				</el-row>
-				<p style="text-align: center;;font-size: 18px;color:#ff8547;">情感偏正向</p>
+				<p style="text-align: center;font-size: 18px;color:#ff8547;">情感偏正向</p>
 				<el-row>
 					<el-col :span="4">
-						<span>正向情感</span>
+						<span style="font-size: 14px; color: #696969;">正向情感&nbsp;&nbsp;</span>
 						<img :src="gaoForm.happyImg" style="width: 50px;position: relative;top: 15px;"/>
 					</el-col>
 					<el-col :span="15">
@@ -227,8 +227,31 @@
 					</el-col>
 					<el-col :span="4" style="margin-left: 15px;">
 						<img :src="gaoForm.unhappyImg" style="width: 50px;position: relative;top: 15px;"/>
-						<span>负向情感</span>
+						<span style="font-size: 14px; color: #696969;">负向情感</span>
 					</el-col>
+				</el-row>
+				<br />
+				<el-row>
+				  	<el-col :span="4">
+				  		<label for=""><span class="input-must">*</span>文章价格:</label>
+				  	</el-col>
+				  	<el-col :span="6">
+				  		<el-input v-model="quareForm.price" placeholder="请输入价格"></el-input>
+				  	</el-col>
+				  	<el-col :span="2">
+				  		<span style="margin-left:10px;">元</span>
+				  	</el-col>
+				</el-row>
+				<el-row>
+				  	<el-col :span="4">
+				  		<label for=""><span class="input-must">*</span>文章价格:</label>
+				  	</el-col>
+				  	<el-col :span="6">
+				  		<el-input v-model="quareForm.price" placeholder="请输入价格"></el-input>
+				  	</el-col>
+				  	<el-col :span="2">
+				  		<span style="margin-left:10px;">元</span>
+				  	</el-col>
 				</el-row>
 			</div>
 			
@@ -297,6 +320,7 @@
 					typeBox:[],
 					type: [ ],
 					checkBoxPre:[], //默认保存选一个
+					price:50,
 				},
 				gaoForm:{
 					num:120,
@@ -339,6 +363,7 @@
 				let that = this;
 				
 				that.$fetch(that.getList_url+'?page='+that.curPage+'&pagesize='+that.pagesize).then((response) => {
+
 			        console.log(response);
 			        if(response.data.list.length>0){
 	            		for(let i=0;i<response.data.list.length;i++){
@@ -381,82 +406,27 @@
 			toAddGao:function(){
 				this.pageStatus = 2;
 			},
-			toSave:function(index){
-				if(index==1){
-					//保存 发布投稿：1 文章广场：2 草稿箱: 3
-					let that = this;
-					if(that.form.title){
-						that.axios.post(that.saveWork, {
-						    content: that.form.msg,
-						    title: that.form.title,
-						    type:2
-						 }).then(function (response) {
-						    let res  = response.data;
-						    if(res.code==0){
-						    	that.$message({
-						          message: '保存成功！',
-						          type: 'success'
-						        });
-						    }else{
-						    	that.$message.error('保存失败，请重新保存');
-						    }
-						  }).catch(function (error) {
-						    console.log(error);
-						  });
-					}else{
-						that.$message.error('标题不能为空');
-						return;
-					}
-					
-				}else{
-					//保存
-					let that = this;
-					if(that.form.title){
-						
-						that.axios.post(that.saveWork, {
-						    content: that.form.msg,
-						    title: that.form.title,
-						    type:2
-						  })
-						  .then(function (response) {
-						  	let res  = response.data;
-						    if(res.code==0){
-						    	that.$message({
-						          message: '保存成功！',
-						          type: 'success'
-						        });
-						    }else{
-						    	that.$message.error('保存失败，请重新保存');
-						    }
-						    that.quit();
-						  })
-						  .catch(function (error) {
-						    console.log(error);
-						  });
-					}else{
-						that.$message.error('标题不能为空');
-						return;
-					}
-				}
-			},
-			//发稿到文章广场
-			toUpload:function(){
+			toSave(){
 				
+				//保存 发布投稿：1 文章广场：2 草稿箱: 3
 				let that = this;
 				if(that.form.title){
 					if(that.quareForm.type.length>0){
 						//掉接口 post xxxxx
 					let addData = qs.stringify({
-					    title: that.form.title,
-					    type:that.quareForm.type[0],
-					    content:that.form.msg
+					    title: 1,
+					    field:1,
+					    content:111,
+					    type:3,  //发布投稿：1 文章广场：2 草稿箱: 3
+					    status:0,
+					    img_count:1
 					 })
 					console.log({
 					    title: that.form.title,
 					    type:that.quareForm.type[0],
 					    content:that.form.msg
 					 });
-					that.$post(that.saveWork, addData)
+					that.axios.post(that.saveWork, addData)
 						.then(function (response) {
 							console.log(response);
 //					    if(response.code==0){
@@ -480,7 +450,54 @@
 					that.$message.error('标题不能为空');
 					return;
 				}
+					
 				
+			},
+			//发稿到文章广场
+			toUpload:function(){
+				
+				let that = this;
+//				if(that.form.title){
+//					if(that.quareForm.type.length>0){
+//						//掉接口 post xxxxx
+//					let addData = qs.stringify({
+//					    title: that.form.title,
+//					    field:that.quareForm.type[0],
+//					    content:that.form.msg,
+//					    type:3,  //发布投稿：1 文章广场：2 草稿箱: 3
+//					    status:0,
+//					    img_count:1
+//					 })
+//					console.log({
+//					    title: that.form.title,
+//					    type:that.quareForm.type[0],
+//					    content:that.form.msg
+//					 });
+//					that.$post(that.saveWork, addData)
+//						.then(function (response) {
+//							console.log(response);
+////					    if(response.code==0){
+////					    	that.$message({
+////					          	message: '创建成功！',
+////					          	type: 'success'
+////					        });
+////					        that.quit();
+////					    }else{
+////					    	
+////					    }
+////						that.pageStatus = 3;
+//					 }).catch(function (error) {
+//					    console.log(error);
+//					  });
+//					  
+//					}else{
+//						that.$message.error('请选择文章类型！');
+//					}
+//				}else{
+//					that.$message.error('标题不能为空');
+//					return;
+//				}
+//				
 				that.pageStatus = 3;
 			},
 			//多选

@@ -6,10 +6,10 @@
                 <div class="query-form">
                     <div class="demand-query-type">
                         <span>类型:</span>
-                        <span :class="{demandActive:now==0}" @click="now=0">全部</span>
-                        <span :class="{demandActive:now==1}" @click="now=1">内容定制</span>
-                        <span :class="{demandActive:now==2}" @click="now=2">原创征稿</span>
-                        <span :class="{demandActive:now==3}" @click="now=3">营销分发</span>
+                        <!-- <span :class="{demandActive:now==0}" @click="now=0">全部</span>
+                        <span :class="{demandActive:now==1}" @click="now=1">内容定制</span> -->
+                        <span :class="{demandActive:now==1}" @click="now=1">原创征稿</span>
+                        <!-- <span :class="{demandActive:now==3}" @click="now=3">营销分发</span> -->
                     </div>
                 </div>
             </div>
@@ -17,14 +17,14 @@
                <div style="width:870px;">
                     <div class="demand-contanier" style=" float:left">
                         <ul class="demand-list">
-                            <li v-for='item in solicitData' >
+                            <li v-for='item in solicitData' v-if="item.is_expire==0">
                                 <div class="item-status">
                                     <span v-if="item.status!=null">{{item.status}}</span>
                                     <span>招募中</span>
                                 </div>
                                 <div class="demand-list-item-title">
                                     <div class="demand-list-title-top">
-                                        <span class="demand-title-type" v-if="item.field!=null">{{item.field}}</span>
+                                        <!-- <span class="demand-title-type" v-if="item.field!=null">{{item.field}}</span> -->
                                         <span class="demand-title-type">原创征稿</span>
                                         <span class="demand-title-name" @click="fn">{{item.price}}</span>
                                         <span>
@@ -42,24 +42,24 @@
                                         </span>
                                         <span class="title-bottom-time">
                                             报名剩余
-                                            <span class="time-active">{{item.days}}</span>
+                                            <span class="time-active">{{item.diff_day}}</span>
                                             天
-                                            <span class="time-active">12</span>
+                                            <span class="time-active">{{item.diff_day}}</span>
                                             小时
-                                            <span class="time-active">58</span>
+                                            <span class="time-active">{{item.diff_minutes}}</span>
                                             分钟
                                         </span>
-                                        <span class="user-option" @click="fn(item)">
+                                        <span class="user-option" @click="fn(item.id)">
                                             我要投稿
                                         </span>
                                     </div>
                                     <div class="cut-off"></div>
                                     <div class="demand-list-item-content">
                                         <span>{{item.content}} 2.要求字数:{{item.words}}字</span>
-                                        <p @click="fn">查看更多></p>
+                                        <p @click="fn(item.id)">查看更多></p>
                                     </div>
                                     <div class="demand-list-item-tag">
-                                        <span>文章</span>
+                                        <span>{{item.field}}</span>
                                     </div>
                                 </div>
                             </li>
@@ -109,6 +109,55 @@
     </div>
 </template>
 
+
+<script>
+import Myheader from '../../../components/header-nav-wrap'
+import MyItem from '../demand-list-item'
+export default {
+    components:{
+        Myheader,
+        MyItem
+    },
+    data:function(){
+        return{
+            a:'buyerorder',
+            now:0,
+            solicitData:[],
+            page:1,
+            pagesize:10
+        }
+    },
+    methods:{
+        getAjax:function(){
+            var self= this;
+            this.$fetch(`/api/solicit/list?page=${this.page}&pagesize=${this.pagesize}`).then(function(res){
+                console.log(res);
+                self.solicitData = res.data.list
+            }).catch(function(res){
+                console.log(res);
+            })
+        },
+        fn:function(val){
+            this.$router.push({path:'/demandHall',query:{id:val}});
+            console.log(val)
+        }
+    },
+    beforeRouteEnter:(to,form,next)=>{
+			next(vm=>{
+				vm.a = to.params.name
+			})
+        },
+    created:function(){
+        this.getAjax();
+        
+    },
+    mounted(){
+        
+        // console.log(this.solicitData);
+    }
+}
+</script>
+
 <style>
 .demand-wrap{width: 1170px;margin: 0 auto;margin-top: 105px;}
 .query-form{height: 50px;line-height: 50px;padding: 0 20px;border-radius: 2px;background: #fff;color: #64676A;margin-bottom: 19px;}
@@ -151,57 +200,3 @@
 .demand-list-item-tag {position: relative;top: -6px;}
 .demand-list-item-tag>span{display: inline-block;height: 20px;line-height: 20px;padding: 0 6px;font-size: 12px;color: #82868a;background: #F4F6F9;border-radius: 2px; margin-right: 20px;}
 </style>
-
-
-
-<script>
-import Myheader from '../../../components/header-nav-wrap'
-import MyItem from '../demand-list-item'
-export default {
-    components:{
-        Myheader,
-        MyItem
-    },
-    data:function(){
-        return{
-            a:'buyerorder',
-            now:0,
-            solicitData:[]
-        }
-    },
-    methods:{
-        getAjax:function(){
-            var self= this;
-            this.axios.get('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/solicit/list',{
-                params:{
-                    page:'1',
-                    pagesize:'5'
-                }
-            }).then(function(res){
-                // console.log(res);
-                self.solicitData = res.data.data.list
-            }).catch(function(res){
-                console.log(res);
-            })
-        },
-        fn:function(val){
-            this.$router.push({path:'/demandHall',query:{airtcle:val}});
-            console.log(val)
-        }
-    },
-    beforeRouteEnter:(to,form,next)=>{
-			next(vm=>{
-				vm.a = to.params.name
-			})
-        },
-    created:function(){
-        this.getAjax();
-        
-    },
-    mounted(){
-        
-        console.log(this.solicitData);
-    }
-}
-</script>
-
