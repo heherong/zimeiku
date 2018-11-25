@@ -118,8 +118,6 @@
 			<div>
 				<vue-ueditor-wrap v-model="form.msg" :config="myConfig"></vue-ueditor-wrap>
 			</div>
-			
-			
 			<div style="position: absolute;left: 100%;top: 170px;">
 				<el-row>
 					<el-button type="success" plain icon="el-icon-check" @click="toSave(2)">保存并返回</el-button>
@@ -128,7 +126,7 @@
 					<el-button type="success" plain icon="el-icon-check" @click="toSave(1)">保存至草稿箱</el-button>
 				</el-row>
 				<el-row>
-					<el-button type="primary" plain icon="el-icon-upload2">发稿（文章广场）</el-button>
+					<el-button type="primary" plain icon="el-icon-upload2" @click="toupload()">发稿（文章广场）</el-button>
 				</el-row>
 				<el-row>
 					<el-button type="danger" plain icon="el-icon-close" @click="quit">取消</el-button>
@@ -136,6 +134,22 @@
 			</div>
 		</div>
 		
+		<div v-if="pageStatus == 3">
+			<div class="myMoney">
+				<h4>{{form.title}}  <i class="el-icon-edit-outline"></i></h4>
+			</div>
+			<el-row>
+			  	<el-col :span="4">
+			  		<span>文章类型：</span>
+			  	</el-col>
+			  	<el-col :span="20">
+			  		<el-checkbox-group v-model="quareForm.type">
+					    <el-checkbox v-for="type in quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
+					</el-checkbox-group>
+			  	</el-col>
+			</el-row>
+		
+		</div>
 	</div>
 </template>
 
@@ -148,8 +162,8 @@
 		},
 		data() {
 			return {
-				pageStatus:1, //列表页面1 ，新建页面2
-				status:1,
+				pageStatus:3, //列表页面1 ，新建页面2,3是点击保存到文章广场之后的返回数据
+				status:1,  //列表页面的切换lab
 				getList_url: baseUrl+'article/mylist',
 				saveWork:baseUrl+'article/add',
 				curPage:1, //当前页数
@@ -190,7 +204,11 @@
 					}],
 				form:{
 					msg:'<h2>Hello World!</h2>',
-					title:''
+					title:'123'
+				},
+				quareForm:{
+					typeBox:['教育', '科学', '情感', '广告'],
+					type: ['情感' ],
 				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
@@ -305,6 +323,35 @@
 						that.$message.error('标题不能为空');
 						return;
 					}
+				}
+			},
+			//发稿到文章广场
+			toupload:function(){
+				
+				let that = this;
+				//xxxxx
+				if(that.form.title){
+					that.pageStatus = 3;
+				}else{
+					that.$message.error('标题不能为空');
+					return;
+				}
+				
+				
+			},
+			//多选
+			checkBoxs: function() {
+//				<el-checkbox-group v-model="quareForm.type">
+//					    <el-checkbox v-for="type in quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
+//					</el-checkbox-group>
+				let that = this;
+				if(that.checkboxGroup.length > 1) {
+					that.checkBoxPre = [];
+					that.checkBoxPre.push(that.checkboxGroup[1]);
+					
+					that.checkboxGroup = that.checkBoxPre;
+				} else {
+					that.checkBoxPre = that.checkboxGroup;
 				}
 			},
 			quit:function(){

@@ -94,6 +94,7 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 import Myheader from '../../components/loginHeader'
 import {baseUrl} from '@/api/index.js' //注意路径
 import qs from 'qs';
+import jpg1 from '@/assets/images/1.jpg';
 export default {
     components:{
         Myheader
@@ -157,7 +158,6 @@ export default {
 		let that = this;
 		//获取Ticket
         that.toGetTicket();
-        
         console.log(that.$Cookies.get('ticket'))
 	},
     methods:{
@@ -171,50 +171,47 @@ export default {
                 	let listData = response.data.list;
                 	that.qrcode = listData.qrcode_url;
                 	// console.log(that.qrcode);
-                	that.$Cookies.set('ticket', listData.ticket,{ expires: 7 });
+                	
                 	
                 	//获取下一个接口
 					that.getStatus(listData.ticket)
                 }
 		    })
-// 			that.axios.get(that.getTicket
-// 			).then((response)=>{
-// //	                console.log(response.data);
-//              if(response.data.code==0){
-//              	let listData = response.data.data.list;
-//              	that.qrcode = listData.qrcode_url;
-//              	//获取下一个接口
-// 					setInterval(that.getStatus(listData.ticket), 1000);
-             	
-//              }
-//          }).catch((response)=>{
-//              console.log(response);
-//          })
 		},
 		//判断注册状态
 		getStatus:function(ticket_){
-            var that = this;
+            let that = this;
             
-            var data = qs.stringify({
+            let data = qs.stringify({
 			  ticket: ticket_,
 			});
 			// 获取ticket
 //			await this.axios.post(this.judgeStatus,`ticket=${ticket_}`
-			let interval_ = setInterval(judge, 1000);
-//			judge()
+			let interval_ = setInterval(judge, 3000);
 			function judge(){
-				that.axios.post(that.judgeStatus,data
+				that.$post(that.judgeStatus,data
 				).then((response)=>{
 					
-	                console.log(response.data);
-	                if(response.data.code==0){
-//	                	window.clearInterval(interval_);
+	                console.log(response);
+	                if(response.code==0){  //xxxxx
+						//保存登陆的数据
+						let userInfo = {
+							name:'herong',
+							headeImg:jpg1
+						}
+						that.$Cookies.set('token', response.data.list.token,{ expires: 7 });
+						that.$Cookies.set('userInfo', userInfo,{ expires: 7 });
+						
+	                	that.$router.push({name: 'index'});
+	                	window.clearInterval(interval_);
 	                }
 	            }).catch((response)=>{
-	                console.log(response);
+	            	debugger
+	                window.clearInterval(interval_);
+	                //重新获取ticket
+//	                that.toGetTicket();
 	            })
 			}
-			
 		},
         onSubmit:function(){
             console.log(1);
