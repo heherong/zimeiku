@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 //host 是域名 后面加接口
 //export const getUuid = () => axios.get(host + '/school/backend/login/getUuid');
 
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 10000;
 axios.defaults.baseURL = baseUrl;
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 //http request 拦截器
