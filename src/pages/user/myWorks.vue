@@ -138,17 +138,48 @@
 			<div class="myMoney">
 				<h4>{{form.title}}  <i class="el-icon-edit-outline"></i></h4>
 			</div>
-			<el-row>
-			  	<el-col :span="4">
-			  		<span>文章类型：</span>
-			  	</el-col>
-			  	<el-col :span="20">
-			  		<el-checkbox-group v-model="quareForm.type">
-					    <el-checkbox v-for="type in quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
-					</el-checkbox-group>
-			  	</el-col>
-			</el-row>
-		
+			<div>
+				<el-row>
+				  	<el-col :span="4">
+				  		<span>文章类型：</span>
+				  	</el-col>
+				  	<el-col :span="20">
+				  		<el-checkbox-group v-model="quareForm.type">
+						    <el-checkbox v-for="type in quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
+						</el-checkbox-group>
+				  	</el-col>
+				</el-row>
+				<el-row>
+				  	<el-col :span="4">
+				  		<span>关键词：</span>
+				  	</el-col>
+				  	<el-col :span="20">
+				  		<el-tag>护肤品</el-tag>
+				  	</el-col>
+				</el-row>
+				<p style="    text-align: center;color: rgb(158, 158, 158);font-size: 14px;border-bottom: dotted 1px #eaeaea;margin: 0px 0 15px 0;padding-bottom: 10px;">文章原创度</p>
+				<el-row>
+					<el-col :span="3">
+						<label for=""><span class="input-must">*</span>百度原创度</span></label>
+					</el-col>
+					<el-col :span="6">
+						<el-slider v-model="form.baidu"></el-slider>
+					</el-col>
+					<el-col :span="2" style="margin-right:30px;color:#333;">
+						<p style="text-align: right;">( {{ form.baidu}} )%</p>
+					</el-col>
+					<el-col :span="3">
+						<label for=""><span class="input-must">*</span>搜狗原创度</span></label>
+					</el-col>
+					<el-col :span="6">
+						<el-slider v-model="form.sogou"></el-slider>
+					</el-col>
+					<el-col :span="2">
+						<p style="text-align: right;color:#333;">( {{ form.sogou}} )%</p>
+					</el-col>
+				</el-row>
+			</div>
+			
 		</div>
 	</div>
 </template>

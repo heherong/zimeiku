@@ -33,12 +33,12 @@
 				</el-table-column>
 				<el-table-column label="字数" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.start_at }}</span>
+						<span>{{ scope.row.words }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="图片数" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.start_at }}</span>
+						<span>{{ scope.row.img_num }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="篇数" width="90" align="center">
@@ -48,17 +48,19 @@
 				</el-table-column>
 				<el-table-column label="投稿数" align="center">
 					<template slot-scope="scope" width="70">
-						<span>{{ scope.row.price }}</span>
+						<span>0</span>
+						<!--<span>{{ scope.row.price }}</span>-->
 					</template>
 				</el-table-column>
 				<el-table-column label="采纳数" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.number }}</span>
+						<span>0</span>
+						<!--<span>{{ scope.row.number }}</span>-->
 					</template>
 				</el-table-column>
 				<el-table-column label="开始时间" width="90" align="center">
 					<template slot-scope="scope">
-						<span>{{ scope.row.start_at }}</span>
+						<span>{{ scope.row.created_at }}</span>
 					</template>
 				</el-table-column>
 				<el-table-column label="周期天数（天）" width="80" align="center">
@@ -66,11 +68,31 @@
 						<span>{{ scope.row.days }}</span>
 					</template>
 				</el-table-column>
-				<el-table-column label="状态" align="center">
+				<el-table-column label="百度原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.baidu_degree }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="搜狗原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.soguo_degree }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="360原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.threesixzero_degree }}</span>
+					</template>
+				</el-table-column>
+				<el-table-column label="综合原创度" width="80" align="center">
+					<template slot-scope="scope">
+						<span>{{ scope.row.average_degree }}</span>
+					</template>
+				</el-table-column>
+				<!--<el-table-column label="状态" align="center">
 					<template slot-scope="scope">
 						<span>{{ scope.row.status }}</span>
 					</template>
-				</el-table-column>
+				</el-table-column>-->
 				<el-table-column label="操作">
 					<template slot-scope="scope">
 						<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
@@ -308,13 +330,14 @@
 				getList:function() {
 					let that = this;
 					that.$fetch(that.getList_url+'?page='+that.curPage+'&pagesize='+that.pagesize).then((response) => {
-				        console.log(response);
-				        if(response.data.list.length > 0) {
-//							for(let i = 0; i < response.data.list.length; i++) {
-//								response.data.list[i].created_at = response.data.list[i].created_at.substring(0, 10);
-//							}
-//							that.tableData = response.data.list;
-//							that.totalNum = response.data.count;
+//				        console.log(response);
+				        if(response.data.list.data.length > 0) {
+							for(let i = 0; i < response.data.list.data.length; i++) {
+								response.data.list.data[i].created_at = response.data.list.data[i].created_at.substring(0, 10);
+							}
+							console.log(response.data.list.data,response.data.list.total);
+							that.tableData = response.data.list.data;
+							that.totalNum = response.data.list.total;
 						}
 				    })
 					
@@ -370,21 +393,7 @@
 										    soguo_degree:that.form.sogou,
 										    threesixzero_degree:that.form.b360,
 										    average_degree:that.form.bchrome,
-										  })
-										console.log({
-										    content: that.form.content,
-										    title: that.form.title,
-										    price:that.form.price,
-										    number:that.form.gaoCont,
-										    days:that.form.checkTerm*7,
-										    field:that.checkBoxPre.join(','),
-										    words:that.form.font,
-										    img_num:that.form.images,
-										    baidu_degree:that.form.baidu,
-										    soguo_degree:that.form.sogou,
-										    threesixzero_degree:that.form.b360,
-										    average_degree:that.form.bchrome,
-										  })
+										 })
 										that.$post(that.addRequest, addData)
 										  .then(function (response) {
 //										  	console.log(response);
