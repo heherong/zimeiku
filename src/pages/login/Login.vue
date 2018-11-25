@@ -93,6 +93,7 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 
 import Myheader from '../../components/loginHeader'
 import {baseUrl} from '@/api/index.js' //注意路径
+import qs from 'qs';
 export default {
     components:{
         Myheader
@@ -165,18 +166,17 @@ export default {
 			let that = this;
 			//获取ticket
 			that.$fetch(that.getTicket).then((response) => {
-			        // console.log(response);
-			        if(response.code==0){
-	                	let listData = response.data.list;
-	                	that.qrcode = listData.qrcode_url;
-	                	// console.log(that.qrcode);
-	                	that.$Cookies.set('ticket', listData.ticket,{ expires: 7 });
-	                	
-	                	//获取下一个接口
-						setInterval(that.getStatus(listData.ticket), 1000);
-	                	
-	                }
-			    })
+		        // console.log(response);
+		        if(response.code==0){
+                	let listData = response.data.list;
+                	that.qrcode = listData.qrcode_url;
+                	// console.log(that.qrcode);
+                	that.$Cookies.set('ticket', listData.ticket,{ expires: 7 });
+                	
+                	//获取下一个接口
+					that.getStatus(listData.ticket)
+                }
+		    })
 // 			that.axios.get(that.getTicket
 // 			).then((response)=>{
 // //	                console.log(response.data);
@@ -192,15 +192,29 @@ export default {
 //          })
 		},
 		//判断注册状态
-		async getStatus(ticket_){
-            var self = this;
+		getStatus:function(ticket_){
+            var that = this;
+            
+            var data = qs.stringify({
+			  ticket: ticket_,
+			});
 			// 获取ticket
-			await this.axios.post(this.judgeStatus,`ticket=${ticket_}`
-			).then((response)=>{
-                console.log(response.data);
-            }).catch((response)=>{
-                console.log(response);
-            })
+//			await this.axios.post(this.judgeStatus,`ticket=${ticket_}`
+			let interval_ = setInterval(judge, 1000);
+//			judge()
+			function judge(){
+				that.axios.post(that.judgeStatus,data
+				).then((response)=>{
+					
+	                console.log(response.data);
+	                if(response.data.code==0){
+//	                	window.clearInterval(interval_);
+	                }
+	            }).catch((response)=>{
+	                console.log(response);
+	            })
+			}
+			
 		},
         onSubmit:function(){
             console.log(1);
