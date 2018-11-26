@@ -12,6 +12,7 @@ import ShoppingCart from '../pages/shoppingCart/main/shopping'
 import ContentBank from '@/pages/contentBank/main/ContentBank'
 import demandHall from '@/pages/demandHall/main/demandHall'
 import Pay from '../pages/pay/pay'
+import Registeragreement from '../pages/registeragreement/registeragreement'
 
 //帮助中心二级路由
 import Platform from '@/pages/help/children/platform'
@@ -107,6 +108,11 @@ export default new Router({
         {path:'auditstandards',component:Auditstandards},
         {path:'paymentsettlement',component:Paymentsettlement}
       ]
+    },
+    {
+      path:'/registeragreement',
+      name:'registeragreement',
+      component:Registeragreement
     }
   ]
 })

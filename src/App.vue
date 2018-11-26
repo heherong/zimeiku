@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-cloak>
     <div style="">
       <router-view/>
     </div>
@@ -13,7 +13,7 @@ import Myfooter from './components/Footer.vue'
 export default {
   name: 'App',
   components:{
-    
+
     Myfooter
   },
   
@@ -22,6 +22,9 @@ export default {
 
 <style>
 @import url('assets/css/react.css');
+[v-cloak] {
+  display: none;
+}
 #app{height: 100%;}
 a:hover{text-decoration: none;}
 a:visited{color:#282B00}

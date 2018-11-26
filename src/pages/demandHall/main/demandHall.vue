@@ -102,18 +102,6 @@
                                     </el-col>
                                 </el-row>
                             </el-form-item>
-                            <el-form-item>
-                                <el-row>
-                                    <el-col :span="4">
-                                        <span>文章类型：</span>
-                                    </el-col>
-                                    <el-col :span="20">
-                                        <el-checkbox-group v-model="form.quareForm.type">
-                                            <el-checkbox v-for="type in form.quareForm.typeBox" :label="type" :key="type"  @change="checkBoxs">{{type}}</el-checkbox>
-                                        </el-checkbox-group>
-                                    </el-col>
-                                </el-row>
-                            </el-form-item>
                             
                             <!--投稿内容-->
                             <div style="padding: 10px;margin-bottom:30px;">
@@ -123,6 +111,14 @@
                                 <el-button @click="quit">取消</el-button>
                                 <el-button type="primary" @click="onSubmit">提交投稿</el-button>
                             </el-form-item>
+                            <!-- 弹出框 -->
+                            <el-dialog title="文章检测" :visible.sync="airtcleDia">
+                                    {{airtcleDiaForm}}
+                                    <div class="margin:20px auto;text-align:center">
+                                        <el-button @click="airtcleDia=false">返回</el-button>
+                                        <el-button type="primary" @click="tougao">投稿</el-button>
+                                    </div>
+                            </el-dialog>
                         </el-form>
                     </div>
                 </div>
@@ -225,8 +221,8 @@
                     <div class="submit-pay">
                         <div>
                             <i>
-                                ￥15
-                                <span class="unm-unit" style="color:#82868A">/篇</span>
+                                ￥{{airtcleCon.price}}
+                                <span class="unm-unit" style="color:#82868A">元/篇</span>
                             </i>
                         </div>
                         <span @click="shade()">
@@ -294,7 +290,7 @@
                         </el-table>
                         <el-row>
                             <div style="margin:0 auto;text-align:center;margin-top:25px;">
-                                <el-button @click="tougao">投稿</el-button>
+                                <el-button @click="tougao" :disabled='disabled'>投稿</el-button>
                                 <el-button type="primary" @click="status = 2">新建稿件</el-button>
                             </div>
                         </el-row>
@@ -360,17 +356,15 @@ export default {
                 //文章详情页的值
                 solicit_id:this.$route.query.id,
                 //文章详情页
-                airtcleCon:'',
+                airtcleCon:[],
                 //对话框
                 dialogTableVisible:false,
+                airtcleDia:false,
+                airtcleDiaForm:'',
+                disabled:true,
                 form: {
                         title: '',
                         content:'<h2>Hello World!</h2>' ,
-                        quareForm:{
-                            typeBox:['教育', '科学', '情感', '广告'],
-                            type: ['情感' ],
-                            checkBoxPre:[], //默认保存选一个
-                        },
                     },
                     myConfig: {
                         // 如果需要上传功能,找后端小伙伴要服务器接口地址
@@ -409,17 +403,20 @@ export default {
     },
     created:function(){
         var self = this;
-        this.SubmitRecords()
+        this.SubmitRecords();
         this.$fetch(`/api/solicit/info?solicit_id=${this.solicit_id}`).then(function(res){
-            self.airtcleCon = res.data.list;
+            self.airtcleCon= res.data.list;
             console.log(self.airtcleCon);
             
         }).catch(function(res){
             console.log(res)
         })
     },
+    beforeCreate(){
+        
+    },
     mounted(){
-        console.log(this.airtcleCon)
+        // console.log(this.airtcleCon)
     },
     methods:{
         //对话框
@@ -427,25 +424,27 @@ export default {
             this.dialogTableVisible =true
 
         },
+        //投稿
         tougao(){
             console.log(this.multipleSelection);
+            this.disabled = false
+            let data = qs.stringify({
+              solicit_id:this.solicit_id,article_id:4
+			});
+            this.axios.post('/api/solicit/add_article',data,
+            
+            ).then(function(res){
+                console.log(res);
+            }).catch(function(res){
+                console.log(res);
+            })
         },
+        //草稿箱多选
         handleSelectionChange(val) {
             this.multipleSelection = val;
+            this.disabled = false
             for(var i=0;i<val.length;i++){
                 console.log(val[i].date);
-            }
-        },
-        //多选
-        checkBoxs: function() {
-            let that = this;
-            if(that.form.quareForm.type.length > 1) {
-                that.checkBoxPre = [];
-                that.checkBoxPre.push(that.form.quareForm.type[1]);
-                
-                that.form.quareForm.type = that.checkBoxPre;
-            } else {
-                that.checkBoxPre = that.form.quareForm.type;
             }
         },
         //投稿记录
@@ -468,15 +467,27 @@ export default {
         },
         //切换至新建稿件
         onSubmit(){
-            let data = qs.stringify({
-              solicit_id:this.solicit_id,article_id:1
-			});
-            this.axios.post('/api/solicit/add_article',data
-            ).then(function(res){
-                console.log(res);
-            }).catch(function(res){
-                console.log(res);
-            })
+            let self = this;
+            
+            if(self.form.title!=''){
+                
+                if(self.form.type.length >= 1){
+                    
+                    this.$post('/api/article/check',`content=${this.form.content}`).then(function(res){
+                        self.airtcleDia = true
+                        self.airtcleDiaForm = res.data.list;
+                        console.log(res);
+                        console.log(self.airtcleDiaForm);
+                    }).catch(function(res){
+                        console.log(res);
+                    })
+                }else{
+                    self.$message.error('请选择文章类型！');
+                }
+            }else{
+                self.$message.error('标题不能为空');
+				return;
+            }
             
         },
         //返回

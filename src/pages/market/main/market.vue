@@ -113,10 +113,10 @@
                                 <span class="item-label">
                                     <span class="work-label">高频词：</span>
                                     <span class="work-con" >
-                                        <span v-for="item in item.words_count" v-if="item.words_count!=null">
+                                        <!-- <span v-for="item in item.words_count" v-if="item.words_count!=null">
                                             {{item}}<span class="work-label"> | </span>
-                                        </span>
-                                        <span v-else>
+                                        </span> -->
+                                        <span>
                                             女人<span class="work-label" > | </span>
                                             恨嫁<span class="work-label"> | </span>
                                             女追男<span class="work-label"> | </span>
@@ -152,7 +152,7 @@
                         <div style="clear:both;"></div>
                     </li>
                     <!-- 撑高度用的假数据 -->
-                    <li v-for="(item , index) in data.list">
+                    <li v-for="(item , index) in data">
                         <div class="img-box">
                             <router-link to='/ContentBank' target="_blank">
                                 <img :src="item.img_count" alt="" style="width:100%;" v-if="!(item.img_count=='' || item.img_count == null)">
@@ -213,10 +213,10 @@
                                 <span class="item-label">
                                     <span class="work-label">高频词：</span>
                                     <span class="work-con" >
-                                        <span v-for="item in item.words_count" v-if="item.words_count!=null">
-                                            {{item}}<span class="work-label"> | </span>
-                                        </span>
-                                        <span v-else>
+                                        <!-- <span v-for="items in item.words_count" v-if="item.words_count!=null">
+                                            {{items}}<span class="work-label"> | </span>
+                                        </span> -->
+                                        <span>
                                             女人<span class="work-label" > | </span>
                                             恨嫁<span class="work-label"> | </span>
                                             女追男<span class="work-label"> | </span>
@@ -313,9 +313,9 @@ export default {
         getAjax:function(){
             let self =this;
             self.$fetch(`/api/fields/list`,).then(function(res){
-                self.infoType = res.data;
+                self.infoType = res.data.list;
                 self.totalNum = res.data.list.total;
-                // console.log(res)
+                console.log(res)
             }).catch(function(res){
                 console.log(res);
             })

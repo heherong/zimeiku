@@ -25,7 +25,7 @@
 							</div>
 							<div class="register-bot-wrap">
 								<el-checkbox v-model="agree">
-									请勾选阅读并同意 <span class="register-login">《陶梦用户服务协议》</span>
+									请勾选阅读并同意 <span class="register-login" @click="agreement">《陶梦用户服务协议》</span>
 								</el-checkbox>
 								<span class="register-login" @click="loginFoget()">
 	                                登录
@@ -228,6 +228,9 @@
 						that.getStatus(listData.ticket)
 	                }
 			    })
+			},
+			agreement(){
+				this.$router.push('/registeragreement')
 			},
 			//判断注册状态
 			getStatus:function(ticket_){
