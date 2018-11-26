@@ -413,6 +413,7 @@
 				if(that.form.title){
 					if(that.quareForm.type.length>0){
 						//掉接口 post xxxxx
+					
 					let addData = qs.stringify({
 					    title: 1,
 					    field:1,
@@ -422,11 +423,14 @@
 					    img_count:1
 					 })
 					console.log({
-					    title: that.form.title,
-					    type:that.quareForm.type[0],
-					    content:that.form.msg
+					    title: 1,
+					    field:1,
+					    content:that.form.msg,
+					    type:3,  //发布投稿：1 文章广场：2 草稿箱: 3
+					    status:0,
+					    img_count:1
 					 });
-					that.axios.post(that.saveWork, addData)
+					that.$post(that.saveWork, addData)
 						.then(function (response) {
 							console.log(response);
 //					    if(response.code==0){
