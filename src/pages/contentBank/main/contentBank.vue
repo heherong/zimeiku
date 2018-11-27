@@ -6,13 +6,13 @@
             <div style="position: relative; height: 100%;">
                 <article class="article-detail">
                     <div class="article-title">
-                        <div class="title-desc">如何引导小孩</div>
+                        <div class="title-desc">{{article.title}}</div>
                         <div class="title-detail">
                             <span class="">
-                                分类: <span style="title-detail-sp">孕产/育儿</span>
+                                分类: <span style="title-detail-sp">{{article.category}}</span>
                             </span>
                             <span class="">
-                                陶梦指数: <span style="title-detail-sp">65.3</span>
+                               自媒库指数: <span style="title-detail-sp">{{article.average_degree}}</span>
                             </span>
                             <span class="">
                                 信息量: <span style="title-detail-sp">562字</span>
@@ -21,32 +21,32 @@
                                 浏览量: <span style="title-detail-sp">1000</span>
                             </span>
                             <span class="">
-                                时间: <span style="title-detail-sp">2018-10-30 20:40:57</span>
+                                时间: <span style="title-detail-sp">{{article.solicit_at}}</span>
                             </span>
                         </div>
                     </div>
                     <div class="article-detail-slice slice-hidden">
                         
-                           从第一个儿子出生，大家都围着团团转，当然我没太多去管他，基本上都是老人家带到大的，感觉我很愧疚于他，他现在跟同龄人相比，他还差好远，不会自己拉尿，不是很独立的吃饭，不怎么会说话，跳舞也不会，画画也不会......，然而老大已经是四岁了。与老二相比，老二的独立性可强了，他会自己吃饭，会学炒菜，会拿着拖把，会自己一个人睡觉，会说尿尿了，会拿着钥匙开门......不过老二才两岁，相差甚远，这也不能怪老人家，老人家帮我们带是一种好意。当然现在我已经把老大接手过来了，已经快半年了，慢慢的也改变了很多，以前老大跟班里的同学都是不合群的，而且攻击性很强，现在老大已经好很多了，会跟同学一起玩了，不会像以前那样在班级里面跑来跑去了。所以看到这些我都很欣慰。他在进步。因为这段时间都在陪伴老大，慢慢的把老二疏远了，所以老二也没怎么在进步了。    
+                           {{article.content}}
                 
                     </div>
                     <div class="not-publish">
-                        <p style="color:#82868a;font-size:12px;line-height: 30px;margin-top: 20px;">为了保证版权安全,仅显示50%内容,购买后可查看全文且拥有该作品的著作权</p>
-                        <button class="btn" style="cursor:pointer;">立即购买</button>
+                        <p style="color:#82868a;font-size:12px;line-height: 30px;margin-top: 20px;">为了保证版权安全,仅显示20%内容,购买后可查看全文且拥有该作品的著作权</p>
+                        <button class="btn" style="cursor:pointer;" @click="pay()">立即购买</button>
                         <div class="publish-hot">
                             <span>
                                 高频词:
                                 <span style="color:#303132;">
-                                    小孩
+                                    {{article.keywords}}
+                                    <span class="work-label"> | </span>
+                                    <!-- 小孩
                                     <span class="work-label"> | </span>
                                     小孩
                                     <span class="work-label"> | </span>
                                     小孩
                                     <span class="work-label"> | </span>
                                     小孩
-                                    <span class="work-label"> | </span>
-                                    小孩
-                                    <span class="work-label"> | </span>
+                                    <span class="work-label"> | </span> -->
                                 </span>
                             </span>
                         </div>
@@ -71,7 +71,7 @@
                     <div class="author-desc">
                         <img src="http://cdn.yuanrongbank.com/3781/1539579564341/12123.jpg" alt="" class="author-img">
                         <div class="author-name" style="width:100%;">
-                            一颗执着的心 
+                            {{article.author_id}} 
                         </div>
                         <div class="author-article">
                             <dl>
@@ -111,7 +111,8 @@
                     图文热词
                 </h3>
                 <div class="hot-word">
-                    <div style="position: relative; overflow: hidden; width: 600px; height: 200px;">
+                    <div style="position: relative; overflow: hidden; width: 600px; height: 200px;" id="echarts-main">
+                        
                             <img src="../../../assets/images/1.png" alt="">
                     </div>
                 </div>
@@ -124,7 +125,7 @@
                         换一批
                     </span>
                 </h3>
-                <div class="similar_list">
+                <!-- <div class="similar_list">
                     <ul>
                         <Item :bol='false'></Item>
                         <Item :bol='false'></Item>
@@ -133,7 +134,7 @@
                         <Item :bol='false'></Item>
                         <Item :bol='false'></Item>
                     </ul>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- <div class="fix-buy">
@@ -157,6 +158,196 @@
         </div> -->
     </div>
 </template>
+
+
+
+<script>
+import Item from '../../market/ContentListItem'
+import Myheader from '../../../components/header-nav-wrap'
+import Echarts from 'echarts'
+import EchartsWordCloud from 'echarts-wordcloud'
+
+export default {
+    components:{
+        Item  ,
+        Myheader
+    },
+    data:function(){
+        return {
+            a:'market',
+            article:''
+            }
+    },
+    methods:{
+        back:function(){
+            this.$router.go(-1)
+        },
+        //EchartsWordCloud
+        EchartsWordCloudfn(){
+            var self = this;
+            var chart = Echarts.init(document.getElementById('echarts-main'));
+            chart.setOption({
+                series: [{
+                    type: 'wordCloud',
+                    left: 'center',
+                    top: 'center',
+                    width: '70%',
+                    height: '80%',
+                    right: null,
+                    bottom: null,
+                    sizeRange: [12, 60],
+                    rotationRange: [-90, 90],
+                    rotationStep: 45,
+                    gridSize: 8,
+                    drawOutOfBound: false,
+                    textStyle: {
+                        normal: {
+                            fontFamily: 'sans-serif',
+                            fontWeight: 'bold',
+                        },
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowColor: '#333'
+                        }
+                    },
+                    data: [ {
+                            name: "Macys",
+                            value: 6181,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Amy Schumer",
+                            value: 4386,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Jurassic World",
+                            value: 4055,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Charter Communications",
+                            value: 2467,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Chick Fil A",
+                            value: 2244,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Planet Fitness",
+                            value: 1898,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Pitch Perfect",
+                            value: 1484,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Express",
+                            value: 1112,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Home",
+                            value: 965,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Johnny Depp",
+                            value: 847,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Lena Dunham",
+                            value: 582,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Lewis Hamilton",
+                            value: 555,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "KXAN",
+                            value: 550,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Mary Ellen Mark",
+                            value: 462,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Farrah Abraham",
+                            value: 366,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Rita Ora",
+                            value: 360,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Serena Williams",
+                            value: 282,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "NCAA baseball tournament",
+                            value: 273,
+                            itemStyle: self.createRandomItemStyle()
+                        },
+                        {
+                            name: "Point Break",
+                            value: 265,
+                            itemStyle: self.createRandomItemStyle()
+                        }]
+                }]
+            })
+        },
+        pay(){
+            this.$router.push({path:'/pay',query:{id:this.article.id}})
+        },
+        market:function(){
+            this.$router.push('/market')
+        },
+        getAjax(){
+            var self= this;
+            this.axios.get(`/api/article/info?article_id=${self.$route.query.id}`).then(function(res){
+                console.log(res);
+                self.article = res.data.data.list
+                console.log(self.article);
+            }).catch(function(){
+                console.log(res);
+            })
+        },
+        //生成16进制随机颜色
+        createRandomItemStyle() {
+            return {
+                normal: {
+                    color: 'rgb(' + [
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160),
+                        Math.round(Math.random() * 160)
+                    ].join(',') + ')'
+                }
+            }
+        }
+    },
+    beforeRouteEnter:(to,form,next)=>{
+        next(vm=>{
+            vm.a = form.params.name
+        })
+    },
+    mounted:function(){
+        this.getAjax();
+        this.EchartsWordCloudfn();
+    },
+}
+</script>
 
 <style >
 .content{width: 1170px;margin: 0 auto;height: 100%;margin-top:105px;}
@@ -207,41 +398,5 @@
 .similar_list ul li>.works-info-wrap{width:534px;}
 .similar_list ul li .works-info-wrap .works-time>.work-author{widht:auto;}
 </style>
-
-<script>
-import Item from '../../market/ContentListItem'
-import Myheader from '../../../components/header-nav-wrap'
-export default {
-    components:{
-        Item  ,
-        Myheader
-    },
-    data:function(){
-        return {a:'market'}
-    },
-    methods:{
-        back:function(){
-            this.$router.go(-1)
-        },
-        fn:function(){
-            this.$router.push('/market')
-        },
-        getAjax(){
-            this.axios.get
-        }
-    },
-    beforeRouteEnter:(to,form,next)=>{
-        next(vm=>{
-            vm.a = form.params.name
-        })
-    },
-    mounted:function(){
-        
-    },
-    created:function(){
-
-    }
-}
-</script>
 
 

@@ -11,7 +11,9 @@ import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Cookies from 'js-cookie'
-import qs from 'qs'
+
+
+
 Vue.use(VueAxios,axios);
 
 import {post,fetch,patch,put} from './api/http'

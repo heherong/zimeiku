@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "echarts": "^4.2.0-rc.2",
+    "echarts-wordcloud": "^1.1.3",
     "element-ui": "^2.4.9",
     "js-cookie": "^2.2.0",
     "qs": "^6.5.2",

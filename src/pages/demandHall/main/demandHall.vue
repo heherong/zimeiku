@@ -76,6 +76,10 @@
                                 <span>字数要求:</span>
                                 <span>{{airtcleCon.words}}</span>
                             </li>
+                            <li>
+                                <span>图片要求:</span>
+                                <span>{{airtcleCon.img_num}}张/篇</span>
+                            </li>
                             <li class="create-require">
                                 <span>创作要求:</span>
                                 <span style="line-height: 30px;">{{airtcleCon.content}}</span>
@@ -109,16 +113,16 @@
                             </div>
                             <el-form-item style="text-align: center;">
                                 <el-button @click="quit">取消</el-button>
-                                <el-button type="primary" @click="onSubmit">提交投稿</el-button>
+                                <el-button type="primary" @click="tougao"  :loading="tougaoloading">提交投稿</el-button>
                             </el-form-item>
                             <!-- 弹出框 -->
-                            <el-dialog title="文章检测" :visible.sync="airtcleDia">
+                            <!-- <el-dialog title="文章检测" :visible.sync="airtcleDia">
                                     {{airtcleDiaForm}}
                                     <div class="margin:20px auto;text-align:center">
                                         <el-button @click="airtcleDia=false">返回</el-button>
                                         <el-button type="primary" @click="tougao">投稿</el-button>
                                     </div>
-                            </el-dialog>
+                            </el-dialog> -->
                         </el-form>
                     </div>
                 </div>
@@ -230,11 +234,14 @@
                         </span>
                         
                     </div>
-                    <el-dialog title="原创度" :visible.sync="dialogTableVisible" center>
+                    <el-dialog title="你符合标准的文章" :visible.sync="dialogTableVisible" center>
                         <el-table :data="caogaoform" style="width: 100%" @selection-change="handleSelectionChange">>
                             <el-table-column
                             type="selection"
                             width="55">
+                            <template slot="empty">
+                                <span>征稿不存在</span>
+                            </template>
                             </el-table-column>
                             <el-table-column type="index" width="60" label="序号" align="center"></el-table-column>
                             <el-table-column label="标题" width="100">
@@ -297,10 +304,14 @@
                     </el-dialog>
                 </div>
                 <div class="container-table">
+                    
                     <el-table
                         :data="SubmitRecordsData"
                         style="width: 100%"
                         max-height="250">
+                        <template slot="empty">
+                            <span>征稿不存在</span>
+                        </template>
                         <el-table-column
                         fixed
                         prop="created_at"
@@ -362,6 +373,7 @@ export default {
                 airtcleDia:false,
                 airtcleDiaForm:'',
                 disabled:true,
+                tougaoloading:false,
                 form: {
                         title: '',
                         content:'<h2>Hello World!</h2>' ,
@@ -381,60 +393,58 @@ export default {
                         enableAutoSave: false
                     },
                     //对话框的表格
-                    caogaoform :[{
-                        date: '2016-05-02',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                        }, {
-                        date: '2016-05-04',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                        }, {
-                        date: '2016-05-01',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                        }, {
-                        date: '2016-05-03',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                        }],
+                    caogaoform :[],
                     multipleSelection:[]
                 }
     },
     created:function(){
-        var self = this;
-        this.SubmitRecords();
-        this.$fetch(`/api/solicit/info?solicit_id=${this.solicit_id}`).then(function(res){
-            self.airtcleCon= res.data.list;
-            console.log(self.airtcleCon);
-            
-        }).catch(function(res){
-            console.log(res)
-        })
+        
     },
     beforeCreate(){
         
     },
     mounted(){
-        // console.log(this.airtcleCon)
+        // console.log(this.airtcleCon);
+        this.SubmitRecords();
+        this.details();
     },
     methods:{
         //对话框
         shade(){
             this.dialogTableVisible =true
-
+            this.fitArticle()
+        },
+        details(){
+            let self = this;
+            this.$fetch(`/api/solicit/info?solicit_id=${self.solicit_id}`).then(function(res){
+            self.airtcleCon= res.data.list;
+            console.log(self.airtcleCon);
+            }).catch(function(res){
+                console.log(res)
+            })
         },
         //投稿
         tougao(){
-            console.log(this.multipleSelection);
+            this.tougaoloading = true
             this.disabled = false
+            let self = this;
             let data = qs.stringify({
-              solicit_id:this.solicit_id,article_id:4
+              solicit_id:self.solicit_id,title:self.form.title,content:self.form.content,type:1,field:self.airtcleCon.field,status:0
 			});
             this.axios.post('/api/solicit/add_article',data,
             
             ).then(function(res){
                 console.log(res);
+                if(res.data.code == 10000){
+                    self.$message.error(res.data.msg)
+                    self.tougaoloading = false
+                }else if(res.data.code == 0){
+                    self.$message({
+                        message: '投稿成功',
+                        type: 'success'
+                    });
+                    this.tougaoloading = false
+                }
             }).catch(function(res){
                 console.log(res);
             })
@@ -450,14 +460,21 @@ export default {
         //投稿记录
         SubmitRecords(){
             var self = this;
-            this.axios.get('/api/solicit/list',{
-            params:{
-            }
-            }).then(function(res){
-                // console.log(res);
+            this.axios.get(`/api/solicit/record?solicit_id=${self.solicit_id}`).then(function(res){
+                console.log(res);
                 self.SubmitRecordsData = res.data.data.list;
             }).catch(function(res){
                 console.log(res);
+            })
+        },
+        //符合征稿的表格
+        fitArticle(){
+            let self = this;
+            this.$fetch(`/api/solicit/article_list?solicit_id=${self.solicit_id}`).then(function(res){
+                console.log(res);
+                self.caogaoform = res.data.list;
+            }).catch(function(res){
+                console.log(res)
             })
         },
         //投稿记录删除当前行
@@ -466,30 +483,24 @@ export default {
             
         },
         //切换至新建稿件
-        onSubmit(){
-            let self = this;
+        // onSubmit(){
+        //     let self = this;
             
-            if(self.form.title!=''){
-                
-                if(self.form.type.length >= 1){
-                    
-                    this.$post('/api/article/check',`content=${this.form.content}`).then(function(res){
-                        self.airtcleDia = true
-                        self.airtcleDiaForm = res.data.list;
-                        console.log(res);
-                        console.log(self.airtcleDiaForm);
-                    }).catch(function(res){
-                        console.log(res);
-                    })
-                }else{
-                    self.$message.error('请选择文章类型！');
-                }
-            }else{
-                self.$message.error('标题不能为空');
-				return;
-            }
+        //     if(self.form.title!=''){
+        //             this.$post('/api/article/check',`content=${this.form.content}`).then(function(res){
+        //                 self.airtcleDia = true
+        //                 self.airtcleDiaForm = res.data.list;
+        //                 console.log(res);
+        //                 console.log(self.airtcleDiaForm);
+        //             }).catch(function(res){
+        //                 console.log(res);
+        //             })
+        //     }else{
+        //         self.$message.error('标题不能为空');
+		// 		return;
+        //     }
             
-        },
+        // },
         //返回
         quit: function() {
             this.status = 1;

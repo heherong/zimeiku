@@ -54,14 +54,14 @@
                 <ul class="original-works-list-wrap">
                     <li v-for="(item , index) in data.list">
                         <div class="img-box">
-                            <router-link to='/ContentBank' target="_blank">
+                            <!-- <router-link to='/ContentBank' target="_blank"> -->
                                 <img :src="item.img_count" alt="" style="width:100%;" v-if="!(item.img_count=='' || item.img_count == null)">
                                 <img src="../../../assets/images/1.jpg" alt="" style="width:100%;" v-else>
-                            </router-link>
+                            <!-- </router-link> -->
                         </div>
                         <div class="works-info-wrap">
                             <div class="works-info-tit-wrap">
-                                <strong @click="ContentBank()" style="cursor: pointer;">{{item.title}}</strong>
+                                <strong @click="ContentBank(item.id)" style="cursor: pointer;">{{item.title}}</strong>
                                 <span class="word-num-wrap">（1638字0图片）</span>
                             </div>
                             <div class="works-time">
@@ -152,7 +152,7 @@
                         <div style="clear:both;"></div>
                     </li>
                     <!-- 撑高度用的假数据 -->
-                    <li v-for="(item , index) in data">
+                    <!-- <li v-for="(item , index) in data">
                         <div class="img-box">
                             <router-link to='/ContentBank' target="_blank">
                                 <img :src="item.img_count" alt="" style="width:100%;" v-if="!(item.img_count=='' || item.img_count == null)">
@@ -213,9 +213,7 @@
                                 <span class="item-label">
                                     <span class="work-label">高频词：</span>
                                     <span class="work-con" >
-                                        <!-- <span v-for="items in item.words_count" v-if="item.words_count!=null">
-                                            {{items}}<span class="work-label"> | </span>
-                                        </span> -->
+                                        
                                         <span>
                                             女人<span class="work-label" > | </span>
                                             恨嫁<span class="work-label"> | </span>
@@ -250,7 +248,7 @@
                             </p>
                         </div>
                         <div style="clear:both;"></div>
-                    </li>
+                    </li> -->
                     <div style="text-align:center;">
                         <el-pagination
                             background
@@ -381,9 +379,9 @@ export default {
         pay(){
             this.$router.push('/pay');
         },
-        ContentBank:function(){
-            this.$router.push('/ContentBank')
-            console.log(1);
+        ContentBank:function(val){
+    
+            this.$router.push({path:'/ContentBank',query:{id:val}});
         },
         amend() {
             const h = this.$createElement;
