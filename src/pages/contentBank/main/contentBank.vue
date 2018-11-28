@@ -15,7 +15,7 @@
                                自媒库指数: <span style="title-detail-sp">{{article.average_degree}}</span>
                             </span>
                             <span class="">
-                                信息量: <span style="title-detail-sp">562字</span>
+                                信息量: <span style="title-detail-sp">{{article.words_count}}</span>
                             </span>
                             <span class="">
                                 浏览量: <span style="title-detail-sp">1000</span>
@@ -175,23 +175,30 @@ export default {
     data:function(){
         return {
             a:'market',
-            article:''
+            article:'',
+            WordCloud:[]
             }
     },
     methods:{
+        //返回
         back:function(){
             this.$router.go(-1)
         },
+        
         //EchartsWordCloud
-        EchartsWordCloudfn(){
+        EchartsWordCloudfn(wordcloud){
             var self = this;
+            for(var i=0;i<self.WordCloud.length;i++){
+                wordcloud[i]['itemStyle'] = self.createRandomItemStyle();
+            }
+            
             var chart = Echarts.init(document.getElementById('echarts-main'));
             chart.setOption({
                 series: [{
                     type: 'wordCloud',
                     left: 'center',
                     top: 'center',
-                    width: '70%',
+                    width: '100%',
                     height: '80%',
                     right: null,
                     bottom: null,
@@ -204,122 +211,39 @@ export default {
                         normal: {
                             fontFamily: 'sans-serif',
                             fontWeight: 'bold',
+                            color: function () {
+                                return 'rgb(' + [
+                                    Math.round(Math.random() * 160),
+                                    Math.round(Math.random() * 160),
+                                    Math.round(Math.random() * 160)
+                                ].join(',') + ')';
+                            }
                         },
                         emphasis: {
                             shadowBlur: 10,
                             shadowColor: '#333'
                         }
                     },
-                    data: [ {
-                            name: "Macys",
-                            value: 6181,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Amy Schumer",
-                            value: 4386,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Jurassic World",
-                            value: 4055,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Charter Communications",
-                            value: 2467,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Chick Fil A",
-                            value: 2244,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Planet Fitness",
-                            value: 1898,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Pitch Perfect",
-                            value: 1484,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Express",
-                            value: 1112,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Home",
-                            value: 965,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Johnny Depp",
-                            value: 847,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Lena Dunham",
-                            value: 582,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Lewis Hamilton",
-                            value: 555,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "KXAN",
-                            value: 550,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Mary Ellen Mark",
-                            value: 462,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Farrah Abraham",
-                            value: 366,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Rita Ora",
-                            value: 360,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Serena Williams",
-                            value: 282,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "NCAA baseball tournament",
-                            value: 273,
-                            itemStyle: self.createRandomItemStyle()
-                        },
-                        {
-                            name: "Point Break",
-                            value: 265,
-                            itemStyle: self.createRandomItemStyle()
-                        }]
+                    data: wordcloud
                 }]
             })
         },
+        //跳转购物车
         pay(){
             this.$router.push({path:'/pay',query:{id:this.article.id}})
         },
+        //跳转文章广场
         market:function(){
             this.$router.push('/market')
         },
-        getAjax(){
+        //文章详情页
+        async ArticleDetails(){
             var self= this;
-            this.axios.get(`/api/article/info?article_id=${self.$route.query.id}`).then(function(res){
-                console.log(res);
+            await this.axios.get(`/api/article/info?article_id=${self.$route.query.id}`).then(function(res){
+                // console.log(res);
                 self.article = res.data.data.list
-                console.log(self.article);
+                self.WordCloud = res.data.data.list.heat_map
+                self.EchartsWordCloudfn(self.WordCloud);
             }).catch(function(){
                 console.log(res);
             })
@@ -343,7 +267,7 @@ export default {
         })
     },
     mounted:function(){
-        this.getAjax();
+        this.ArticleDetails();
         this.EchartsWordCloudfn();
     },
 }

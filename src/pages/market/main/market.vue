@@ -6,7 +6,7 @@
                 <div class="condition-item">
                     <span class="tit">作品类型:</span>
                     <ul class="use-scenes" :style="{height:downm}">
-                        <li v-for="(item , index) in infoType" :class="{activeNav:nowIndex==index}" @click="nowIndex=index">{{item.name}}</li> 
+                        <li v-for="(item , index) in infoType" :class="{activeNav:nowIndex==index}" @click="changetype(index)">{{item.name}}</li> 
                     </ul>
                     <div style="float:left" v-show='true'>
                         <More @height ='fheight'></More>
@@ -138,7 +138,7 @@
                         </div>
                         <div class="works-right-wrap"  v-show="!isDisabled">
                             <p>
-                                <i class="icon-help" @click="amend"></i>
+                                <i class="icon-help"></i>
                                 <span class="price-pub">买断价:</span>
                                 <span class="price">¥{{item.money}}</span>
                             </p>
@@ -236,7 +236,7 @@
                         </div>
                         <div class="works-right-wrap"  v-show="!isDisabled">
                             <p>
-                                <i class="icon-help" @click="amend"></i>
+                                <i class="icon-help"></i>
                                 <span class="price-pub">买断价:</span>
                                 <span class="price">¥{{item.money}}</span>
                             </p>
@@ -296,7 +296,7 @@ export default {
             isDisabled:false,
             shoppingcartNum:0,
             bol:true,
-
+            
         }
     },
     beforeRouteEnter:(to,form,next)=>{
@@ -308,15 +308,20 @@ export default {
         fheight:function(val){
             this.downm = val;
         },
-        getAjax:function(){
+        //获取类型
+        gain:function(){
             let self =this;
             self.$fetch(`/api/fields/list`,).then(function(res){
                 self.infoType = res.data.list;
-                self.totalNum = res.data.list.total;
-                console.log(res)
+                
             }).catch(function(res){
                 console.log(res);
             })
+        },
+        //改变类型
+        changetype(i){
+            this.nowIndex = i
+            this.fn(this.curPage,this.pagesize);
         },
         shoppingcart(){
 
@@ -333,9 +338,11 @@ export default {
         },
         fn:function(curPage,pagesize){
             let self = this;
+            // self.$fetch(`/api/article/list?page=${curPage}&pagesize=${pagesize}&field=${self.nowIndex}`).then((response)=>{
             self.$fetch(`/api/article/list?page=${curPage}&pagesize=${pagesize}`).then((response)=>{
                 this.data=response.data;
-                console.log(this.data.list);
+                console.log(response);
+                // console.log(this.data.list);
                 if(response.data.data.list.length>0){
                     for(let i=0;i<response.data.data.list.length;i++){
                         response.data.data.list[i].created_at = response.data.data.list[i].created_at.substring(0,10);
@@ -362,7 +369,7 @@ export default {
             
             // this.$router.push('/shoppingcart')
             // let self = this;
-            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
+            // this.axios.post('/api/article/buy',{
             //     article_id:this.list.author_id
             // }).then(function(res){
             //     self.$message({
@@ -383,66 +390,9 @@ export default {
     
             this.$router.push({path:'/ContentBank',query:{id:val}});
         },
-        amend() {
-            const h = this.$createElement;
-            this.$msgbox({
-            
-            message: h('div', {style:`max-height: 415.333px;  
-                overflow-y: auto;  
-                background:url('../../assets/images/bg_content.jpg')
-                padding: 20px 30px;
-                width: 100%;
-                color: #64676a;
-                min-height: 110px;`}, [
-                h('h3', {style:'text-align:center;margin-bottom: 30px;'},'标题'),
-                h('article', { style:"line-height: 24px;"}, 'msg '),
-                h('div', { style: `background-color: #f9f9f9;
-                    border: 1px dashed #9e9e9e;
-                    color: #4895e7;line-height: 24px;
-                    padding: 10px;` }, 'msg'),
-                h('div',{style:'text-align:center'},[
-                    h('button',{style:`background-color: #4895e7;
-                        color: #fff;
-                        padding: 3px 5px;
-                        text-align: center;
-                        margin-top: 30px;
-                        padding: 10px 20px;
-                        border: none;
-                        cursor: pointer;
-                        outline: none;
-                        resize: none;`},'换一篇试试看'),
-                    h('p',{style:`padding-top: 12px;
-                        text-align: center;
-                        font-size: 12px;`})
-                ])
-            ]),
-            showCancelButton: true,
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            beforeClose: (action, instance, done) => {
-                if (action === 'confirm') {
-                instance.confirmButtonLoading = true;
-                instance.confirmButtonText = '执行中...';
-                setTimeout(() => {
-                    done();
-                    setTimeout(() => {
-                    instance.confirmButtonLoading = false;
-                    }, 300);
-                }, 3000);
-                } else {
-                done();
-                }
-            }
-            }).then(action => {
-            this.$message({
-                type: 'info',
-                message: 'action: ' + action
-            });
-            });
-        },
     },
     mounted:function(){
-        this.getAjax();
+        this.gain();
         var list = document.getElementById('p').getElementsByTagName("span");
         for(var i = 0; i < list.length; i++){
             (function(n){
@@ -458,6 +408,7 @@ export default {
     },
     created:function(){
         this.fn(this.curPage,this.pagesize);
+        
     }
 }
 </script>
