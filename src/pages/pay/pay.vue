@@ -166,6 +166,9 @@ export default {
             });
             });
         }
+    },
+    mounted(){
+        console.log(this.$route.params.article_ids)
     }
 }
 </script>

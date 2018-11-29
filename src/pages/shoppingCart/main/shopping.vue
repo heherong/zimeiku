@@ -11,13 +11,13 @@
                     <ul class="cart-tab-wrap">
                         <li>
                             
-                                <span :class="{cartActive:nowIndex==0}" @click="nowIndex=0">作品<i class="js-cart-author-totle " :class="{iCartActive:nowIndex==0}">[{{tableData3.length}}]</i></span>
+                                <span :class="{cartActive:nowIndex==0}" @click="nowIndex=0">作品<i class="js-cart-author-totle " :class="{iCartActive:nowIndex==0}">[{{CartForm.length}}]</i></span>
                             
                         </li>
                         <li>
                             
                                 <span :class="{cartActive:nowIndex==1}" @click="nowIndex=1">创作者<i class="js-cart-author-totle" :class="{iCartActive:nowIndex==1}">[{{Allnum}}]</i></span>
-                            
+                               
                         </li>
                     </ul>
                     <div class="cart-tab-rt-wrap">
@@ -49,7 +49,7 @@
                     <div class="cart-article-wrap">
                         <el-table
                             ref="multipleTable"
-                            :data="tableData3"
+                            :data="CartForm"
                             tooltip-effect="dark"
                             style="width: 100%"
                             @selection-change="selsChange"
@@ -94,7 +94,7 @@
                             width="120">
                             <template slot-scope="scope">
                                 <el-button
-                                @click.native.prevent="deleteNowRow(scope.$index, tableData3)"
+                                @click.native.prevent="deleteNowRow(scope.$index, CartForm)"
                                 type="text"
                                 size="small">
                                 移除
@@ -102,10 +102,16 @@
                             </template>
                             </el-table-column>
                         </el-table>
+                        <div style="text-align:center;margin-top:35px;">
+                            <el-pagination
+                                layout="prev, pager, next"
+                                :total="totalNum">
+                            </el-pagination>
+                        </div>
                     </div>
                     <div class="cart-bottom">
                         <div class="cart-bottom-le">
-                            <el-button @click="toggleSelection(tableData3)">全选</el-button>
+                            <el-button @click="toggleSelection(CartForm)">全选</el-button>
                             <el-button @click='deleteRow()'>删除选中作品</el-button>
                             <el-button @click='setCurrent()' disabled>清空失效作品</el-button>
                             <!-- <el-button @click='setCurrent()'>导出选中作品</el-button> -->
@@ -176,7 +182,7 @@ export default {
         price:[],
         already:0,
         never:0,
-        tableData3: [{
+        CartForm: [{
             date: '2016-05-03',
             name: '王小虎',
             price: '1',
@@ -213,7 +219,7 @@ export default {
             article_id:8976
             }],
             article_ids:[],
-            a:''
+            totalNum:0
         }
     },
     computed:{
@@ -238,7 +244,13 @@ export default {
             var self = this;
             this.$post('/api/cart/list').then(function(res){
                 console.log(res);
-
+                if(res.data.list.length>0){
+                    for(let i=0;i<res.data.list.length;i++){
+                        res.data.list[i].created_at = res.data.list[i].created_at.substring(0,10);
+                    }
+                    self.totalNum = res.data.count;
+                    self.CartForm = res.data.list;
+                }
             }).catch(function(res){
                 console.log(res);
             })
@@ -258,10 +270,13 @@ export default {
             this.$refs.multipleTable.clearSelection();
             }
         },
+        //删除购物车
         CartDel(article_ids){
-            this.axios.post('/api/cart/del', `article_id=${article_ids}`).then((response)=>{
-                // this.tableData3=response;
-                self.a = response;
+            this.axios.post('/api/cart/del', `article_id=${article_ids}`).then((res)=>{
+                
+                console.log(res)
+                self.CartForm = res.data.data.list;
+                console.log(self.CartForm);
             }).catch((response)=>{
                 console.log(response);
             })
@@ -275,7 +290,7 @@ export default {
             //         article_id:row
             //     }
             // }).then((response)=>{
-            //     this.tableData3=response;
+            //     this.CartForm=response;
                 
             // }).catch((response)=>{
             //     console.log(response);
@@ -289,25 +304,12 @@ export default {
                 article_id[i] = this.price[i].article_id
             }
             console.log(article_id)
-            CartDel(article_id)
+            this.CartDel(article_id)
         },
         // 批量购买
          buy(){
-        //     let self = this;
-        //     this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
-
-        //         article_id:self.article_id
-        //     }).then(function(res){
-        //         self.$message({
-        //             message:res.data.msg,
-        //              type: 'success'
-        //         });
-        //         if(res.data.msg=='购买成功'){
-        //             self.isDisabled = true;
-        //         }
-        //     }).catch(function(res){
-        //         console.log(res)
-        //     })
+            let self = this;
+            this.$router.push({path:'/pay',query:{article_ids:this.article_ids}})
          },
     },
     mounted(){
