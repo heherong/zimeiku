@@ -94,7 +94,7 @@
                             width="120">
                             <template slot-scope="scope">
                                 <el-button
-                                @click.native.prevent="deleteRow(scope.$index, tableData3)"
+                                @click.native.prevent="deleteNowRow(scope.$index, tableData3)"
                                 type="text"
                                 size="small">
                                 移除
@@ -212,6 +212,8 @@ export default {
             price: '7',
             article_id:8976
             }],
+            article_ids:[],
+            a:''
         }
     },
     computed:{
@@ -231,6 +233,16 @@ export default {
         }
     },
     methods:{
+        //购物车列表
+        Cartlist(){
+            var self = this;
+            this.$post('/api/cart/list').then(function(res){
+                console.log(res);
+
+            }).catch(function(res){
+                console.log(res);
+            })
+        },
         //获取选中状态的值
         selsChange(val){
 			this.price=val;
@@ -246,9 +258,17 @@ export default {
             this.$refs.multipleTable.clearSelection();
             }
         },
+        CartDel(article_ids){
+            this.axios.post('/api/cart/del', `article_id=${article_ids}`).then((response)=>{
+                // this.tableData3=response;
+                self.a = response;
+            }).catch((response)=>{
+                console.log(response);
+            })
+        },
         //删除当前行
-        deleteRow(index, rows) {
-            // rows.splice(index, 1);
+        deleteNowRow(index, rows) {
+            rows.splice(index, 1);
             // let row = rows
             // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
             //     params:{
@@ -263,16 +283,13 @@ export default {
         },
         //批量删除
         deleteRow() {
-            // this.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/list',{
-            //     params:{
-            //         article_id:this.article_id
-            //     }
-            // }).then((response)=>{
-            //     this.tableData3=response;
-                
-            // }).catch((response)=>{
-            //     console.log(response);
-            // })
+            let article_id = [];
+            var self = this;
+            for(var i =0;i<this.price.length;i++){
+                article_id[i] = this.price[i].article_id
+            }
+            console.log(article_id)
+            CartDel(article_id)
         },
         // 批量购买
          buy(){
@@ -292,6 +309,9 @@ export default {
         //         console.log(res)
         //     })
          },
+    },
+    mounted(){
+        this.Cartlist();
     }
 }
 </script>

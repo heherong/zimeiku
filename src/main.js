@@ -31,20 +31,6 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
-//路由拦截
-// router.beforeEach((to, from, next) => {
-//   //判断是否登录
-//   const loggin_in = false;
-//   if(to.name!=='/login'){
-//     console.log(to)
-//     if(token){
-//       next();
-
-//     }else{
-//       next('/login');
-//     }
-//   }
-// })
 
 /* eslint-disable no-new */
 new Vue({
