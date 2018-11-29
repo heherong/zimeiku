@@ -1,7 +1,42 @@
 import axios from 'axios'
-import {baseUrl} from '@/api/index'
-import { Message } from 'element-ui';
+import { baseUrl } from '@/api/index'
+import { Message, Loading } from 'element-ui';
+import router from '@/router/index'
 import Cookies from 'js-cookie'
+/**
+ *公共加载方法 
+ */
+let loading //定义loading变量
+function startLoading(content) { //使用Element loading-start 方法
+	loading = Loading.service({
+		lock: true,
+		text: content ? content : '加载中……',
+		background: 'rgba(0, 0, 0, 0.7)'
+	})
+}
+
+function endLoading() { //使用Element loading-close 方法
+	loading.close()
+}
+
+//那么 showFullScreenLoading() tryHideFullScreenLoading() 要干的事儿就是将同一时刻的请求合并。
+//声明一个变量 needLoadingRequestCount，每次调用showFullScreenLoading方法 needLoadingRequestCount + 1。
+//调用tryHideFullScreenLoading()方法，needLoadingRequestCount - 1。needLoadingRequestCount为 0 时，结束 loading。
+let needLoadingRequestCount = 0;
+export function showFullScreenLoading() {
+	if(needLoadingRequestCount === 0) {
+		startLoading()
+	}
+	needLoadingRequestCount++
+}
+
+export function tryHideFullScreenLoading() {
+	if(needLoadingRequestCount <= 0) return
+	needLoadingRequestCount--
+	if(needLoadingRequestCount === 0) {
+		endLoading()
+	}
+}
 //host 是域名 后面加接口
 //export const getUuid = () => axios.get(host + '/school/backend/login/getUuid');
 
@@ -10,36 +45,46 @@ axios.defaults.baseURL = baseUrl;
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 //http request 拦截器
 axios.interceptors.request.use(
-  config => {
-  	
-    const token = Cookies.get('token');//注意使用的时候需要引入cookie方法，推荐js-cookie
-    config.data = config.data;
-    config.headers = {
-      'Content-Type':'application/x-www-form-urlencoded'
-    }
-       if(token){
-         config.params = {'token':token}
-       }
-    return config;
-  },
-  error => {
-    return Promise.reject(err);
-  }
+	config => {
+		const token = Cookies.get('token');
+		config.data = config.data;
+		config.headers = {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		}
+		if(token) {
+			config.params = {'token': token}
+		} //注意使用的时候需要引入cookie方法，推荐js-cookie
+		if (config.showLoading) {showFullScreenLoading()}
+		return config;
+	},
+	error => {
+		return Promise.reject(err);
+	}
 );
 //http response 拦截器
 axios.interceptors.response.use(
-  response => {
-    if(response.code ==401){
-      router.push({
-        path:"/login",
-        querry:{redirect:router.currentRoute.fullPath}//从哪个页面跳转
-      })
-    }
-    return response;
-  },
-  error => {
-    return Promise.reject(error)
-  }
+	response => {
+		//当返回信息为未登录或者登录失效的时候重定向为登录页面
+		if(response.data.code == 401) {
+			//清除cookie token name headeImg
+			Cookies.remove('name');
+			Cookies.remove('token');
+			Cookies.remove('headeImg');
+			router.push({
+				path: "/login",
+				querry: {
+					redirect: router.currentRoute.fullPath
+				} //从哪个页面跳转
+			})
+		}
+		if (response.config.showLoading) {
+		  tryHideFullScreenLoading()
+		}
+		return response;
+	},
+	error => {
+		return Promise.reject(error)
+	}
 )
 /**
  * 封装get方法
@@ -48,18 +93,21 @@ axios.interceptors.response.use(
  * @returns {Promise}
  */
 
-export function fetch(url,params={}){
-  return new Promise((resolve,reject) => {
-    axios.get(url,{
-      params:params
-    },{withCredentials: true,crossDomain: true})
-    .then(response => {
-      resolve(response.data);
-    })
-    .catch(err => {
-      reject(err)
-    })
-  })
+export function fetch(url, params = {},config = { showLoading: false }) {
+	return new Promise((resolve, reject) => {
+		axios.get(url, {
+				params: params
+			},config, {
+				withCredentials: true,
+				crossDomain: true
+			})
+			.then(response => {
+				resolve(response.data);
+			})
+			.catch(err => {
+				reject(err)
+			})
+	})
 }
 
 /**
@@ -69,50 +117,49 @@ export function fetch(url,params={}){
  * @returns {Promise}
  */
 
- export function post(url,data = {}){
-   return new Promise((resolve,reject) => {
-     axios.post(url,data)
-          .then(response => {
-            resolve(response.data);
-          },err => {
-            reject(err)
-          })
-   })
- }
- 
-  /**
+export function post(url, data = {},config = { showLoading: false }) {
+	return new Promise((resolve, reject) => {
+		axios.post(url, data,config)
+			.then(response => {
+				resolve(response.data);
+			}, err => {
+				reject(err)
+			})
+	})
+}
+
+/**
  * 封装patch请求
  * @param url
  * @param data
  * @returns {Promise}
  */
 
-export function patch(url,data = {}){
-  return new Promise((resolve,reject) => {
-    axios.patch(url,data)
-         .then(response => {
-           resolve(response.data);
-         },err => {
-           reject(err)
-         })
-  })
+export function patch(url, data = {}) {
+	return new Promise((resolve, reject) => {
+		axios.patch(url, data)
+			.then(response => {
+				resolve(response.data);
+			}, err => {
+				reject(err)
+			})
+	})
 }
 
- /**
+/**
  * 封装put请求
  * @param url
  * @param data
  * @returns {Promise}
  */
 
-export function put(url,data = {}){
-  return new Promise((resolve,reject) => {
-    axios.put(url,data)
-         .then(response => {
-           resolve(response.data);
-         },err => {
-           reject(err)
-         })
-  })
+export function put(url, data = {}) {
+	return new Promise((resolve, reject) => {
+		axios.put(url, data)
+			.then(response => {
+				resolve(response.data);
+			}, err => {
+				reject(err)
+			})
+	})
 }
- 

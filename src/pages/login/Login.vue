@@ -159,7 +159,6 @@ export default {
 		let that = this;
 		//获取Ticket
         that.toGetTicket();
-        console.log(that.$Cookies.get('ticket'))
 	},
     methods:{
     	//获取Ticket
@@ -184,8 +183,9 @@ export default {
 			let interval_ = setInterval(judge, 3000);
 			function judge(){
 				that.$post(that.judgeStatus,data).then((response)=>{
-	                console.log(response);
-	                if(response.code==0){  //xxxxx
+					
+	                console.log(response.data.list.token);
+	                if(response.code==0){ 
 						//保存登陆的数据
 						let userInfo = {
 							name:'herong',
@@ -196,7 +196,6 @@ export default {
 						that.$Cookies.set('headeImg', "0",{ expires: 7 });
 						window.clearInterval(interval_);
 	                	that.$router.push({name: 'index'});
-	                	
 	                }
 	           }).catch((response)=>{
 	                window.clearInterval(interval_);

@@ -129,9 +129,6 @@
 				<vue-ueditor-wrap v-model="form.msg" :config="myConfig"></vue-ueditor-wrap>
 			</div>
 			<div style="position: absolute;left: 100%;top: 170px;">
-				<!--<el-row>
-					<el-button type="success" plain icon="el-icon-check" @click="toSave(2)">保存并返回</el-button>
-				</el-row>-->
 				<el-row>
 					<el-button type="success" plain icon="el-icon-check" @click="toSave">保存至草稿箱</el-button>
 				</el-row>
@@ -144,11 +141,7 @@
 			</div>
 		</div>
 
-		<el-dialog
-		title=" - 系统检测结果 "
-		:visible.sync="dialogVisible"
-		width="55%"
-		:before-close="handleClose">
+		<el-dialog title="系统检测结果 " :visible.sync="dialogVisible" width="55%" :before-close="handleClose">
 			<div>
 				<el-row>
 					<el-col :span="3" style="text-align:center">
@@ -157,13 +150,13 @@
 					<el-col :span="5">
 						<span>{{articlemarketForm.words}} 字</span>
 					</el-col>
-					<el-col :span="2">
+					<el-col :span="3">
 						<span>图片数：</span>
 					</el-col>
 					<el-col :span="5">
 						<span>{{gaoForm.img}} 张</span>
 					</el-col>
-					<el-col :span="2">
+					<el-col :span="3">
 						<span>关键词：</span>
 					</el-col>
 					<el-col :span="5">
@@ -171,23 +164,21 @@
 					</el-col>
 				</el-row>
 				<el-row>
-					<el-col :span="3" style="text-align:center">
+					<el-col :span="6" style="text-align:center">
 						<span>百度原创度:</span>
+						<span>{{articlemarketForm.baidu*100}} %</span>
 					</el-col>
-					<el-col :span="3">
-						<span>{{articlemarketForm.baidu*100}}%</span>
-					</el-col>
-					<el-col :span="5" style="text-align:center">
+					<el-col :span="6" style="text-align:center">
 						<span>搜狗原创度:</span>
-						<span>{{articlemarketForm.sogou*100}}%</span>
+						<span>{{articlemarketForm.sogou*100}} %</span>
 					</el-col>
-					<el-col :span="5" style="text-align:center">
+					<el-col :span="6" style="text-align:center">
 						<span>360原创度:</span>
-						<span>{{articlemarketForm[360]}}%</span>
+						<span>{{articlemarketForm[360]*100}} %</span>
 					</el-col>
-					<el-col :span="5" style="text-align:center">
+					<el-col :span="6" style="text-align:center">
 						<span>综合原创度:</span>
-						<span>{{parseInt((articlemarketForm.baidu+articlemarketForm.sogou+articlemarketForm[360])/3*100)}}%</span>
+						<span>{{articlemarketForm.guge}} %</span>
 					</el-col>
 				</el-row>
 				<p style="text-align: center;font-size: 18px;color:#ff8547;">情感偏正向</p>
@@ -227,11 +218,7 @@
 				<el-button type="primary" @click="toUpload">确 定</el-button>
 			</span>
 		</el-dialog>
-		
-		<!-- <div v-show="pageStatus == 3">
-			
-			
-		</div> -->
+		<!-- <div v-show="pageStatus == 3"></div> -->
 	</div>
 </template>
 
@@ -240,7 +227,7 @@
 	import {baseUrl} from '@/api/index.js' //注意路径
 	import happy from '@/assets/images/happy.png';  //正向
 	import unhappy from '@/assets/images/unhappy.png';  //负向
-	import qs from 'qs'
+	
 	export default {
 		components: {
 		    VueUeditorWrap
@@ -310,7 +297,8 @@
 					unhappyImg:unhappy,
 				},
 				articlemarketForm:{
-
+					//检测结果
+					
 				},
 				myConfig: {
 		            // 如果需要上传功能,找后端小伙伴要服务器接口地址
@@ -335,24 +323,27 @@
 			}else{
 				this.getList();
 			}
-        	//获取类别
-        	this.getCategoryFun();
+      //获取类别
+      this.getCategoryFun();
    		},
 		methods: {
 			//弹出框推出前试行是否保存至草稿箱
 			handleClose(done) {
+				let that = this;
 				this.$confirm('是否保存至草稿箱').then(_ => {
 					done();
 					//这里执行确定
 					
 				}).catch(_ => {
 					//这里执行取消
-					});
+					done();
+					that.dialogVisible = true;
+				});
 			},
 			getList:function(){
 				let that = this;
 				
-				that.$fetch(that.getList_url+'?page='+that.curPage+'&pagesize='+that.pagesize).then((response) => {
+				that.$fetch(that.getList_url+'?page='+that.curPage+'&pagesize='+that.pagesize,{showLoading:true}).then((response) => {
 
 			        console.log(response);
 			        if(response.data.list.length>0){
@@ -365,18 +356,13 @@
 			    })
 			},
 			getCategoryFun:function(){
-//				quareForm:{
-//					typeBox:[],
-//					type: [ ],
-//					checkBoxPre:[], //默认保存选一个
-//				},
 				//获取类别
 				let that = this;
 				that.$fetch(that.getCategory).then((response) => {
 			        if(response.data.list){
 			        	that.quareForm.typeBox = response.data.list;
 			        }
-			    })
+			    },{ showLoading: false })
 			},
 			currentChange: function(curPage){
                 this.curPage = curPage;
@@ -403,7 +389,7 @@
 					if(that.quareForm.type.length>0){
 						//掉接口 post xxxxx
 					
-					let addData = qs.stringify({
+					let addData = that.qs.stringify({
 					    title: 1,
 					    field:1,
 					    content:111,
@@ -419,7 +405,7 @@
 					    status:0,
 					    img_count:1
 					 });
-					that.$post(that.saveWork, addData)
+					that.$post(that.saveWork, addData,{showLoading:true})
 						.then(function (response) {
 							console.log(response);
 //					    if(response.code==0){
@@ -443,25 +429,28 @@
 					that.$message.error('标题不能为空');
 					return;
 				}
-					
-				
 			},
 			//弹出弹出框
 			dialogtoUpload(){
 				let that = this;
 				if(that.form.title){
 					if(that.quareForm.type.length>0){
-						const loading = this.$loading({
-							lock: true,
-							text: '正在检测中...',
-							spinner: 'el-icon-loading',
-							background: 'rgba(0, 0, 0, 0.7)'
-						});
-						this.$post('/api/article/check',`content=${that.form.msg}`).then(function(res){
+//						const loading = this.$loading({
+//							lock: true,
+//							text: '正在检测中...',
+//							spinner: 'el-icon-loading',
+//							background: 'rgba(0, 0, 0, 0.7)'
+//						});
+						this.$post('/api/article/check',`content=${that.form.msg}`,{showLoading:true}).then(function(res){
 							console.log(res);
-							loading.close();
+//							loading.close();
 							that.dialogVisible = true;
 							that.articlemarketForm = res.data.list;
+							
+							let val_baidu = parseInt(that.articlemarketForm.baidu*1000);
+							let val_sogou = parseInt(that.articlemarketForm.sogou*1000);
+							let val_360 = parseInt(that.articlemarketForm[360]*1000);
+							that.articlemarketForm.guge = parseInt((val_baidu+val_sogou+val_360)/30);
 						}).catch(function(res){
 							console.log(res);
 							
@@ -480,14 +469,14 @@
 			toUpload:function(){
 				let that = this;
 				console.log(that.quareForm.type)
-				let addData = qs.stringify({
+				let addData = that.qs.stringify({
 					title: that.form.title,
 					field:that.quareForm.type[0],
 					content:that.form.msg,
 					type:2,  //发布投稿：1 文章广场：2 草稿箱: 3
 					status:1,//发布状态:1是发布,0是未发布
 				})
-				this.$post('/api/article/add',addData).then(function(res){
+				this.$post('/api/article/add',addData,{showLoading:true}).then(function(res){
 					console.log(res);
 					
 					// that.$message(res.data.msg);
@@ -586,7 +575,7 @@
 	    background-color: #67c23a;
 	    position: relative;
 	    z-index: 999;
-	    top: 7px;
+	    top: 6px;
 	    float: right;
 	    border-radius:0 10px 10px 0;
 	}
