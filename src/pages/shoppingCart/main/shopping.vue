@@ -168,6 +168,7 @@
 
 <script>
 import Myheader from '../../../components/header-nav-wrap'
+import qs from 'qs'
 
 export default {
     components:{
@@ -272,7 +273,8 @@ export default {
         },
         //删除购物车
         CartDel(article_ids){
-            this.axios.post('/api/cart/del', `article_id=${article_ids}`).then((res)=>{
+           
+            this.axios.post('/api/cart/del', `article_ids=${JSON.stringify(article_ids)}`).then((res)=>{
                 
                 console.log(res)
                 self.CartForm = res.data.data.list;

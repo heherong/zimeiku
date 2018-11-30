@@ -301,7 +301,7 @@
 				myConfig: {
 					// 如果需要上传功能,找后端小伙伴要服务器接口地址
 					//		            serverUrl: baseUrl+'ueditor/server?action=config&noCache=1542597685533',
-					serverUrl: baseUrl + 'ueditor/server',
+					serverUrl: baseUrl + 'api/config',
 					// 你的UEditor资源存放的路径,相对于打包后的index.html
 					UEDITOR_HOME_URL: './static/UEditor/',
 					// 编辑器不自动被内容撑高

@@ -22,6 +22,9 @@ import Sellerguide from '@/pages/help/children/sellerguide'
 import Paymentsettlement from '@/pages/help/children/paymentsettlement'
 import Auditstandards from '@/pages/help/children/auditstandards'
 
+//a
+import refer from '@/pages/refer/refer'
+
 Vue.use(Router)
 
 export default new Router({
@@ -113,6 +116,11 @@ export default new Router({
       path:'/registeragreement',
       name:'registeragreement',
       component:Registeragreement
+    },
+    {
+      path:'/a',
+      name:'refer',
+      component:refer
     }
   ]
 })
