@@ -143,7 +143,7 @@
                                 <button class="addCar btn-border-disabled" v-else>已加入购物车</button>
                             </p>
                             <p style="margin-top:10px;">
-                                <button class="purchase" @click="pay()">立即购买</button>
+                                <button class="purchase" @click="pay(item.id)">立即购买</button>
                             </p>
                         </div>
                         <div style="clear:both;"></div>
@@ -292,11 +292,11 @@ export default {
                 console.log(res)
             })
         },
-        pay(){
-            this.$router.push('/pay');
+        pay(val){
+            this.$router.push({path:'/pay',query:{id:val}});
         },
         ContentBank:function(val){
-    
+    		
             this.$router.push({path:'/ContentBank',query:{id:val}});
         },
     },

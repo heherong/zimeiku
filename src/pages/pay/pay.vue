@@ -22,7 +22,8 @@
                         </div>
                     </div>
                 </div> 
-                <div class="order-wrap">
+                <!--提交订单信息-->
+                <div class="order-wrap" v-if="istepstatus==1">
                     <div style="min-height: 240px;">
                         <table>
                             <thead>
@@ -79,6 +80,28 @@
                         </div>
                     </div>
                 </div>
+           		<!--支付订单费用-->
+           		<div class="order-wrap" v-if="istepstatus==2">
+           			
+           				<el-row style="padding: 20px;margin-right:30px;background-color: #edf5ff;">
+						  	<el-col :span="18">
+						  		<p style="font-size: 20px;">订单编号：
+						  			<span style="color:#409EFF;">{{orderData.id}}</span>
+						  		</p>
+						  		<br />
+           						<p>订单个数：<span>{{orderData.number}}</span></p>
+						  	</el-col>
+						  	<el-col :span="6">
+						  		<p>支付金额：<span style="color: #f56c6c;font-size:24px;"> {{ orderData.money }} </span>元</p>
+						  	</el-col>
+						</el-row>
+           				<el-row>
+						  	<el-col :span="24">
+						  		<img :src="weixin_png" style="width:130px;"/>
+						  	</el-col>
+						</el-row>
+           			
+           		</div>
             </div>
         </div>
     </div>
@@ -91,7 +114,7 @@
 .pay-step>span{font-size: 12px;display: inline-block;width: 140px;height: 30px;line-height: 30px;text-align: center;}
 .pay-step>span.stepActive{background: #7cbc5a;color: #fff;}
 .pay-step>span.pay-roll-before{width: 0;height: 0;border-top: 15px solid #eaf4e5;border-bottom: 15px solid #eaf4e5;border-left: 10px solid #7cbc5a;display: inline-block;vertical-align: middle;margin-left: -5px;}
-.order-wrap{width: 1170px;margin: 0 auto;padding: 20px;background: #fff;}
+.order-wrap{width: 100%;margin: 0 auto;padding: 20px;background: #fff;}
 .order-wrap table{width: 100%;text-align: center;font-size: 12px;border: none;}
 .order-wrap table thead{background: #F4F6F9;line-height: 40px;color: #303132;}
 .order-wrap table tbody tr td{border-bottom: 1px solid #EFF1F3;padding: 20px 0;}
@@ -105,6 +128,9 @@
 
 <script>
 import Myheader from '../../components/header-nav-wrap'
+import weixin from '@/assets/images/weixin.png'; 
+import tui from '@/assets/images/tui.png';
+import qs from 'qs' //请求
 export default {
     components:{
         Myheader,
@@ -112,15 +138,28 @@ export default {
     data:function(){
         return {
             istepstatus:1,
+            weixin_png:weixin,
+            tui_png:tui,
             data:{
-                article_id:'1',
-                type:"作品订单",
+                article_id:'',
+                type:"1", //1是立即购买
                 title:"迟来的痛感",
                 preTax:48,
                 tax:5,
                 nextTax:53
-            }
+            },
+            orderData:{
+            	id:123456789,
+            	number:1,
+            	money:84.8,
+            	ecord:'' //二维码图片
+            },
+            bugUrl: '/api/order/add', //提交订单
         }
+    },
+    mounted:function(){
+    	this.data.article_id = this.$route.query.id;
+    	console.log(this.data.article_id);
     },
     methods:{
         submit:function(){
@@ -138,23 +177,21 @@ export default {
             cancelButtonText: '取消',
             beforeClose: (action, instance, done) => {
                 if (action === 'confirm') {
-                instance.confirmButtonLoading = true;
-                instance.confirmButtonText = '执行中...';
-                setTimeout(() => {
-                    done();
-                    setTimeout(() => {
-                        self.axios.post('http://result.eolinker.com/HkMlppZ19a43d8b112895061d5abbde7ab985e965756f10?uri=http://www.zmk.com/api/article/buy',{
-                            params:{
-                                article_id:this.article_id
-                            }
-                        }).then(function(res){
-                            console.log(res);
-                        }).catch(function(res){
-                            console.log(Res);
-                        })
-                    instance.confirmButtonLoading = false;
-                    }, 300);
-                }, 3000);
+	                    self.istepstatus = 2;
+	                    done();  
+//	                	self.$post(self.bugUrl, qs.stringify({
+//	                		product_id:([self.data.article_id]).toString(),
+//	                		type:self.data.type
+//	                	}), {
+//							showLoading: true
+//						})
+//						.then(function(response) {
+//							console.log(response);
+//							
+//						}).catch(function(error) {
+//							console.log(error);
+//						});
+	                    	
                 } else {
                 done();
                 }
@@ -167,9 +204,7 @@ export default {
             });
         }
     },
-    mounted(){
-        console.log(this.$route.params.article_ids)
-    }
+    
 }
 </script>
 
