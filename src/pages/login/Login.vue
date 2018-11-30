@@ -94,7 +94,7 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 <script>
 
 import Myheader from '../../components/loginHeader'
-import {baseUrl} from '@/api/index.js' //注意路径
+//import {baseUrl} from '@/api/index.js' //注意路径
 import qs from 'qs'
 export default {
     components:{
@@ -133,8 +133,8 @@ export default {
         bol:true,
         qrcode: '0' ,//二维码图片
 		ticket: '',
-		getTicket: baseUrl+'qrcode', //获取ticket ?
-		judgeStatus: baseUrl+'login', //重复调用，获取返回数据
+		getTicket: '/api/qrcode', //获取ticket ?
+		judgeStatus: '/api/login', //重复调用，获取返回数据
         ruleForm2: {
           shoujihao: '',
           poCode:'',
