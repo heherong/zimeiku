@@ -316,11 +316,8 @@
 			}
 		},
 		mounted: function() {
-			if(!this.$Cookies.get('token')) {
-				this.$router.push('/index')
-			} else {
-				this.getList();
-			}
+			//获取列表
+			this.getList();
 			//获取类别
 			this.getCategoryFun();
 		},
@@ -405,10 +402,6 @@
 							}).catch(function(error) {
 								console.log(error);
 							});
-							
-							
-							
-							
 							
 						} else {
 							this.$message.error('内容不能为空！')
