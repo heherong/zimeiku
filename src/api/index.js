@@ -20,7 +20,7 @@ export const getMyArticleList = (params) => axios.get(host + "/api/article/mylis
 
 export const buyArticle = (params) => axios.post(host + "/api/article/buy", params); // 购买文章
 
-export const getMyArticleList = (params) => axios.get(host + "/api/article/list", {params}); // 文章列表
+export const getArticleList = (params) => axios.get(host + "/api/article/list", {params}); // 文章列表
 
 export const addSolicitArticle = (params) => axios.post(host + "/api/solicit/add_article", params); // 投稿
 
@@ -33,8 +33,6 @@ export const getSolicitList = (params) => axios.get(host + "/api/solicit/list", 
 export const getArticleInfo = (params) => axios.get(host + "/api/article/info", {params}); // 文章详情
 
 export const getSolicitMyInfo = (params) => axios.get(host + "/api/solicit/myinfo", {params}); // 征稿详细
-
-export const getFieldsList = (params) => axios.get(host + "/api/solicit/list", {params}); // 征稿列表
 
 export const getSolicitInfo = (id) => axios.get(host + "/api/solicit/info?solicit_id=" + id); // 证稿详情
 

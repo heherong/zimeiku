@@ -52,7 +52,7 @@ axios.interceptors.request.use(
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 		if(token) {
-			config.params = {'token': token}
+			config.params['token'] = token
 		} //注意使用的时候需要引入cookie方法，推荐js-cookie
 		if (config.showLoading) {showFullScreenLoading()}
 		return config;

@@ -233,6 +233,7 @@
 	import happy from '@/assets/images/happy.png'; //正向
 	import unhappy from '@/assets/images/unhappy.png'; //负向
 	import qs from 'qs' //请求
+	import { getMyArticleList } from '@/api'
 	export default {
 		components: {
 			VueUeditorWrap
@@ -405,15 +406,18 @@
 			getList: function(inx) {
 				let that = this;
 				that.listType = inx;
-				that.$fetch(that.getList_url + '?page=' + that.curPage + '&pagesize=' + that.pagesize + '&type=' + that.listType, {
-					showLoading: true
-				}).then((response) => {
-					if (response.data.list.length > 0) {
-						for (let i = 0; i < response.data.list.length; i++) {
-							response.data.list[i].created_at = response.data.list[i].created_at.substring(0, 10);
+				let _data = {
+					page: that.curPage,
+					pagesize: that.pagesize,
+					type: that.listType
+				}
+				getMyArticleList(_data).then(res => {
+					if (res.data.list.length > 0) {
+						for (let i = 0; i < res.data.list.length; i++) {
+							res.data.list[i].created_at = res.data.list[i].created_at.substring(0, 10);
 						}
-						that.tableData = response.data.list;
-						that.totalNum = response.data.count;
+						that.tableData = res.data.list;
+						that.totalNum = res.data.count;
 					}
 				})
 			},
