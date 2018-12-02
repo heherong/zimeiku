@@ -232,8 +232,12 @@
 	import host from '@/config/apiConfig'
 	import happy from '@/assets/images/happy.png'; //正向
 	import unhappy from '@/assets/images/unhappy.png'; //负向
-	import qs from 'qs' //请求
-	import { getMyArticleList } from '@/api'
+	import {
+		getMyArticleList,
+		addArticle,
+		getFieldsList,
+		checkArticle
+	} from '@/api'
 	export default {
 		components: {
 			VueUeditorWrap
@@ -243,9 +247,6 @@
 				dialogVisible: false, //弹出框
 				pageStatus: 1, //列表页面1 ，新建页面2,3是点击保存到文章广场之后的返回数据
 				status: 1, //列表页面的切换lab
-				getList_url: '/api/article/mylist',
-				saveWork: '/api/article/add',
-				getCategory: '/api/fields/list', //类别
 				curPage: 1, //当前页数
 				pagesize: 10, //一页10条
 				totalNum: 0, //总数
@@ -412,24 +413,20 @@
 					type: that.listType
 				}
 				getMyArticleList(_data).then(res => {
-					if (res.data.list.length > 0) {
-						for (let i = 0; i < res.data.list.length; i++) {
-							res.data.list[i].created_at = res.data.list[i].created_at.substring(0, 10);
+					if (res.data.list.data.length > 0) {
+						for (let i = 0; i < res.data.list.data.length; i++) {
+							res.data.list.data[i].created_at = res.data.list.data[i].created_at.substring(0, 10);
 						}
-						that.tableData = res.data.list;
+						that.tableData = res.data.list.data;
 						that.totalNum = res.data.count;
 					}
 				})
 			},
-			getCategoryFun: function() {
-				//获取类别
-				let that = this;
-				that.$fetch(that.getCategory).then((response) => {
-					if (response.data.list) {
-						that.quareForm.typeBox = response.data.list;
+			getCategoryFun: function() { //获取类别
+				getFieldsList().then(res => {
+					if (res.data.list) {
+						this.quareForm.typeBox = res.data.list;
 					}
-				}, {
-					showLoading: false
 				})
 			},
 			currentChange: function(curPage) {
@@ -463,28 +460,22 @@
 				if (that.form.title) {
 					if (that.quareForm.type.length > 0) {
 						if (that.form.msg.length > 0) {
-							let addData = qs.stringify({
+							let addData = {
 								title: that.form.title,
 								field: that.quareForm.type[0],
 								content: that.form.msg,
 								type: 3, //发布投稿：1 文章广场：2 草稿箱: 3
 								status: 1, //发布状态:1是发布,0是未发布
+							}
+							addArticle(addData).then(res => {
+								if (res.code == 0) {
+									that.$message({
+										message: '保存成功！',
+										type: 'success'
+									});
+									that.quit();
+								}
 							})
-							that.$post(that.saveWork, addData, {
-									showLoading: true
-								})
-								.then(function(response) {
-									if (response.code == 0) {
-										that.$message({
-											message: '保存成功！',
-											type: 'success'
-										});
-										that.quit();
-									}
-								}).catch(function(error) {
-									console.log(error);
-								});
-
 						} else {
 							this.$message.error('内容不能为空！')
 						}
@@ -502,9 +493,10 @@
 				if (that.form.title) {
 					if (that.quareForm.type.length > 0) {
 						if (that.form.msg.length > 0) {
-							this.$post('/api/article/check', `content=${that.form.msg}`, {
-								showLoading: true
-							}).then(function(res) {
+							let _data = {
+								content: that.form.msg
+							}
+							checkArticle(_data).then(res => {
 								that.dialogVisible = true;
 								that.articlemarketForm = res.data.list;
 								//就算汇总
@@ -512,9 +504,6 @@
 								let val_sogou = parseInt(that.articlemarketForm.sogou * 1000);
 								let val_360 = parseInt(that.articlemarketForm[360] * 1000);
 								that.articlemarketForm.guge = parseInt((val_baidu + val_sogou + val_360) / 30);
-							}).catch(function(res) {
-								console.log(res);
-
 								that.dialogVisible = true;
 							})
 						} else {
@@ -530,16 +519,14 @@
 			//发稿到文章广场
 			toUpload: function() {
 				let that = this;
-				let addData = qs.stringify({
+				let addData = {
 					title: that.form.title,
 					field: that.quareForm.type[0],
 					content: that.form.msg,
 					type: 2, //发布投稿：1 文章广场：2 草稿箱: 3
 					status: 1, //发布状态:1是发布,0是未发布
-				})
-				this.$post('/api/article/add', addData, {
-					showLoading: true
-				}).then(function(res) {
+				}
+				addArticle(addData).then(res => {
 					if (res.code == 0) {
 						that.$message({
 							showClose: true,
@@ -550,12 +537,8 @@
 					} else {
 
 					}
-					// that.$message(res.data.msg);
 					that.dialogVisible = false
-				}).catch(function(res) {
-					console.log(res);
 				})
-
 			},
 			//多选
 			checkBoxs: function() {

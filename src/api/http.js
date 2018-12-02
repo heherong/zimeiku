@@ -3,6 +3,8 @@ import host from '@/config/apiConfig'
 import { Message, Loading } from 'element-ui';
 import router from '@/router/index'
 import Cookies from 'js-cookie'
+import qs from 'qs' //请求
+
 /**
  *公共加载方法 
  */
@@ -47,14 +49,20 @@ axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded'
 axios.interceptors.request.use(
 	config => {
 		const token = Cookies.get('token');
-		config.data = config.data;
+		if(config.method == 'post'){
+			config.data = qs.stringify(config.data);
+			showFullScreenLoading()
+		}
 		config.headers = {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 		if(token) {
-			config.params['token'] = token
+			if(!config.params){
+				config.params = {'token':token}
+			}else{
+				config.params['token'] = token
+			}
 		} //注意使用的时候需要引入cookie方法，推荐js-cookie
-		if (config.showLoading) {showFullScreenLoading()}
 		return config;
 	},
 	error => {
@@ -77,10 +85,8 @@ axios.interceptors.response.use(
 				} //从哪个页面跳转
 			})
 		}
-		if (response.config.showLoading) {
-		  tryHideFullScreenLoading()
-		}
-		return response;
+		tryHideFullScreenLoading()
+		return response.data;
 	},
 	error => {
 		return Promise.reject(error)

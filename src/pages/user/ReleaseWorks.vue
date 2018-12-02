@@ -101,7 +101,7 @@
 			</el-table>
 			<!--!!!!!!!!!!!!!!!!!分页!!!!!!!!!!!!!!!! -->
 			<div class="pages">
-				<el-pagination @current-change="currentChange"  :current-page="curPage" layout="prev, pager, next" :total="totalNum">
+				<el-pagination @current-change="currentChange" :current-page="curPage" layout="prev, pager, next" :total="totalNum">
 				</el-pagination>
 			</div>
 		</div>
@@ -127,9 +127,8 @@
 						</el-col>
 						<el-col :span="18">
 							<el-checkbox-group v-model="checkboxGroup">
-								<el-checkbox v-for="item in form.checkedData" :key="item.id" :label="item.id" 
-									 @change="checkBoxs" class="release-checkBoxs">{{item.name}}</el-checkbox>
-								
+								<el-checkbox v-for="item in form.checkedData" :key="item.id" :label="item.id" @change="checkBoxs" class="release-checkBoxs">{{item.name}}</el-checkbox>
+
 							</el-checkbox-group>
 						</el-col>
 					</el-row>
@@ -167,7 +166,8 @@
 					</el-row>
 				</el-form-item>
 				<!--稿件要求-->
-				<p style="margin: 0 auto;text-align: center;color: #909090;font-size: 14px;margin-bottom: 7px;">( 温馨提示：征稿文章的原创度会按照您所选原创度来判定，且不会低于设定值； 0为不限 )</p>
+				<p style="margin: 0 auto;text-align: center;color: #909090;font-size: 14px;margin-bottom: 7px;">(
+					温馨提示：征稿文章的原创度会按照您所选原创度来判定，且不会低于设定值； 0为不限 )</p>
 				<el-form-item>
 					<el-row>
 						<el-col :span="3">
@@ -195,7 +195,7 @@
 						<el-col :span="3">
 							<label for=""><span class="input-must">*</span>360原创度</label>
 						</el-col>
-						<el-col :span="6" >
+						<el-col :span="6">
 							<el-slider v-model="form.b360"></el-slider>
 						</el-col>
 						<el-col :span="2" style="margin-right:30px;color:#333;">
@@ -237,7 +237,7 @@
 							<label for=""><span class="input-must">*</span>每篇价格</span></label>
 						</el-col>
 						<el-col :span="10">
-							<el-input v-model="form.price"  @change="toChangePrice"></el-input>
+							<el-input v-model="form.price" @change="toChangePrice"></el-input>
 						</el-col>
 						<el-col :span="3">
 							<p style="margin-left: 10px;">元</p>
@@ -261,7 +261,7 @@
 						</el-col>
 					</el-row>
 				</el-form-item>
-				
+
 				<!--征稿详细说明-->
 				<el-form-item>
 					<el-row>
@@ -284,217 +284,234 @@
 </template>
 
 <script>
-//	import {baseUrl} from '@/api/index.js' //注意路径
-	import qs from 'qs'
+	import {
+		getSolicitMyList,
+		addSolicit,
+		getFieldsList
+	} from '@/api' //注意路径
+
 	export default {
 		data() {
-				return {
-					status: 1, //1是列表状态，2是发布
-					checkboxGroup: [], //实时状态
-					checkBoxPre: [], //当前状态
-					radio: '1',
-					getList_url: '/api/solicit/mylist',  //获取列表
-					addRequest:'/api/solicit/add',  //创建列表
-					getCategory:'/api/fields/list',  //类别
-					curPage: 1, //当前页数
-					pagesize: 3, //一页10条
-					totalNum: 0, //总数
-					form: {
-						title: '',
-						checkedData: [],  //类别选择
-						font: 2000, //稿子字数
-						gaoCont: 1, //稿子篇数
-						images:1,
-						baidu:50,
-						sogou:50,
-						b360:50,
-						bchrome:50,
-						checkOptions: [],
-						price: '10', //每篇价格
-//						lowPrice: 50, //最低值
-//						highPrice: 100, //最高值
-						checkTerm: '1', //周期
-						checkTermOptions:[{value:'1',label:'1'},{value:'2',label:'2'},{value:'3',label:'3'},{value:'4',label:'4'},{value:'5',label:'5'},{value:'6',label:'6'},{value:'7',label:'7'}],
-						content: '',
-						startTime: '' //开始时间
-					},
-					tableData: [],
-				}
-			},
-			created: function() {
-				//获取列表数据
-				this.getList(this.curPage,this.pagesize);
-				//获取领域列表
-				this.getCategoryFun();
-			},
-			methods: {
-				getList:function(curPage,pagesize) {
-					let that = this;
-					that.$fetch(that.getList_url+'?page='+curPage+'&pagesize='+pagesize).then((response) => {
-			        console.log(response);
-				        if(response.data.list.data.length > 0) {
-							for(let i = 0; i < response.data.list.data.length; i++) {
-								response.data.list.data[i].created_at = response.data.list.data[i].created_at.substring(0, 10);
-							}
-							// console.log(response.data.list.data,response.data.list.total);
-							that.tableData = response.data.list.data;
-							that.totalNum = response.data.list.total;
-						}
-				    })
-					
+			return {
+				status: 1, //1是列表状态，2是发布
+				checkboxGroup: [], //实时状态
+				checkBoxPre: [], //当前状态
+				radio: '1',
+				curPage: 1, //当前页数
+				pagesize: 3, //一页10条
+				totalNum: 0, //总数
+				form: {
+					title: '',
+					checkedData: [], //类别选择
+					font: 2000, //稿子字数
+					gaoCont: 1, //稿子篇数
+					images: 1,
+					baidu: 50,
+					sogou: 50,
+					b360: 50,
+					bchrome: 50,
+					checkOptions: [],
+					price: '10', //每篇价格
+					//						lowPrice: 50, //最低值
+					//						highPrice: 100, //最高值
+					checkTerm: '1', //周期
+					checkTermOptions: [{
+						value: '1',
+						label: '1'
+					}, {
+						value: '2',
+						label: '2'
+					}, {
+						value: '3',
+						label: '3'
+					}, {
+						value: '4',
+						label: '4'
+					}, {
+						value: '5',
+						label: '5'
+					}, {
+						value: '6',
+						label: '6'
+					}, {
+						value: '7',
+						label: '7'
+					}],
+					content: '',
+					startTime: '' //开始时间
 				},
-				getCategoryFun:function(){
-					//获取类别
-					let that = this;
-					that.$fetch(that.getCategory).then((response) => {
-				        if(response.data.list){
-				        	that.form.checkedData = response.data.list;
-				        }
-				    })
-				},
-				currentChange: function(curPage) {
-					this.curPage = curPage;
-					this.getList(this.curPage,this.pagesize);
-					console.log(this.curPage) //点击第几页
-				},
-				handleEdit(index, row) {
-					console.log(index, row);
-				},
-				handleDelete(index, row) {
-					console.log(index, row);
-				},
-				//发布稿件
-				toWrite: function() {
-					let that = this;
-					this.status = 2;
-				},
-				onSubmit() {
-					let that = this;
-					if(that.form.title) {
-						if(that.form.title.length > 50 || that.form.title.length < 5) {
-							that.$message.error('征稿标题字数限制为5~50');
-							that.form.title = "";
-						} else {
-
-							if(that.checkBoxPre.length < 1) {
-								that.$message.error('请至少选择一项标签');
-							} else {
-								if(that.form.images && that.form.images>=1) {
-									if(that.form.content && that.form.content.length > 50) {
-										//调用接口
-										let addData = qs.stringify({
-										    content: that.form.content,
-										    title: that.form.title,
-										    price:that.form.price,
-										    number:that.form.gaoCont,
-										    days:that.form.checkTerm*7,
-										    field:that.checkBoxPre.join(','),
-										    words:that.form.font,
-										    img_num:that.form.images,
-										    baidu_degree:that.form.baidu,
-										    soguo_degree:that.form.sogou,
-										    threesixzero_degree:that.form.b360,
-										    average_degree:that.form.bchrome,
-										 })
-										that.$post(that.addRequest, addData)
-										  .then(function (response) {
-//										  	console.log(response);
-										    if(response.code==0){
-										    	that.$message({
-										          	message: '创建成功！',
-										          	type: 'success'
-										        });
-										        that.quit();
-										    }else{
-										    	
-										    }
-										  })
-										  .catch(function (error) {
-										    console.log(error);
-										  });
-									} else {
-										that.$message.error('征稿详细说明字数要大于50');
-									}
-								} else {
-									that.$message.error('图片数量不小于 1 张');
-								}
-							}
-						}
-					} else {
-						that.$message.error('征稿标题不能为空');
-						that.form.title = "";
-					}
-				},
-				//多选
-				checkBoxs: function() {
-					let that = this;
-					console.log(that.checkboxGroup)
-					if(that.checkboxGroup.length > 1) {
-						that.checkBoxPre = [];
-						that.checkBoxPre.push(that.checkboxGroup[1]);
-						
-						that.checkboxGroup = that.checkBoxPre;
-					} else {
-						that.checkBoxPre = that.checkboxGroup;
-					}
-				},
-				//改变字数
-				toChangeSize: function(index) {
-					let that = this;
-					if(index == 1 && that.form.font <= 100000) {
-						that.form.font = that.form.font + 100;
-
-					} else if(index == 2 && that.form.font > 100) {
-						that.form.font = that.form.font - 100;
-
-					} else if((index == 3 && that.form.font <= 100) || !Number.isInteger(parseInt(that.form.font))) {
-						that.form.font = 100;
-					}
-					that.form.font = parseInt(that.form.font);
-				},
-				toChangeImg:function(){ 
-					let that = this;
-					if((!Number.isInteger(parseInt(that.form.images)))){
-						that.form.images = 1;
-					}
-					that.form.images = parseInt(that.form.images);
-				},
-				//改变稿子数
-				toChangeCont: function(index) {
-					let that = this;
-					if(index == 1 && that.form.gaoCont <= 100000) {
-						that.form.gaoCont = that.form.gaoCont + 1;
-
-					} else if(index == 2 && that.form.gaoCont >= 2) {
-						that.form.gaoCont = that.form.gaoCont - 1;
-
-					} else if((index == 3 && that.form.gaoCont <= 1) || !Number.isInteger(parseInt(that.form.gaoCont))) {
-						that.form.gaoCont = 1;
-					}
-					that.form.gaoCont = parseInt(that.form.gaoCont);
-				},
-				//改变价格
-				toChangePrice:function(){
-					let that = this;
-					if((!Number.isInteger(parseInt(that.form.price)))){
-						that.form.price = 10;
-					}
-					that.form.price = parseInt(that.form.price);
-				},
-				//返回
-				quit: function() {
-					this.status = 1;
-				}
+				tableData: [],
 			}
+		},
+		created: function() {
+			//获取列表数据
+			this.getList(this.curPage, this.pagesize);
+			//获取领域列表
+			this.getCategoryFun();
+		},
+		methods: {
+			getList: function(curPage, pagesize) {
+				let that = this;
+				let _data = {
+					page: curPage,
+					pagesize: pagesize
+				}
+				getSolicitMyList(_data).then(res => {
+					if (res.data.list.data.length > 0) {
+						for (let i = 0; i < res.data.list.data.length; i++) {
+							res.data.list.data[i].created_at = res.data.list.data[i].created_at.substring(0, 10);
+						}
+						that.tableData = res.data.list.data;
+						that.totalNum = res.data.list.total;
+					}
+				})
+			},
+			getCategoryFun: function() { //获取类别
+				getFieldsList().then(res => {
+					if (res.data.list) {
+						this.form.checkedData = res.data.list;
+					}
+				})
+			},
+			currentChange: function(curPage) {
+				this.curPage = curPage;
+				this.getList(this.curPage, this.pagesize);
+				console.log(this.curPage) //点击第几页
+			},
+			handleEdit(index, row) {
+				console.log(index, row);
+			},
+			handleDelete(index, row) {
+				console.log(index, row);
+			},
+			//发布稿件
+			toWrite: function() {
+				let that = this;
+				this.status = 2;
+			},
+			onSubmit() {
+				let that = this;
+				if (that.form.title) {
+					if (that.form.title.length > 50 || that.form.title.length < 5) {
+						that.$message.error('征稿标题字数限制为5~50');
+						that.form.title = "";
+					} else {
+
+						if (that.checkBoxPre.length < 1) {
+							that.$message.error('请至少选择一项标签');
+						} else {
+							if (that.form.images && that.form.images >= 1) {
+								if (that.form.content && that.form.content.length > 50) {
+									//调用接口
+									let addData = {
+										content: that.form.content,
+										title: that.form.title,
+										price: that.form.price,
+										number: that.form.gaoCont,
+										days: that.form.checkTerm * 7,
+										field: that.checkBoxPre.join(','),
+										words: that.form.font,
+										img_num: that.form.images,
+										baidu_degree: that.form.baidu,
+										soguo_degree: that.form.sogou,
+										threesixzero_degree: that.form.b360,
+										average_degree: that.form.bchrome,
+									}
+									addSolicit(addData).then(res => {
+										if (res.code == 0) {
+											that.$message({
+												message: '创建成功！',
+												type: 'success'
+											});
+											that.quit();
+										} else {
+
+										}
+									})
+								} else {
+									that.$message.error('征稿详细说明字数要大于50');
+								}
+							} else {
+								that.$message.error('图片数量不小于 1 张');
+							}
+						}
+					}
+				} else {
+					that.$message.error('征稿标题不能为空');
+					that.form.title = "";
+				}
+			},
+			//多选
+			checkBoxs: function() {
+				let that = this;
+				console.log(that.checkboxGroup)
+				if (that.checkboxGroup.length > 1) {
+					that.checkBoxPre = [];
+					that.checkBoxPre.push(that.checkboxGroup[1]);
+
+					that.checkboxGroup = that.checkBoxPre;
+				} else {
+					that.checkBoxPre = that.checkboxGroup;
+				}
+			},
+			//改变字数
+			toChangeSize: function(index) {
+				let that = this;
+				if (index == 1 && that.form.font <= 100000) {
+					that.form.font = that.form.font + 100;
+
+				} else if (index == 2 && that.form.font > 100) {
+					that.form.font = that.form.font - 100;
+
+				} else if ((index == 3 && that.form.font <= 100) || !Number.isInteger(parseInt(that.form.font))) {
+					that.form.font = 100;
+				}
+				that.form.font = parseInt(that.form.font);
+			},
+			toChangeImg: function() {
+				let that = this;
+				if ((!Number.isInteger(parseInt(that.form.images)))) {
+					that.form.images = 1;
+				}
+				that.form.images = parseInt(that.form.images);
+			},
+			//改变稿子数
+			toChangeCont: function(index) {
+				let that = this;
+				if (index == 1 && that.form.gaoCont <= 100000) {
+					that.form.gaoCont = that.form.gaoCont + 1;
+
+				} else if (index == 2 && that.form.gaoCont >= 2) {
+					that.form.gaoCont = that.form.gaoCont - 1;
+
+				} else if ((index == 3 && that.form.gaoCont <= 1) || !Number.isInteger(parseInt(that.form.gaoCont))) {
+					that.form.gaoCont = 1;
+				}
+				that.form.gaoCont = parseInt(that.form.gaoCont);
+			},
+			//改变价格
+			toChangePrice: function() {
+				let that = this;
+				if ((!Number.isInteger(parseInt(that.form.price)))) {
+					that.form.price = 10;
+				}
+				that.form.price = parseInt(that.form.price);
+			},
+			//返回
+			quit: function() {
+				this.status = 1;
+			}
+		}
 	}
 </script>
 
 <style scoped="scoped">
 	@import url("../../assets/css/user");
+
 	.release-checkBoxs {
 		margin: 0 20px 20px 0 !important;
 	}
-	
+
 	.release-up {
 		height: 20px;
 		padding: 0 20px;
@@ -502,24 +519,26 @@
 		top: -31px;
 		left: -11px;
 	}
-	
+
 	.release-up:first-child {
 		top: -10px;
 		left: -1px;
 	}
-	
+
 	.release-up i {}
-	
+
 	.release-size-request {
 		margin-bottom: -30px;
 	}
-	.inform h4{
+
+	.inform h4 {
 		display: inline-block;
 		border: none;
 		position: relative;
-    	top: 15px;
+		top: 15px;
 	}
-	.border-p{
+
+	.border-p {
 		border-bottom: 1px solid #ddd;
 		margin-bottom: 20px;
 	}
