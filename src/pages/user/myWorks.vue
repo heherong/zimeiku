@@ -5,7 +5,7 @@
 				<h4>我的稿件 </h4>
 				<el-button type="primary" class="release-gao" @click="toAddGao">新建稿件 <i class="el-icon-edit el-icon--right"></i></el-button>
 				<p class="border-p"></p>
-				
+
 				<!--<h4>稿件明细 </h4>-->
 				<el-row class="list-status">
 					<el-col :span="6">
@@ -23,7 +23,7 @@
 				</el-row>
 				<el-table :data="tableData.slice((curPage-1)*pagesize,curPage*pagesize)" style="width: 100%">
 					<el-table-column type="index" width="80" label="序号" align="center"></el-table-column>
-					
+
 					<el-table-column label="标题" width="180">
 						<template slot-scope="scope">
 							<span>{{ scope.row.title }}</span>
@@ -105,7 +105,7 @@
 
 		<div v-show="pageStatus == 2">
 			<div class="myMoney">
-				<h4>新建稿件  <i class="el-icon-edit-outline"></i></h4>
+				<h4>新建稿件 <i class="el-icon-edit-outline"></i></h4>
 			</div>
 			<el-row>
 				<el-col :span="3">
@@ -229,7 +229,7 @@
 
 <script>
 	import VueUeditorWrap from 'vue-ueditor-wrap'
-	import { baseUrl } from '@/api/index.js' //注意路径
+	import host from '@/config/apiConfig'
 	import happy from '@/assets/images/happy.png'; //正向
 	import unhappy from '@/assets/images/unhappy.png'; //负向
 	import qs from 'qs' //请求
@@ -248,7 +248,7 @@
 				curPage: 1, //当前页数
 				pagesize: 10, //一页10条
 				totalNum: 0, //总数
-				listType:'',  //发布投稿：1 文章广场：2 草稿箱: 3
+				listType: '', //发布投稿：1 文章广场：2 草稿箱: 3
 				tableData: [],
 				form: {
 					msg: '',
@@ -277,18 +277,109 @@
 				myConfig: {
 					// 如果需要上传功能,找后端小伙伴要服务器接口地址
 					//		            serverUrl: baseUrl+'ueditor/server?action=config&noCache=1542597685533',
-//					serverUrl: '/api/ueditor/server',
-					serverUrl:'http://api.zimeiku.com/api/ueditor/server',
+					//					serverUrl: '/api/ueditor/server',
+					serverUrl: host + '/api/ueditor/server',
 					// 你的UEditor资源存放的路径,相对于打包后的index.html
 					UEDITOR_HOME_URL: './static/UEditor/',
 					// 编辑器不自动被内容撑高
 					autoHeightEnabled: false,
 					// 初始容器高度
-					initialFrameHeight: 540,
+					initialFrameHeight: 520,
 					// 初始容器宽度
 					initialFrameWidth: '100%',
 					// 关闭自动保存
-					enableAutoSave: false
+					enableAutoSave: false,
+					toolbars: [
+						[
+							'source', //源代码
+							'cleardoc', //清空文档
+							'insertcode', //代码语言
+							'fontfamily', //字体
+							'fontsize', //字号
+							'paragraph', //段落格式
+							'customstyle', //自定义标题
+							'|',
+							'insertimage', //多图上传
+							'attachment', //附件
+							'emotion', //表情
+							'time', //时间
+							'date', //日期
+							'map', //Baidu地图
+							'edittip ', //编辑提示
+							'autotypeset', //自动排版
+							'touppercase', //字母大写
+							'tolowercase', //字母小写
+							'background', //背景
+							'template', //模板
+							'scrawl', //涂鸦
+							'music', //音乐
+							'insertvideo', //视频
+							'|',
+							'anchor', //锚点
+							'undo', //撤销
+							'redo', //重做
+							'pagebreak', //分页
+							'bold', //加粗
+							'indent', //首行缩进
+							'snapscreen', //截图
+							'italic', //斜体
+							'underline', //下划线
+							'strikethrough', //删除线
+							'subscript', //下标
+							'fontborder', //字符边框
+							'superscript', //上标
+							'formatmatch', //格式刷
+							'blockquote', //引用
+							'pasteplain', //纯文本粘贴模式
+							'selectall', //全选
+							'print', //打印
+							'link', //超链接
+							'horizontal', //分隔线
+							'removeformat', //清除格式
+							'unlink', //取消链接
+							'|',
+							'insertrow', //前插入行
+							'insertcol', //前插入列
+							'mergeright', //右合并单元格
+							'mergedown', //下合并单元格
+							'deleterow', //删除行
+							'deletecol', //删除列
+							'splittorows', //拆分成行
+							'splittocols', //拆分成列
+							'splittocells', //完全拆分单元格
+							'deletecaption', //删除表格标题
+							'inserttitle', //插入标题
+							'mergecells', //合并多个单元格
+							'deletetable', //删除表格
+							'insertparagraphbeforetable', //"表格前插入行"
+							'edittable', //表格属性
+							'edittd', //单元格属性
+							'spechars', //特殊字符
+							'searchreplace', //查询替换
+							'justifyleft', //居左对齐
+							'justifyright', //居右对齐
+							'justifycenter', //居中对齐
+							'justifyjustify', //两端对齐
+							'forecolor', //字体颜色
+							'backcolor', //背景色
+							'insertorderedlist', //有序列表
+							'insertunorderedlist', //无序列表
+							'fullscreen', //全屏
+							'directionalityltr', //从左向右输入
+							'directionalityrtl', //从右向左输入
+							'rowspacingtop', //段前距
+							'rowspacingbottom', //段后距
+							'insertframe', //插入Iframe
+							'imagenone', //默认
+							'imageleft', //左浮动
+							'imageright', //右浮动
+							'imagecenter', //居中
+							'lineheight', //行间距
+							'inserttable', //插入表格
+							'charts', // 图表
+							'preview', //预览
+						]
+					],
 				}
 			}
 		},
@@ -314,11 +405,11 @@
 			getList: function(inx) {
 				let that = this;
 				that.listType = inx;
-				that.$fetch(that.getList_url + '?page=' + that.curPage + '&pagesize=' + that.pagesize+'&type='+that.listType, {
+				that.$fetch(that.getList_url + '?page=' + that.curPage + '&pagesize=' + that.pagesize + '&type=' + that.listType, {
 					showLoading: true
 				}).then((response) => {
-					if(response.data.list.length > 0) {
-						for(let i = 0; i < response.data.list.length; i++) {
+					if (response.data.list.length > 0) {
+						for (let i = 0; i < response.data.list.length; i++) {
 							response.data.list[i].created_at = response.data.list[i].created_at.substring(0, 10);
 						}
 						that.tableData = response.data.list;
@@ -330,7 +421,7 @@
 				//获取类别
 				let that = this;
 				that.$fetch(that.getCategory).then((response) => {
-					if(response.data.list) {
+					if (response.data.list) {
 						that.quareForm.typeBox = response.data.list;
 					}
 				}, {
@@ -351,23 +442,23 @@
 				let that = this;
 				that.status = index;
 				//获取数据
-				if(index-1==0){
+				if (index - 1 == 0) {
 					that.getList();
-				}else{
-					that.getList(index-1);
+				} else {
+					that.getList(index - 1);
 				}
-				
+
 			},
 			//新建稿件
 			toAddGao: function() {
 				this.pageStatus = 2;
 			},
-			toSave: function(){
+			toSave: function() {
 				//保存 发布投稿：1 文章广场：2 草稿箱: 3
 				let that = this;
-				if(that.form.title) {
-					if(that.quareForm.type.length > 0) {
-						if(that.form.msg.length > 0) {
+				if (that.form.title) {
+					if (that.quareForm.type.length > 0) {
+						if (that.form.msg.length > 0) {
 							let addData = qs.stringify({
 								title: that.form.title,
 								field: that.quareForm.type[0],
@@ -376,20 +467,20 @@
 								status: 1, //发布状态:1是发布,0是未发布
 							})
 							that.$post(that.saveWork, addData, {
-								showLoading: true
-							})
-							.then(function(response) {
-								if(response.code==0){
-									that.$message({
-							          	message: '保存成功！',
-							          	type: 'success'
-							        });
-							        that.quit();
-								}
-							}).catch(function(error) {
-								console.log(error);
-							});
-							
+									showLoading: true
+								})
+								.then(function(response) {
+									if (response.code == 0) {
+										that.$message({
+											message: '保存成功！',
+											type: 'success'
+										});
+										that.quit();
+									}
+								}).catch(function(error) {
+									console.log(error);
+								});
+
 						} else {
 							this.$message.error('内容不能为空！')
 						}
@@ -404,9 +495,9 @@
 			//弹出弹出框
 			dialogtoUpload() {
 				let that = this;
-				if(that.form.title) {
-					if(that.quareForm.type.length > 0) {
-						if(that.form.msg.length > 0) {
+				if (that.form.title) {
+					if (that.quareForm.type.length > 0) {
+						if (that.form.msg.length > 0) {
 							this.$post('/api/article/check', `content=${that.form.msg}`, {
 								showLoading: true
 							}).then(function(res) {
@@ -445,15 +536,15 @@
 				this.$post('/api/article/add', addData, {
 					showLoading: true
 				}).then(function(res) {
-					if(res.code==0){
+					if (res.code == 0) {
 						that.$message({
-				          	showClose: true,
-				         	message: '保存成功！',
-				          	type: 'success'
-				        });
-				        that.quit();
-					}else{
-						
+							showClose: true,
+							message: '保存成功！',
+							type: 'success'
+						});
+						that.quit();
+					} else {
+
 					}
 					// that.$message(res.data.msg);
 					that.dialogVisible = false
@@ -465,7 +556,7 @@
 			//多选
 			checkBoxs: function() {
 				let that = this;
-				if(that.quareForm.type.length > 1) {
+				if (that.quareForm.type.length > 1) {
 					that.checkBoxPre = [];
 					that.checkBoxPre.push(that.quareForm.type[1]);
 
@@ -475,7 +566,7 @@
 				}
 			},
 			quit: function() {
-				this.checkBoxPre = this.quareForm.type=[];
+				this.checkBoxPre = this.quareForm.type = [];
 				this.form.msg = '';
 				this.form.title = '';
 				this.pageStatus = 1;
@@ -489,65 +580,65 @@
 	/*.market{
 		width:95%;
 	}*/
-	
+
 	.list-status {
 		margin-bottom: 20px;
 	}
-	
+
 	.list-status span {
 		display: inline-block;
 		width: 50%;
 		cursor: pointer;
 		text-align: center;
 	}
-	
+
 	.list-status .active {
 		padding-bottom: 5px;
 		border-bottom: solid 2px #409EFF;
 	}
-	
+
 	.cash {
 		font-size: 20px;
 		color: #56BCEB;
 	}
-	
+
 	.myMoney-cash {
 		line-height: 60px;
 		background-color: #eef1f6;
 		padding-left: 10px;
 	}
-	
+
 	.myMoney {
 		margin-bottom: 50px;
 	}
-	
+
 	.inform h4 {
 		display: inline-block;
 		border: none;
 		position: relative;
 		top: 15px;
 	}
-	
+
 	.border-p {
 		border-bottom: 1px solid #ddd;
 		margin-bottom: 20px;
 	}
-	
+
 	.table-expand {
 		font-size: 0;
 	}
-	
+
 	.table-expand label {
 		width: 90px;
 		color: #99a9bf;
 	}
-	
+
 	.table-expand .el-form-item {
 		margin-right: 0;
 		margin-bottom: 0;
 		width: 50%;
 	}
-	
+
 	.emation-tiao {
 		width: 98%;
 		height: 20px;
@@ -557,7 +648,7 @@
 		position: relative;
 		top: 30px;
 	}
-	
+
 	.emation-unhappy {
 		display: inline-block;
 		height: 20px;

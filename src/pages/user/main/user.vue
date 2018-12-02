@@ -1,5 +1,5 @@
 <template>
-	<div class="wrap transAll" style="min-height:366px;margin-top:20px;width:100%;">
+	<div class="wrap transAll" style="min-height:366px;width:100%;">
 		<Myheader :active='a'></Myheader>
 		<div class="market" style="margin-top:83px;">
 			<el-row class="tac" :gutter="20">

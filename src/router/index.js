@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Index from '@/pages/index/main/index'
+import Index from '@/pages/index/main'
 import Market from '@/pages/market/main/market'
 import User from '@/pages/user/main/user'
 import Login from '@/pages/login/login'
@@ -38,7 +38,7 @@ export default new Router({
     },
     {
       path: '/index',
-      name: 'index',
+      name: 'indexs',
       component: Index
     },
     {

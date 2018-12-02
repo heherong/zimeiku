@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { baseUrl } from '@/api/index'
+import host from '@/config/apiConfig'
 import { Message, Loading } from 'element-ui';
 import router from '@/router/index'
 import Cookies from 'js-cookie'
@@ -41,7 +41,7 @@ export function tryHideFullScreenLoading() {
 //export const getUuid = () => axios.get(host + '/school/backend/login/getUuid');
 
 axios.defaults.timeout = 100000;
-axios.defaults.baseURL = baseUrl;
+axios.defaults.baseURL = host;
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 //http request 拦截器
 axios.interceptors.request.use(
