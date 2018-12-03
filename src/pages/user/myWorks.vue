@@ -301,6 +301,7 @@
 							'paragraph', //段落格式
 							'customstyle', //自定义标题
 							'|',
+							'simpleupload',
 							'insertimage', //多图上传
 							'attachment', //附件
 							'emotion', //表情
