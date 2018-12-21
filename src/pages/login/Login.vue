@@ -92,44 +92,47 @@ li.loginActive{color: #4895e7;transition: all .2s ease-in-out;border-bottom: 2px
 
 
 <script>
-
+/**
+ * 未扫描二维码而进入主页 (待解决)
+ */
 import Myheader from '../../components/loginHeader'
-//import {baseUrl} from '@/api/index.js' //注意路径
+import {qrcode,login,getUserInfom} from '@/api/index.js' //注意路径
 import qs from 'qs'
 export default {
     components:{
         Myheader
     },
      data() {
-      var checkshouji = (rule, value, callback) => {
-        if (!value) {
-          return callback(new Error('请输入手机号码'));
-        }
-        setTimeout(() => {
-          if (!Number.isInteger(value)) {
-            callback(new Error('请输入数字值'));
-          } else {
+    //   var checkshouji = (rule, value, callback) => {
+    //     if (!value) {
+    //       return callback(new Error('请输入手机号码'));
+    //     }
+    //     setTimeout(() => {
+    //       if (!Number.isInteger(value)) {
+    //         callback(new Error('请输入数字值'));
+    //       } else {
           
-          }
-        }, 1000);
-      };
-      var poCode = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入验证码'));
-        } else {
-          callback();
-        }
-      };
-      var imgCode = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入验证码'));
-        } else {
-          callback();
-        }
-      };
+    //       }
+    //     }, 1000);
+    //   };
+    //   var poCode = (rule, value, callback) => {
+    //     if (value === '') {
+    //       callback(new Error('请输入验证码'));
+    //     } else {
+    //       callback();
+    //     }
+    //   };
+    //   var imgCode = (rule, value, callback) => {
+    //     if (value === '') {
+    //       callback(new Error('请输入验证码'));
+    //     } else {
+    //       callback();
+    //     }
+    //   };
       return {
         checked:'',
         now:0,
+        token:this.$Cookies.get("token"),
         bol:true,
         qrcode: '0' ,//二维码图片
 		ticket: '',
@@ -140,17 +143,21 @@ export default {
           poCode:'',
           imgCode:''
         },
-        rules2: {
-          shoujihao: [
-            { validator: checkshouji, trigger: 'blur' }
-          ],
-          poCode: [
-            { validator: poCode, trigger: 'blur' }
-          ],
-          imgCode:[
-            { validator: imgCode, trigger: 'blur' }
-          ],
-        },
+        userInfo:{
+            name:'zhaoliwen',
+            headeImg:0
+        }
+        // rules2: {
+        //   shoujihao: [
+        //     { validator: checkshouji, trigger: 'blur' }
+        //   ],
+        //   poCode: [
+        //     { validator: poCode, trigger: 'blur' }
+        //   ],
+        //   imgCode:[
+        //     { validator: imgCode, trigger: 'blur' }
+        //   ],
+        // },
         
         
       };
@@ -159,45 +166,72 @@ export default {
 		let that = this;
 		//获取Ticket
         that.toGetTicket();
+        //判断是否登陆注册
+        //隐藏登陆注册 显示头像和名称
+        //判断是否登陆注册
+			if (this.token) {
+				//隐藏登陆注册 显示头像和名称
+                // this.loginMsg.status = true;
+                // console.log(66666);
+                this.getUserInfo()
+                }
+			// }
 	},
     methods:{
     	//获取Ticket
 		toGetTicket:function(){
 			let that = this;
-			//获取ticket
-			that.$fetch(that.getTicket).then((response) => {
-		        if(response.code==0){
-                	let listData = response.data.list;
+			
+            qrcode().then(res=>{
+                console.log(res,8888);
+                if(res.code==0){
+                	let listData = res.data.list;
                 	that.qrcode = listData.qrcode_url;
-                	//获取下一个接口
-					that.getStatus(listData.ticket)
+                    //获取下一个接口
+                    that.getStatus(listData.ticket)
+                    
                 }
-		    })
-		},
+            });
+        },
+        // 获取用户信息
+        getUserInfo() {
+				let self = this;
+				getUserInfom().then((res) => {
+                    console.log(res,55555);
+					// this.loginMsg.headeImg = res.data.list.header_img || jpg1;
+					// self.loginMsg.name = res.data.list.nickname;
+				}).catch((res) => {
+					console.log(res);
+				})
+			},
 		//判断注册状态
 		getStatus:function(ticket_){
+            // console.log(arguments);
             let that = this;
-            let data = qs.stringify({
+            let data ={
 			  ticket: ticket_,
-			});
-			let interval_ = setInterval(judge, 3000);
-			function judge(){
+            };
+            console.log(data)
+			let interval_ = setInterval(function(){
+                // login(that.judgeStatus,data).then(res=>{
+                //     console.log(res);
+                // });
+                // console.log(data);
 				that.$post(that.judgeStatus,data).then((response)=>{
 					
-	                console.log(response.data.list.token);
-	                if(response.code==0){ 
+	                console.log(response)
 						//保存登陆的数据
-						let userInfo = {
-							name:'herong',
-							headeImg:0
-						}
-						that.$Cookies.set('token', response.data.list.token,{ expires: 7 });
-						that.$Cookies.set('name', "herong",{ expires: 7 });
+						// let userInfo = {
+						// 	name:'zhaoliwen',
+						// 	headeImg:0
+						// }
+						that.$Cookies.set('token', response.list.token,{ expires: 7 });
+						that.$Cookies.set('name', "zhaoliwen",{ expires: 7 });
 						that.$Cookies.set('headeImg', "0",{ expires: 7 });
 						window.clearInterval(interval_);
 	                	that.$router.push({name: 'index'});
-	                }
 	           }).catch((response)=>{
+                   console.log(response);
 	                window.clearInterval(interval_);
 	                //重新获取ticket
 	                that.$message({
@@ -206,7 +240,8 @@ export default {
 			        });
 			        that.qrcode = 1;
 	            })
-			}
+			}, 3000);
+			
 		},
         onSubmit:function(){
             console.log(1);

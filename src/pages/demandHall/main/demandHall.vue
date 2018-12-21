@@ -3,7 +3,7 @@
 		<Myheader :active='a'></Myheader>
 		<div class="market" style="margin-top:105px;">
 			<div class="demand-detail-wrap">
-				<div class="container-left" v-if="airtcleCon.is_expire==0">
+				<div class="container-left">
 					<div class="container-left-title">
 						<div>{{airtcleCon.status}}</div>
 						<span>原创征稿</span>
@@ -99,17 +99,18 @@
 							<el-form-item>
 								<el-row>
 									<el-col :span="3">
-										<label for=""><span class="input-must">*</span>文章标题</span></label>
+										<label for=""><span class="input-must">*</span>文章标题</label>
 									</el-col>
 									<el-col :span="12">
 										<el-input v-model="form.title" class="add-title" placeholder="请输入标题，5~50个字"></el-input>
 									</el-col>
 								</el-row>
 							</el-form-item>
-
+							<vue-ueditor-wrap v-model="form.content" :config="myConfig"></vue-ueditor-wrap>
 							<!--投稿内容-->
 							<div style="padding: 10px;margin-bottom:30px;">
-								<VueUeditorWrap v-model="form.content" :config="myConfig"></VueUeditorWrap>
+								<!-- <VueUeditorWrap v-model="form.content" :config="myConfig"></VueUeditorWrap> -->
+								
 							</div>
 							<el-form-item style="text-align: center;">
 								<el-button @click="quit">取消</el-button>
@@ -356,13 +357,13 @@
 				tougaoloading: false,
 				form: {
 					title: '',
-					content: '<h2>Hello World!</h2>',
+					content: '<h2>Hello World!</h2>'
 				},
 				myConfig: {
 					// 如果需要上传功能,找后端小伙伴要服务器接口地址
-					serverUrl: host + 'ueditor/server',
+					serverUrl: host + '/api/ueditor/server',
 					// 你的UEditor资源存放的路径,相对于打包后的index.html
-					UEDITOR_HOME_URL: host + '/UEditor/',
+					UEDITOR_HOME_URL: './static/UEditor/',
 					// 编辑器不自动被内容撑高
 					autoHeightEnabled: false,
 					// 初始容器高度

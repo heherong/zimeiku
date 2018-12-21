@@ -48,10 +48,18 @@ axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded'
 //http request 拦截器
 axios.interceptors.request.use(
 	config => {
+		// console.log(config);
 		const token = Cookies.get('token');
 		if(config.method == 'post'){
 			config.data = qs.stringify(config.data);
 			showFullScreenLoading()
+		} else if (config.method == 'get'){
+			console.log(config,22222);
+			if(config.url=='/api/qrcode') {
+				return;
+			}
+			showFullScreenLoading()
+			
 		}
 		config.headers = {
 			'Content-Type': 'application/x-www-form-urlencoded'
@@ -80,7 +88,7 @@ axios.interceptors.response.use(
 			Cookies.remove('headeImg');
 			router.push({
 				path: "/login",
-				querry: {
+				query: {
 					redirect: router.currentRoute.fullPath
 				} //从哪个页面跳转
 			})

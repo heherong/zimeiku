@@ -34,6 +34,7 @@ export default new Router({
     {
       path: '/',
       name: 'index',
+      redirect:'/index',
       component: Index,
     },
     {
@@ -102,14 +103,15 @@ export default new Router({
     {
       path:'/help',
       name:'help',
+      redirect:'/help/platform',
       component:Help,
       children:[
-        {path:'platform',component:Platform},
-        {path:'helpinfo',component:Helpinfo},
-        {path:'buyerguide',component:Buyerguide},
-        {path:'sellerguide',component:Sellerguide},
-        {path:'auditstandards',component:Auditstandards},
-        {path:'paymentsettlement',component:Paymentsettlement}
+        {path:'platform',component:Platform,name:'help'},
+        {path:'helpinfo',component:Helpinfo,name:'help'},
+        {path:'buyerguide',component:Buyerguide,name:'help'},
+        {path:'sellerguide',component:Sellerguide,name:'help'},
+        {path:'auditstandards',component:Auditstandards,name:'help'},
+        {path:'paymentsettlement',component:Paymentsettlement,name:'help'}
       ]
     },
     {

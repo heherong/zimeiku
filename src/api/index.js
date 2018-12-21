@@ -8,7 +8,9 @@ import host from '@/config/apiConfig'
 
 export const qrcode = (params) => axios.get(host + "/api/qrcode", {params}); // 获取二维码
 
-export const login = (params) => axios.post(host + "/api/login", params); // 轮询请求获取是否登入
+export const getUserInfom = (params) =>axios.post(host +'/api/user/info',params); //获取用户信息
+
+export const login = (params) => axios.post(host + "/api/login", {params}); // 轮询请求获取是否登入
 
 export const addSolicit = (params) => axios.post(host + "/api/solicit/add", params); //添加征稿令
 

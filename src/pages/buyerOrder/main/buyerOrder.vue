@@ -17,7 +17,7 @@
 				<div style="width:870px;">
 					<div class="demand-contanier" style=" float:left">
 						<ul class="demand-list">
-							<li v-for='item in solicitData' v-if="item.is_expire==0">
+							<li v-for='item in solicitData' v-if="item.is_expire==1">
 								<div class="item-status">
 									<span v-if="item.status!=null">{{item.status}}</span>
 									<span>招募中</span>
@@ -128,6 +128,7 @@
 		},
 		methods: {
 			getAjax(page, pagesize){
+				// console.log(this.$route);
 				let _data = {
 					page: page,
 					pagesize: pagesize

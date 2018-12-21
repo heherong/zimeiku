@@ -1,6 +1,6 @@
 <template>
     <div class="transAll" style="width:100%;">
-        <Myheader></Myheader>
+        <Myheader :active='tabActive'></Myheader>
         <div class="inner-wrap" style="margin-top:105px;">
             <div class="aside-wrap transAll" style="min-height:273px;">
                 <ul class="menu-ul-wrap transAll">
@@ -75,14 +75,20 @@ export default {
     },
     data:function(){
             return {
-                selected:'platform'
+                tabActive: 'help',
+                selected:'platform',
             }
         },
     methods:{
         getVal:function(val){
             this.selected = val;
-            console.log(val)
         }
+    },
+    beforeRouteEnter:(to,form,next)=>{
+        next(vm=>{
+            vm.tabActive = to.params.name;
+
+        })
     },
 }
 </script>

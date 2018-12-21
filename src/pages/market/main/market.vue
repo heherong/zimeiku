@@ -88,7 +88,7 @@
 											<span>2</span>
 										</p>
 										<p class="popluarity">
-											人&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp气
+											人&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;气
 											<span>441</span>
 										</p>
 										<p class="jump_detail">

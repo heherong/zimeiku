@@ -170,18 +170,13 @@
 				}
 				return total
 			},
-			article_id: function() {
-				let article_id = [];
-				for (var i = 0; i < this.price.length; i++) {
-					article_id.push(this.price[i].article_id);
-				}
-				return article_id
-			}
+			
 		},
 		methods: {
 			//购物车列表
 			Cartlist() {
 				cartList().then(res => {
+					console.log(res)
 					if (res.data.length > 0) {
 						this.CartForm = res.data
 					}
@@ -204,11 +199,13 @@
 			},
 			//删除购物车
 			CartDel(article_ids) {
+				console.log(article_ids)
 				let _data = {
 					article_ids: JSON.stringify(article_ids)
 				}
 				delCart(_data).then(res => {
-					this.CartForm = res.data.data.list;
+					console.log(res);
+					this.CartForm = res.data;
 				})
 			},
 			//删除当前行
